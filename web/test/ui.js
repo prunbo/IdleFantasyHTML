@@ -13,6 +13,7 @@ global.localStorage = (() => {
   return { getItem: k => (k in store ? store[k] : null), setItem: (k, v) => { store[k] = String(v); }, removeItem: k => { delete store[k]; } };
 })();
 try { global.navigator = {}; } catch (e) {}
+global.requestAnimationFrame = fn => 1;
 
 /* ---------------- minimal virtual DOM ---------------- */
 class VElem {
@@ -98,10 +99,12 @@ const check = (name, cond) => { if (cond) console.log('  ✓ ' + name); else { c
   global.Sim = require('../js/sim.js').Sim;
   const State = require('../js/state.js').State;
   global.State = State;
+  global.Systems = require('../js/systems.js').Systems;
   const Engine = require('../js/engine.js').Engine;
   global.Engine = Engine;
   const UI = require('../js/ui.js').UI;
   global.UI = UI;
+  require('../js/ui-town.js');
 
   State.init();
   UI.bindTabs();
@@ -170,6 +173,28 @@ const check = (name, cond) => { if (cond) console.log('  ✓ ' + name); else { c
   Engine.session().endsAt = Date.now() - 1;
   Engine.collect();
   check('dungeon collect ok', true);
+
+  console.log('— render: town (all four sections) —');
+  UI.tab = 'town';
+  UI.townView = 'slayer'; UI.render();
+  UI.townView = 'guilds'; UI.render();
+  UI.townView = 'carnival'; UI.render();
+  UI.townView = 'tower'; UI.render();
+  check('all town sections render', true);
+
+  console.log('— render: farming + herblore + pets —');
+  State.addItem('potato_seed', 10);
+  UI.tab = 'skills'; UI.skillView = 'farming'; UI.render();
+  check('farming patches render', byId.screen.children.length > 0);
+  UI.skillView = 'herblore'; UI.render();
+  check('herblore recipes render', byId.screen.children.length > 0);
+  UI.skillView = 'slayer'; UI.render();
+  check('slayer note renders', byId.screen.children.length > 0);
+  UI.skillView = null;
+  UI.tab = 'character'; UI.render();
+  check('character with pets card renders', byId.screen.children.length > 0);
+  UI.updateTownLive();
+  check('town live update runs', true);
 
   console.log('— modal + confirm + toast —');
   UI.toast('hello');

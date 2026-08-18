@@ -20,12 +20,33 @@ const State = {
       combatStyle: 'attack',
       activeSpell: null,
       styleWeapons: {},      // style -> weapon key memory
+      activePotion: null,    // potion selected for the next combat session
       session: null,
       quests: {},            // id -> {claimed:bool}
       stats: {
         itemsGathered: {}, itemsCrafted: {}, killsByEnemy: {}, totalKills: 0,
         dungeonRuns: {}, dungeonStyleRuns: {}, dungeonNoFoodRuns: 0,
         pickpockets: 0, stolen: {}, bonesScattered: {}, sessionsCollected: 0,
+        slayerTasksCompleted: 0,
+      },
+      // Pets (passive collectibles — every owned pet gives its boost)
+      petsOwned: [],
+      // Farming: 5 patch slots (3 unlocked at level 1, 4 at 20, 5 at 40)
+      farmingPatches: [null, null, null, null, null],
+      magicBeanPlanted: false,
+      unlockedDungeonsExtra: [],   // e.g. cloud_kingdom via magic bean
+      // Slayer
+      slayer: { activeTask: null, foretelled: [], points: 0 },
+      // Infinite Tower
+      tower: { current: 0, best: 0, claimed: [], xpBonus: 0, hpBonus: 0, coinBonus: 0 },
+      // Carnival (active minigame cooldowns, epoch ms)
+      carnivalCooldowns: {},
+      // Guilds
+      guilds: {
+        progress: {},          // guild quest id -> {progress, completed}
+        dailyIds: [], dailyProgress: {}, dailyClaimed: [],
+        tierCounts: {},        // "guild:tier" -> dailies claimed this tier
+        generatedAt: 0,
       },
       log: [],
     };
@@ -53,6 +74,12 @@ const State = {
       const def = this.defaults();
       data.skills = { ...def.skills, ...data.skills };
       data.stats = { ...def.stats, ...data.stats };
+      data.guilds = { ...def.guilds, ...data.guilds };
+      data.slayer = { ...def.slayer, ...data.slayer };
+      data.tower = { ...def.tower, ...data.tower };
+      if (!Array.isArray(data.farmingPatches)) data.farmingPatches = def.farmingPatches;
+      while (data.farmingPatches.length < 5) data.farmingPatches.push(null);
+      if (!Array.isArray(data.petsOwned)) data.petsOwned = [];
       this.state = data;
       return true;
     } catch (e) { return false; }
@@ -129,6 +156,9 @@ const State = {
   SLOTS() {
     return ['weapon', 'shield', 'head', 'body', 'legs', 'boots', 'cape', 'ring', 'necklace'];
   },
+  TOOL_SLOTS() {
+    return ['pickaxe', 'axe', 'fishing_rod', 'hammer', 'tinderbox', 'grappling_hook', 'frying_pan', 'lockpick', 'hoe'];
+  },
 
   equippedItem(slot) { return this.state.equipped[slot] || null; },
 
@@ -196,6 +226,44 @@ const State = {
     return eq && eq.cape_skill === skillKey ? (eq.cape_bonus || 0) : 0;
   },
 
+  /** XP boost percentage from all owned pets for a given skill ('combat' matches combat pets). */
+  petBoost(skillKey) {
+    return this.state.petsOwned.reduce((sum, id) => {
+      const p = GameData.pets[id];
+      return sum + (p && (p.boosted_skill === skillKey || p.boosted_skill === 'all') ? p.boost_percent : 0);
+    }, 0);
+  },
+
+  combatPetBoost() {
+    return this.state.petsOwned.reduce((sum, id) => {
+      const p = GameData.pets[id];
+      return sum + (p && (p.boosted_skill === 'combat' || p.boosted_skill === 'all') ? p.boost_percent : 0);
+    }, 0);
+  },
+
+  addPet(id) {
+    if (!GameData.pets[id] || this.state.petsOwned.includes(id)) return false;
+    this.state.petsOwned.push(id);
+    const p = GameData.pets[id];
+    this.pushLog(`🐾 ${p.emoji || '🐾'} ${p.display_name} joined you! (+${p.boost_percent}% ${Util.prettify(p.boosted_skill)} XP)`, 'quest');
+    return true;
+  },
+
+  /** Farming patch count: 3 (lvl 1-19), 4 (20-39), 5 (40+). */
+  patchCount() {
+    const lvl = this.level('farming');
+    return lvl >= 40 ? 5 : lvl >= 20 ? 4 : 3;
+  },
+
+  /** Effective max HP including tower milestone bonuses (+5 hp levels each). */
+  effectiveHpLevel() { return this.level('hitpoints') + (this.state.tower?.hpBonus || 0); },
+
+  /** A dungeon is visible if not gated, or unlocked via the magic bean. */
+  dungeonUnlocked(key) {
+    if (key !== 'cloud_kingdom') return true;
+    return (this.state.unlockedDungeonsExtra || []).includes('cloud_kingdom');
+  },
+
   /** Summed combat bonuses from all currently equipped gear. */
   combatBonuses() {
     const b = { attack: 0, strength: 0, defense: 0, rangedAttack: 0, rangedStr: 0, magicAttack: 0, magicDmg: 0, attackSpeed: null, infiniteRunes: null };
@@ -232,7 +300,7 @@ const State = {
       attack: this.level('attack'),
       strength: this.level('strength'),
       defense: this.level('defense') + bonuses.defense,
-      hitpoints: this.level('hitpoints'),
+      hitpoints: this.effectiveHpLevel(),
       ranged: this.level('ranged'),
       magic: this.level('magic'),
       agilityLevel: this.level('agility'),

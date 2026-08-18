@@ -49,6 +49,7 @@ function check(name, cond) {
   global.Sim = Sim;
   const StateMod = require('../js/state.js');
   global.State = StateMod.State;
+  global.Systems = require('../js/systems.js').Systems;
   const Engine = require('../js/engine.js').Engine;
   global.Engine = Engine;
 

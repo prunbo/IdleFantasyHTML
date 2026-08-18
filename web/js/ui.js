@@ -60,12 +60,14 @@ const UI = {
       case 'character': screen.appendChild(this.renderCharacter()); break;
       case 'shop': screen.appendChild(this.renderShop()); break;
       case 'quests': screen.appendChild(this.renderQuests()); break;
+      case 'town': screen.appendChild(this.renderTown ? this.renderTown() : Util.el('div', 'empty-note', 'Town not loaded.')); break;
     }
   },
 
   /** Cheap per-tick refresh of live elements (no full re-render). */
   updateLive() {
     this.renderTopbar();
+    if (this.updateTownLive) this.updateTownLive();
     const bar = document.getElementById('session-progress-fill');
     const label = document.getElementById('session-progress-label');
     const live = document.getElementById('session-live');
@@ -135,13 +137,13 @@ const UI = {
 
   _sessionCard(sess) {
     const card = Util.el('div', 'card');
-    const emoji = { mining: '⛏️', woodcutting: '🪓', fishing: '🎣', thieving: '🗝️', agility: '🏃', firemaking: '🔥', smithing: '🔨', cooking: '🍳', fletching: '🏹', crafting: '💎', runecrafting: '✨', prayer: '🙏', combat: '⚔️' }[sess.skill] || '🎯';
+    const emoji = { mining: '⛏️', woodcutting: '🪓', fishing: '🎣', thieving: '🗝️', agility: '🏃', firemaking: '🔥', smithing: '🔨', cooking: '🍳', fletching: '🏹', crafting: '💎', runecrafting: '✨', prayer: '🙏', combat: '⚔️', tower: '🗼', ranged: '🎯', strength: '💪', magic: '🔮', attack: '⚔️', defense: '🛡️', herblore: '🧪' }[sess.skill] || '🎯';
     const skillName = GameData.skillDefs.find(d => d.key === sess.skill)?.name || sess.skill;
 
     card.innerHTML = `
       <div class="session-hero">
         <span class="emoji">${emoji}</span>
-        <div class="session-title">${Util.esc(sess.kind === 'dungeon' ? sess.label : `${skillName}: ${sess.label}`)}</div>
+        <div class="session-title">${Util.esc(sess.kind === 'dungeon' || sess.kind === 'tower' ? sess.label : `${skillName}: ${sess.label}`)}</div>
         <div class="session-meta">${sess.kind === 'dungeon'
           ? `Style: ${Util.prettify(sess.style)} · Minute ${Util.clamp(Engine.revealedFrames(sess), 0, sess.frames.length)} of ${sess.frames.length}`
           : `Minute ${Util.clamp(Engine.revealedFrames(sess), 0, sess.frames.length)} of ${sess.frames.length}`}</div>
@@ -263,6 +265,17 @@ const UI = {
     const busy = Engine.hasSession();
     const combatSkills = ['attack', 'strength', 'defense', 'ranged', 'magic', 'hitpoints'];
 
+    if (skillKey === 'farming' && this.renderFarming) {
+      wrap.appendChild(back);
+      wrap.appendChild(this.renderFarming());
+      return wrap;
+    }
+    if (skillKey === 'slayer') {
+      card.appendChild(Util.el('div', 'empty-note', 'Slayer is trained by completing tasks from the Slayer Master — visit the 🏘️ Town tab. Each on-task kill earns Slayer XP.'));
+      wrap.appendChild(back);
+      wrap.appendChild(card);
+      return wrap;
+    }
     if (combatSkills.includes(skillKey)) {
       card.appendChild(Util.el('div', 'empty-note', `${def.name} is trained by fighting in Dungeons. ${skillKey === 'hitpoints' ? 'You gain Hitpoints XP from every fight.' : 'Switch your combat style on the Dungeons screen to train it.'}`));
     } else {
@@ -530,6 +543,24 @@ const UI = {
       styleCard.appendChild(err);
     }
 
+    // Combat potion selector (one dose consumed per combat session)
+    const potionsOwned = Object.keys(GameData.potionEffects).filter(k => State.count(k) > 0);
+    if (potionsOwned.length > 0) {
+      const sel = Util.el('select', 'fancy');
+      sel.style.marginTop = '10px';
+      sel.innerHTML = '<option value="">— no potion —</option>' +
+        potionsOwned.map(k => {
+          const eff = Object.entries(GameData.potionEffects[k]).map(([st, v]) => `+${v} ${st}`).join(', ');
+          return `<option value="${k}" ${State.state.activePotion === k ? 'selected' : ''}>${GameData.name(k)} ×${Util.fmt(State.count(k))} (${eff})</option>`;
+        }).join('');
+      sel.onchange = () => { State.state.activePotion = sel.value || null; State.save(); this.render(); };
+      styleCard.appendChild(sel);
+      const note = Util.el('div', 'card-sub');
+      note.style.marginTop = '6px';
+      note.textContent = '🧪 One dose is consumed per dungeon/tower session — bonuses last the whole run.';
+      styleCard.appendChild(note);
+    }
+
     // Spell / arrow pickers
     if (State.state.combatStyle === 'magic') {
       const sel = Util.el('select', 'fancy');
@@ -576,6 +607,7 @@ const UI = {
     const ctx2 = State.combatContext();
     const totalFoodHeal = Object.entries(ctx2.food).reduce((s, [k, v]) => s + (GameData.foodHeals[k] || 0) * 10 * v, 0);
     for (const d of GameData.dungeonList()) {
+      if (!State.dungeonUnlocked(d.name)) continue;
       const rating = Sim.estimateSurvival(d, ctx2.defense, ctx2.hitpoints, totalFoodHeal);
       const ratingTag = { LIKELY: ['green', 'Likely survive'], RISKY: ['orange', 'Risky'], UNLIKELY: ['red', 'Unlikely'] }[rating];
       const enemies = [...new Set(d.enemy_spawns.map(s => GameData.enemies[s.enemy]?.display_name || s.enemy))].slice(0, 4).join(', ');
@@ -603,8 +635,8 @@ const UI = {
     eqCard.appendChild(Util.el('h2', null, '🧝 Equipment'));
     eqCard.appendChild(Util.el('p', 'card-sub', 'Tap a filled slot to unequip. Better gear from dungeon loot, smithing, fletching and crafting.'));
     const eg = Util.el('div', 'equip-grid');
-    const slotIcons = { weapon: '⚔️', shield: '🛡️', head: '⛑️', body: '👕', legs: '👖', boots: '👟', cape: '🧣', ring: '💍', necklace: '📿' };
-    for (const slot of State.SLOTS()) {
+    const slotIcons = { weapon: '⚔️', shield: '🛡️', head: '⛑️', body: '👕', legs: '👖', boots: '👟', cape: '🧣', ring: '💍', necklace: '📿', pickaxe: '⛏️', axe: '🪓', fishing_rod: '🎣', hammer: '🔨', tinderbox: '🔥', grappling_hook: '🪝', frying_pan: '🍳', lockpick: '🗝️', hoe: '🌾' };
+    for (const slot of [...State.SLOTS(), ...State.TOOL_SLOTS()]) {
       const key = State.equippedItem(slot);
       const cell = Util.el('div', 'equip-slot' + (key ? ' filled' : ''));
       const eq = key ? GameData.equipment[key] : null;

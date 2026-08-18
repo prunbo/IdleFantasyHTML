@@ -10,6 +10,15 @@ const Sim = {
   TICKS_PER_FRAME: 25,
   BASE_ATTACK_SPEED_SEC: 2.4,
 
+  /* --------------------------- pet drop helper --------------------------- */
+
+  /** One pet-drop roll (chance is per frame, like the app's 1/1000 x 60 frames). */
+  _petRoll(items, petDrop) {
+    if (petDrop && petDrop.key && Math.random() < petDrop.chance) {
+      items[petDrop.key] = (items[petDrop.key] || 0) + 1;
+    }
+  },
+
   /* ------------------------------ XP table ------------------------------ */
 
   levelForXp(xp) {
@@ -54,6 +63,7 @@ const Sim = {
       for (let i = 0; i < qty; i++)
         for (const [gemKey, gem] of Object.entries(GameData.gems))
           if (Math.random() < gem.drop_rate) items[gemKey] = (items[gemKey] || 0) + 1;
+      this._petRoll(items, opts.petDrop);
 
       frames.push(this._frame(minute, xpBefore, currentXp, levelBefore, levelAfter, items, xpGain));
     }
@@ -78,6 +88,7 @@ const Sim = {
       const qty = Math.max(1, Math.floor(acc));
       acc -= qty;
       const items = { [treeData.log_name]: qty };
+      this._petRoll(items, opts.petDrop);
 
       frames.push(this._frame(minute, xpBefore, currentXp, levelBefore, levelAfter, items, xpGain));
     }
@@ -108,6 +119,7 @@ const Sim = {
       } else {
         items[fishKey] = qty;
       }
+      this._petRoll(items, opts.petDrop);
 
       frames.push(this._frame(minute, xpBefore, currentXp, levelBefore, levelAfter, items, xpGain));
     }
@@ -139,6 +151,7 @@ const Sim = {
           const q = entry.min_qty && entry.max_qty ? Util.randInt(entry.min_qty, entry.max_qty) : 1;
           items[entry.item] = (items[entry.item] || 0) + q;
         }
+      this._petRoll(items, opts.petDrop);
 
       frames.push(this._frame(minute, xpBefore, currentXp, levelBefore, levelAfter, items, xpGain));
     }
@@ -170,10 +183,15 @@ const Sim = {
    * min(qty, 60) frames. XP per batch scales with efficiency; item output does not
    * (efficiency instead shortens the session, set by the engine).
    */
-  simulateCraft(startXp, qty, xpPerItem, outputQty, outputKey, eff) {
+  simulateCraft(startXp, qty, xpPerItem, outputQty, outputKey, eff, petDrop) {
     const frameCount = Math.min(qty, 60);
     const frames = [];
     let xp = startXp;
+    // Pet drop: the app rolls once per frame (up to 60) and attaches it to the last frame
+    let petItem = null;
+    if (petDrop && petDrop.key) {
+      for (let i = 0; i < 60; i++) if (Math.random() < petDrop.chance) { petItem = petDrop.key; break; }
+    }
     for (let bucket = 0; bucket < frameCount; bucket++) {
       const inBucket = Math.floor((bucket + 1) * qty / frameCount) - Math.floor(bucket * qty / frameCount);
       const levelBefore = this.levelForXp(xp);
@@ -185,6 +203,10 @@ const Sim = {
         levelBefore, levelAfter, items: outputKey ? { [outputKey]: outputQty * inBucket } : {},
         leveledUp: levelAfter > levelBefore, kills: inBucket, died: false,
       });
+    }
+    if (petItem && frames.length > 0) {
+      const last = frames[frames.length - 1];
+      last.items[petItem] = (last.items[petItem] || 0) + 1;
     }
     return frames;
   },
@@ -221,7 +243,8 @@ const Sim = {
    * Player attacks every `attackSpeedSec`; the enemy retaliates on a fixed 2.4s
    * clock. Food is auto-eaten (best tier first) at <=50% HP or on big hits.
    */
-  simulateDungeon(dungeon, ctx) {
+  simulateDungeon(dungeon, ctx, enemiesOverride) {
+    const enemies = enemiesOverride || GameData.enemies;
     const speed = Util.clamp(ctx.attackSpeedSec || this.BASE_ATTACK_SPEED_SEC, 1.2, this.BASE_ATTACK_SPEED_SEC);
     const ticksPerFrame = Math.round(60 / speed);
     const eatFraction = 0.5;
@@ -259,7 +282,7 @@ const Sim = {
 
       const enemyKey = carryoverKey || spawnPool[Math.floor(Math.random() * spawnPool.length)];
       carryoverKey = null;
-      const enemy = GameData.enemies[enemyKey];
+      const enemy = enemies[enemyKey];
       if (!enemy) continue;
 
       let playerMaxHit, playerEffAtk, enemyDefStat;
@@ -329,7 +352,8 @@ const Sim = {
               frameItems[d.item] = (frameItems[d.item] || 0) + q;
             }
           }
-          const xp = enemy.xp_drops.combat || 0;
+          const baseXp = enemy.xp_drops.combat || 0;
+          const xp = ctx.petBoostPct ? Math.floor(baseXp * (1 + ctx.petBoostPct / 100)) : baseXp;
           for (const [skill, sxp] of Object.entries(this._distributeXp(xp, ctx.style)))
             frameXpBySkill[skill] = (frameXpBySkill[skill] || 0) + sxp;
           frameXp += xp;
@@ -426,6 +450,112 @@ const Sim = {
     }
     const ratio = pool / Math.max(1, weightedDPM * 60);
     return ratio >= 1.2 ? 'LIKELY' : ratio >= 0.6 ? 'RISKY' : 'UNLIKELY';
+  },
+
+  /* ----------------------------- Carnival ----------------------------- */
+
+  /** Port of CarnivalSimulator: ticket drop per frame + small skill XP. */
+  simulateCarnival(activityKey, relevantSkillLevel, petBoostPct, agilityLevel, tierBonus) {
+    const chance = Math.min(1, 0.15 + Util.clamp(relevantSkillLevel - 1, 0, 98) * (0.20 / 98) + (tierBonus || 0));
+    const baseXp = { archery_range: 10, strongman_competition: 8, wizards_duel: 12, fishing_derby: 9 }[activityKey] || 8;
+    const skillKey = { archery_range: 'ranged', strongman_competition: 'strength', wizards_duel: 'magic', fishing_derby: 'fishing' }[activityKey] || 'ranged';
+    const frames = [];
+    for (let minute = 1; minute <= 60; minute++) {
+      const tickets = Math.random() < chance ? 1 : 0;
+      const xpGain = Math.floor(baseXp * (1 + (petBoostPct || 0) / 100));
+      frames.push({
+        minute, xpGain, xpBefore: 0, xpAfter: 0, levelBefore: relevantSkillLevel, levelAfter: relevantSkillLevel,
+        items: tickets > 0 ? { carnival_ticket: tickets } : {},
+        leveledUp: false, kills: 0, died: false,
+        xpBySkill: { [skillKey]: xpGain },
+      });
+    }
+    return this._result(frames, agilityLevel);
+  },
+
+  /* ----------------------------- Tower ----------------------------- */
+
+  TOWER_TIERS: [
+    { max: 20, spawns: [['goblin', 40], ['skeleton', 30], ['zombie', 30]] },
+    { max: 40, spawns: [['orc_warrior', 40], ['dark_wizard', 30], ['bandit', 30]] },
+    { max: 60, spawns: [['cave_troll', 35], ['shadow_beast', 35], ['demon', 30]] },
+    { max: 80, spawns: [['forge_demon', 35], ['shadow_assassin', 35], ['abyssal_leech', 30]] },
+    { max: 100, spawns: [['void_stalker', 35], ['void_guardian', 35], ['abyssal_lord', 30]] },
+    { max: Infinity, spawns: [['void_archon', 35], ['eternal_sentinel', 35], ['abyssal_lord', 30]] },
+  ],
+
+  TOWER_MILESTONES: [
+    { floor: 10, type: 'item', item: 'tower_ring' },
+    { floor: 20, type: 'xp', amount: 1 },
+    { floor: 30, type: 'coins', amount: 5000 },
+    { floor: 40, type: 'item', item: 'tower_shield' },
+    { floor: 50, type: 'item', item: 'tower_amulet' },
+    { floor: 60, type: 'hp', amount: 5 },
+    { floor: 70, type: 'xp', amount: 2 },
+    { floor: 80, type: 'coins', amount: 25000 },
+    { floor: 90, type: 'item', item: 'tower_helm' },
+    { floor: 100, type: 'pet', item: 'tower_pet' },
+    { floor: 110, type: 'coinDrops', amount: 1 },
+    { floor: 120, type: 'item', item: 'tower_body' },
+    { floor: 130, type: 'xp', amount: 2 },
+    { floor: 140, type: 'coins', amount: 100000 },
+    { floor: 150, type: 'items', items: ['tower_legs', 'tower_boots', 'tower_plateskirt'] },
+    { floor: 160, type: 'hp', amount: 5 },
+    { floor: 170, type: 'coinDrops', amount: 1 },
+    { floor: 180, type: 'item', item: 'tower_sword' },
+    { floor: 190, type: 'xp', amount: 2 },
+    { floor: 200, type: 'item', item: 'tower_cape', coins: 500000 },
+    { floor: 210, type: 'hp', amount: 5 },
+    { floor: 220, type: 'item', item: 'tower_crossbow' },
+    { floor: 230, type: 'coinDrops', amount: 1 },
+    { floor: 240, type: 'xp', amount: 2 },
+    { floor: 250, type: 'item', item: 'void_staff', coins: 1000000 },
+  ],
+
+  towerTierSpawns(floor) {
+    for (const t of this.TOWER_TIERS) if (floor <= t.max) return t.spawns;
+    return this.TOWER_TIERS[this.TOWER_TIERS.length - 1].spawns;
+  },
+
+  /** DungeonData-shaped object for a tower floor. */
+  buildTowerFloor(floor) {
+    return {
+      name: 'tower_floor_' + floor,
+      display_name: 'Tower Floor ' + floor,
+      description: 'Endless gauntlet — floor ' + floor,
+      recommended_level: Math.min(200, floor * 2),
+      encounter_rate: 0.65,
+      enemy_spawns: this.towerTierSpawns(floor).map(([enemy, weight]) => ({ enemy, weight })),
+    };
+  },
+
+  /** Enemies scaled beyond floor 100: HP toward 10x, stats toward +30% at floor 250. */
+  scaledTowerEnemies(floor) {
+    const progress = floor <= 100 ? 0 : (Util.clamp(floor, 101, 250) - 100) / 150;
+    const hpMult = 1 + progress * 9;
+    const statMult = 1 + progress * 0.3;
+    const relevant = new Set(this.towerTierSpawns(floor).map(x => x[0]));
+    const out = {};
+    for (const [key, e] of Object.entries(GameData.enemies)) {
+      if (!relevant.has(key)) { out[key] = e; continue; }
+      out[key] = {
+        ...e,
+        hp: Math.max(1, Math.floor(e.hp * hpMult)),
+        combat_stats: {
+          ...e.combat_stats,
+          attack_bonus: Math.floor(e.combat_stats.attack_bonus * statMult),
+          strength_bonus: Math.floor(e.combat_stats.strength_bonus * statMult),
+        },
+        defensive_stats: {
+          ...e.defensive_stats,
+          attack_defense: Math.floor(e.defensive_stats.attack_defense * statMult),
+          strength_defense: Math.floor(e.defensive_stats.strength_defense * statMult),
+          ranged_defense: Math.floor(e.defensive_stats.ranged_defense * statMult),
+          magic_defense: Math.floor(e.defensive_stats.magic_defense * statMult),
+        },
+      };
+    }
+    return out;
   },
 
   /* ---------------------------- shared ---------------------------- */

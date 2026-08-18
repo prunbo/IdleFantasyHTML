@@ -77,7 +77,11 @@ const Engine = {
     const s = State.state;
     const level = State.level(skill);
     const capeBonus = State.capeBonus(skill);
-    const opts = { agilityLevel: State.level('agility'), petBoostPct: 0 };
+    const opts = { agilityLevel: State.level('agility'), petBoostPct: State.petBoost(skill) };
+    // Gathering pets drop from their skill's sessions (1/1000 per frame, like the app)
+    const petDef = GameData.petBySkill[skill];
+    if (petDef && ['mining', 'woodcutting', 'fishing', 'thieving', 'agility'].includes(skill))
+      opts.petDrop = { key: petDef.id, chance: 1 / 1000 };
 
     switch (skill) {
       case 'mining': {
@@ -125,10 +129,31 @@ const Engine = {
         if (qty < 1) return { error: `You need ${GameData.name(activityKey)} to burn.` };
         const eff = State.toolEfficiency('tinderbox', 'firemaking', log.level_required);
         State.removeItem(activityKey, qty);
+        const petDef = GameData.petBySkill.firemaking;
         const baseFrameMs = Sim.sessionDurationMs(State.level('agility')) / 60;
         return { ok: true, session: this._makeSession('production', 'firemaking', activityKey, GameData.name(activityKey),
-          { frames: Sim.simulateCraft(State.xp('firemaking'), qty, log.xp_per_log, 1, ashKey, eff), durationMs: Math.max(1, qty * baseFrameMs / eff) },
+          { frames: Sim.simulateCraft(State.xp('firemaking'), qty, log.xp_per_log, 1, ashKey, eff, petDef ? { key: petDef.id, chance: 1 / 1000 } : null), durationMs: Math.max(1, qty * baseFrameMs / eff) },
           { consumed: { [activityKey]: qty }, outputKey: ashKey, totalQty: qty }) };
+      }
+      case 'herblore': {
+        const recipe = GameData.herbloreRecipes[activityKey];
+        if (!recipe) return { error: 'Unknown recipe.' };
+        if (level < recipe.level_required) return { error: `Requires Herblore ${recipe.level_required}.` };
+        let maxQty = 500;
+        for (const [mat, need] of Object.entries(recipe.materials || {}))
+          maxQty = Math.min(maxQty, Math.floor((State.count(mat) || 0) / need));
+        if (maxQty < 1) {
+          const missing = Object.entries(recipe.materials || {}).filter(([m]) => (State.count(m) || 0) < 1).map(([m]) => GameData.name(m));
+          return { error: `Not enough materials — need ${missing.join(', ')}.` };
+        }
+        const qty = Math.min(maxQty, qtyArg || maxQty);
+        for (const [mat, need] of Object.entries(recipe.materials || {})) State.removeItem(mat, need * qty);
+        const petDef = GameData.petBySkill.herblore;
+        const baseFrameMs = Sim.sessionDurationMs(State.level('agility')) / 60;
+        const effects = Object.entries(recipe.effects || {}).map(([k, v]) => `+${v} ${k}`).join(', ');
+        return { ok: true, session: this._makeSession('production', 'herblore', activityKey, recipe.display_name,
+          { frames: Sim.simulateCraft(State.xp('herblore'), qty, recipe.xp_per_item, recipe.output_quantity || 1, activityKey, 1, petDef ? { key: petDef.id, chance: 1 / 1000 } : null), durationMs: Math.max(1, qty * baseFrameMs) },
+          { consumed: Object.fromEntries(Object.entries(recipe.materials || {}).map(([m, n]) => [m, n * qty])), outputKey: activityKey, totalQty: qty * (recipe.output_quantity || 1) }) };
       }
       case 'smithing': case 'fletching': case 'crafting': {
         const recipe = GameData.recipes[skill][activityKey];
@@ -146,9 +171,10 @@ const Engine = {
         const eff = skill === 'smithing'
           ? State.toolEfficiency('hammer', 'smithing', recipe.level_required)
           : 1.0;
+        const petDef = GameData.petBySkill[skill];
         const baseFrameMs = Sim.sessionDurationMs(State.level('agility')) / 60;
         return { ok: true, session: this._makeSession('production', skill, activityKey, recipe.display_name,
-          { frames: Sim.simulateCraft(State.xp(skill), qty, recipe.xp_per_item, recipe.output_quantity || 1, activityKey, eff), durationMs: Math.max(1, qty * baseFrameMs / eff) },
+          { frames: Sim.simulateCraft(State.xp(skill), qty, recipe.xp_per_item, recipe.output_quantity || 1, activityKey, eff, petDef ? { key: petDef.id, chance: 1 / 1000 } : null), durationMs: Math.max(1, qty * baseFrameMs / eff) },
           { consumed: Object.fromEntries(Object.entries(recipe.materials || {}).map(([m, n]) => [m, n * qty])), outputKey: activityKey, totalQty: qty * (recipe.output_quantity || 1) }) };
       }
       case 'cooking': {
@@ -173,9 +199,18 @@ const Engine = {
         const qty = Math.min(have, qtyArg || have);
         if (qty < 1) return { error: 'You need Rune Essence — mine it at level 1 Mining or buy it at the shop.' };
         State.removeItem('rune_essence', qty * (rune.essence_cost || 1));
+        const petDef = GameData.petBySkill.runecrafting;
+        const frames = Sim.simulateRunecrafting(activityKey, rune, qty, State.xp('runecrafting'));
+        if (petDef && frames.length > 0) {
+          for (let i = 0; i < 60; i++) if (Math.random() < 1 / 1000) {
+            const last = frames[frames.length - 1];
+            last.items[petDef.id] = (last.items[petDef.id] || 0) + 1;
+            break;
+          }
+        }
         const baseFrameMs = Sim.sessionDurationMs(State.level('agility')) / 60;
         return { ok: true, session: this._makeSession('production', 'runecrafting', activityKey, rune.display_name,
-          { frames: Sim.simulateRunecrafting(activityKey, rune, qty, State.xp('runecrafting')), durationMs: Math.max(1, qty * baseFrameMs) },
+          { frames, durationMs: Math.max(1, qty * baseFrameMs) },
           { consumed: { rune_essence: qty * (rune.essence_cost || 1) }, outputKey: activityKey, totalQty: qty }) };
       }
       case 'prayer': {
@@ -225,13 +260,24 @@ const Engine = {
     if (this.hasSession()) return { error: 'A session is already running.' };
     const dungeon = GameData.dungeons[dungeonKey];
     if (!dungeon) return { error: 'Unknown dungeon.' };
+    if (!State.dungeonUnlocked(dungeonKey)) return { error: 'This dungeon is locked — something in the clouds must open the way…' };
     const style = State.state.combatStyle;
     const styleError = this.validateStyle(style);
     if (styleError) return { error: styleError };
     if (style === 'ranged' && !State.equippedItem('arrows')) return { error: 'Select arrows in the Combat tab.' };
 
     const ctx = State.combatContext();
+    ctx.petBoostPct = State.combatPetBoost();
+    // Potion: one dose consumed at session start, bonuses last the whole run
+    const potionKey = State.state.activePotion;
+    if (potionKey && State.count(potionKey) > 0 && GameData.potionEffects[potionKey]) {
+      State.removeItem(potionKey, 1);
+      ctx.potions = GameData.potionEffects[potionKey];
+    } else {
+      ctx.potions = {};
+    }
     const result = Sim.simulateDungeon(dungeon, ctx);
+    State.save();
     return {
       ok: true,
       session: this._makeSession('dungeon', 'combat', dungeonKey, dungeon.display_name, result, {
@@ -266,23 +312,103 @@ const Engine = {
       for (const [k, v] of Object.entries(f.runesConsumed || {})) summary.runesConsumed[k] = (summary.runesConsumed[k] || 0) + v;
     }
 
+    // --- Tower: death forfeits 90% of XP/loot; survivors get tower bonus multipliers ---
+    const tower = State.state.tower;
+    if (sess.kind === 'tower') {
+      if (summary.died) {
+        for (const k of Object.keys(summary.xpBySkill)) summary.xpBySkill[k] = Math.max(1, Math.floor(summary.xpBySkill[k] * 0.1));
+        for (const k of Object.keys(summary.items)) {
+          summary.items[k] = Math.floor(summary.items[k] * 0.1);
+          if (summary.items[k] === 0) delete summary.items[k];
+        }
+      } else {
+        const xpMult = 1 + tower.xpBonus / 100;
+        const coinMult = 1 + tower.coinBonus / 100;
+        for (const k of Object.keys(summary.xpBySkill)) summary.xpBySkill[k] = Math.floor(summary.xpBySkill[k] * xpMult);
+        if (summary.items.coins) summary.items.coins = Math.floor(summary.items.coins * coinMult);
+      }
+      // Ammo/runes partially reclaimed (25%..75% by ranged/magic level)
+      summary.reclaimed = {};
+      for (const [k, v] of Object.entries(summary.arrowsConsumed)) {
+        const back = Math.floor(v * Systems.reclaimChance(State.level('ranged')));
+        if (back > 0) { summary.arrowsConsumed[k] -= back; summary.reclaimed[k] = back; }
+      }
+      for (const [k, v] of Object.entries(summary.runesConsumed)) {
+        const back = Math.floor(v * Systems.reclaimChance(State.level('magic')));
+        if (back > 0) { summary.runesConsumed[k] -= back; summary.reclaimed[k] = (summary.reclaimed[k] || 0) + back; }
+      }
+    }
+
+    // --- Slayer: on-task kills grant Slayer XP and complete tasks (survivors only) ---
+    if ((sess.kind === 'dungeon' || sess.kind === 'tower') && !summary.died && Object.keys(summary.killsByEnemy).length) {
+      const slayerRes = Systems.recordKills(summary.killsByEnemy);
+      if (slayerRes.xp > 0) summary.xpBySkill.slayer = (summary.xpBySkill.slayer || 0) + slayerRes.xp;
+      summary.slayerTasks = slayerRes.tasksCompleted;
+      State.state.stats.slayerTasksCompleted = (State.state.stats.slayerTasksCompleted || 0) + slayerRes.tasksCompleted;
+      Systems.recordGuildSlayer(slayerRes.taskKills, slayerRes.tasksCompleted);
+    }
+
     // Apply XP
     for (const [skill, xp] of Object.entries(summary.xpBySkill)) {
       const ups = State.addXp(skill, xp);
       if (ups.length === 2) summary.leveled.push(`${skill} ${ups[0]}→${ups[1]}`);
     }
-    // Apply items
-    for (const [k, v] of Object.entries(summary.items)) State.addItem(k, v);
+    // Apply items (pets are intercepted into the pet collection)
+    summary.petsGained = [];
+    for (const [k, v] of Object.entries(summary.items)) {
+      if (GameData.pets[k]) { for (let i = 0; i < v; i++) if (State.addPet(k) && !summary.petsGained.includes(k)) summary.petsGained.push(k); continue; }
+      State.addItem(k, v);
+    }
     // Consume ammo/food used during combat
     for (const [k, v] of Object.entries(summary.foodConsumed)) State.removeItem(k, v);
     for (const [k, v] of Object.entries(summary.arrowsConsumed)) State.removeItem(k, v);
     for (const [k, v] of Object.entries(summary.runesConsumed)) State.removeItem(k, v);
 
+    // --- Tower floor progression ---
+    if (sess.kind === 'tower') {
+      const floor = sess.floor;
+      if (summary.died) {
+        const checkpoint = Math.floor(tower.best / 25) * 25;
+        tower.current = checkpoint;
+        State.pushLog(`🗼 You fell on tower floor ${floor} — back to checkpoint ${checkpoint}.`, 'death');
+      } else {
+        const isBest = floor > tower.best;
+        tower.current = floor;
+        tower.best = Math.max(tower.best, floor);
+        State.pushLog(isBest ? `🗼 New tower record: floor ${floor}!` : `🗼 Tower floor ${floor} cleared.`, 'quest');
+      }
+    }
+
     this._updateQuestCounters(sess, summary);
+    this._updateGuildCounters(sess, summary);
     State.state.stats.sessionsCollected++;
     State.state.session = null;
     State.save();
     return summary;
+  },
+
+  /** Feed a collected session into the guild tracking system. */
+  _updateGuildCounters(sess, summary) {
+    if (typeof Systems === 'undefined') return;
+    if (sess.kind === 'gathering') {
+      if (sess.skill === 'thieving') {
+        const okFrames = sess.frames.filter(f => (f.xpGain || 0) > 0).length;
+        Systems.recordGuildThieving(sess.activityKey, okFrames);
+      } else if (sess.skill === 'agility') {
+        Systems.recordGuildAgility(sess.activityKey);
+      } else {
+        Systems.recordGuildGathering(sess.skill, summary.items);
+      }
+    } else if (sess.kind === 'production') {
+      if (sess.skill === 'prayer') {
+        const buried = Object.values(sess.consumed || {}).reduce((a, b) => a + b, 0);
+        Systems.recordGuildPrayer(buried);
+      } else {
+        Systems.recordGuildCrafting(sess.skill, summary.items);
+      }
+    } else if (sess.kind === 'dungeon' || sess.kind === 'tower') {
+      if (!summary.died && Object.keys(summary.killsByEnemy).length) Systems.recordGuildCombat(summary.killsByEnemy, sess.style);
+    }
   },
 
   _updateQuestCounters(sess, sum) {
@@ -353,7 +479,7 @@ const Engine = {
       } else if (itemKey.includes('arrow')) {
         base = { runite: 20, adamantite: 14, mithril: 9, steel: 6, iron: 4 }[itemKey.split('_')[0]] || 3;
         if (itemKey === 'arrow_shaft') base = 1;
-      } else if (itemKey.endsWith('potion')) base = 25;
+      } else if (itemKey.endsWith('potion') || itemKey.endsWith('brew')) base = 25;
       else if (itemKey.includes('log')) base = 5;
       else if (itemKey.endsWith('ore') || itemKey === 'rune_essence') base = 5;
       else if (itemKey.startsWith('cooked')) base = 10;
@@ -402,6 +528,7 @@ const Engine = {
   },
 
   sell(itemKey, qty) {
+    if (itemKey === 'carnival_ticket') return { error: 'Tickets can only be spent at the Carnival.' };
     const have = State.count(itemKey);
     qty = Math.min(qty, have);
     if (qty < 1) return { error: 'Nothing to sell.' };
@@ -418,7 +545,7 @@ const Engine = {
   SUPPORTED_QUEST_TYPES: new Set([
     'gather', 'gather_any', 'craft', 'craft_any', 'prayer', 'kill', 'dungeon',
     'kill_enemy', 'dungeon_melee_only', 'dungeon_ranged_only', 'dungeon_magic_only',
-    'dungeon_no_food', 'collect', 'pickpocket', 'steal',
+    'dungeon_no_food', 'collect', 'pickpocket', 'steal', 'slayer_task',
   ]),
 
   questsAvailable() {
@@ -446,6 +573,7 @@ const Engine = {
       case 'collect': count = (st.combatItems || {})[q.target] || 0; break;
       case 'pickpocket': count = (st.pickpocketsByNpc || {})[q.target] || 0; break;
       case 'steal': count = (st.stolen || {})[q.target] || 0; break;
+      case 'slayer_task': count = st.slayerTasksCompleted || 0; break;
     }
     const prevClaimed = !q.requires_previous || (State.state.quests[q.requires_previous]?.claimed);
     return {
