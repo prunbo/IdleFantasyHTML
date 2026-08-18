@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Idle Fantasy — Web Edition</title>
+  <meta name="description" content="Browser port of the open-source offline idle RPG Idle Fantasy. Set your hero to work, close the tab, come back to loot.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚔️</text></svg>">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-icon">⚔️</span>
+        <div>
+          <h1>Idle Fantasy</h1>
+          <span class="brand-sub">Web Edition</span>
+        </div>
+      </div>
+      <div class="topbar-stats">
+        <div class="stat" title="Coins">
+          <span class="stat-icon">🪙</span>
+          <span id="coins">0</span>
+        </div>
+        <div class="stat" title="Total level">
+          <span class="stat-icon">⭐</span>
+          <span id="total-level">0</span>
+        </div>
+        <div class="stat" title="Hitpoints">
+          <span class="stat-icon">❤️</span>
+          <span id="hp-display">10</span>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button id="btn-export" class="btn-icon" title="Export save code">📤</button>
+        <button id="btn-import" class="btn-icon" title="Import save code">📥</button>
+        <button id="btn-reset" class="btn-icon danger" title="Reset game">🗑️</button>
+      </div>
+    </header>
+
+    <nav class="tabs" id="tabs">
+      <button data-tab="home" class="tab active">🏠 Home</button>
+      <button data-tab="skills" class="tab">🎯 Skills</button>
+      <button data-tab="dungeons" class="tab">🏰 Dungeons</button>
+      <button data-tab="character" class="tab">🧝 Character</button>
+      <button data-tab="shop" class="tab">🛒 Shop</button>
+      <button data-tab="quests" class="tab">📜 Quests</button>
+      <button data-tab="town" class="tab">🏘️ Town</button>
+    </nav>
+
+    <main id="screen" class="screen"></main>
+
+    <div id="save-ind" class="save-ind" title="Progress is saved in your browser">💾 saved</div>
+
+    <footer class="footer">
+      Web edition of the open-source Android game
+      <a href="https://github.com/tristinbaker/IdleFantasy" target="_blank" rel="noopener">Idle Fantasy</a> (GPL-3.0).
+      Your hero keeps working while the tab is closed — come back to collect.
+    </footer>
+  </div>
+
+  <div id="toasts" class="toasts"></div>
+  <div id="modal-root"></div>
+
+  <script src="js/util.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/sim.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/systems.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/ui-town.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

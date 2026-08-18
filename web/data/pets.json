@@ -1,0 +1,252 @@
+{
+  "dragon_whelp": {
+    "id": "dragon_whelp",
+    "display_name": "Dragon Whelp",
+    "emoji": "\ud83d\udc09",
+    "description": "A young dragon that boosts your combat prowess.",
+    "source": "King Black Dragon raid (1/100 per kill)",
+    "effect_type": "xp_boost",
+    "boosted_skill": "combat",
+    "boost_percent": 5
+  },
+  "imp_pet": {
+    "id": "imp_pet",
+    "display_name": "Imp Pet",
+    "emoji": "\ud83d\ude08",
+    "description": "A mischievous imp that enhances your prayer training.",
+    "source": "Demon Lord raid (1/100 per kill)",
+    "effect_type": "xp_boost",
+    "boosted_skill": "prayer",
+    "boost_percent": 5
+  },
+  "baby_kraken": {
+    "id": "baby_kraken",
+    "display_name": "Baby Kraken",
+    "emoji": "\ud83e\udd91",
+    "description": "A tiny kraken that improves your cooking abilities.",
+    "source": "Kraken raid (1/100 per kill)",
+    "effect_type": "xp_boost",
+    "boosted_skill": "cooking",
+    "boost_percent": 5
+  },
+  "rock_golem": {
+    "id": "rock_golem",
+    "display_name": "Rock Golem",
+    "emoji": "\ud83d\uddff",
+    "description": "A living rock formation that enhances your mining prowess.",
+    "source": "Mining (6% chance per session)",
+    "effect_type": "xp_boost",
+    "boosted_skill": "mining",
+    "boost_percent": 10
+  },
+  "ent": {
+    "id": "ent",
+    "display_name": "Ent",
+    "emoji": "\ud83c\udf33",
+    "description": "An ancient tree spirit that aids your woodcutting.",
+    "source": "Woodcutting (6% chance per session)",
+    "effect_type": "xp_boost",
+    "boosted_skill": "woodcutting",
+    "boost_percent": 10
+  },
+  "tiny_templar": {
+    "id": "tiny_templar",
+    "display_name": "Tiny Templar",
+    "emoji": "\ud83d\udc1f",
+    "description": "A small fish that boosts your fishing expertise.",
+    "source": "Fishing (6% chance per session)",
+    "effect_type": "xp_boost",
+    "boosted_skill": "fishing",
+    "boost_percent": 10
+  },
+  "tangleroot": {
+    "id": "tangleroot",
+    "display_name": "Tangleroot",
+    "emoji": "\ud83c\udf3f",
+    "description": "A magical plant creature that enhances your farming.",
+    "source": "Farming harvest (1/1000 per harvest)",
+    "effect_type": "xp_boost",
+    "boosted_skill": "farming",
+    "boost_percent": 10
+  },
+  "baby_balrog": {
+    "id": "baby_balrog",
+    "display_name": "Gothic Emberling",
+    "emoji": "\ud83d\udd25",
+    "description": "A tiny demon of fire and shadow that enhances your magic.",
+    "source": "Gothic Ember raid (1/200 per kill)",
+    "effect_type": "xp_boost",
+    "boosted_skill": "magic",
+    "boost_percent": 5
+  },
+  "void_wisp": {
+    "id": "void_wisp",
+    "display_name": "Void Wisp",
+    "emoji": "\ud83d\udcab",
+    "description": "A fragment of the Void Sovereign's essence, bound to those who bested its master. Amplifies combat experience.",
+    "source": "Void Sovereign raid (1/333 per kill)",
+    "effect_type": "xp_boost",
+    "boosted_skill": "combat",
+    "boost_percent": 5
+  },
+  "graceling_sprite": {
+    "id": "graceling_sprite",
+    "display_name": "Graceling Sprite",
+    "emoji": "\ud83e\uddda",
+    "description": "A nimble fairy born from thousands of laps run in silence. Guides your feet with uncanny grace.",
+    "source": "Agility (6% chance per session)",
+    "effect_type": "xp_boost",
+    "boosted_skill": "agility",
+    "boost_percent": 10
+  },
+  "shadow_fox": {
+    "id": "shadow_fox",
+    "display_name": "Shadow Fox",
+    "emoji": "\ud83e\udd8a",
+    "description": "A cunning fox that materialised from the shadows of a thousand pickpocket attempts.",
+    "source": "Thieving (6% chance per session)",
+    "effect_type": "xp_boost",
+    "boosted_skill": "thieving",
+    "boost_percent": 10
+  },
+  "ember_moth": {
+    "id": "ember_moth",
+    "display_name": "Ember Moth",
+    "emoji": "\ud83e\udd8b",
+    "description": "Drawn to flame for so long it became one. Its wings shimmer with residual heat.",
+    "source": "Firemaking (1/1000 per craft)",
+    "effect_type": "xp_boost",
+    "boosted_skill": "firemaking",
+    "boost_percent": 10
+  },
+  "herb_wisp": {
+    "id": "herb_wisp",
+    "display_name": "Herb Wisp",
+    "emoji": "\ud83c\udf3f",
+    "description": "A spirit born from the vapour of a thousand brewed potions. Its presence sharpens the mind.",
+    "source": "Herblore (1/1000 per craft)",
+    "effect_type": "xp_boost",
+    "boosted_skill": "herblore",
+    "boost_percent": 10
+  },
+  "rune_sprite": {
+    "id": "rune_sprite",
+    "display_name": "Rune Sprite",
+    "emoji": "\ud83d\udd2e",
+    "description": "A crystallised fragment of magical energy that escaped the Runecrafting altar.",
+    "source": "Runecrafting (1/1000 per craft)",
+    "effect_type": "xp_boost",
+    "boosted_skill": "runecrafting",
+    "boost_percent": 10
+  },
+  "gem_golem": {
+    "id": "gem_golem",
+    "display_name": "Gem Golem",
+    "emoji": "\ud83d\udc8e",
+    "description": "A tiny creature sculpted from gem shards and polishing dust. Keeps your tools sharp.",
+    "source": "Crafting (1/1000 per craft)",
+    "effect_type": "xp_boost",
+    "boosted_skill": "crafting",
+    "boost_percent": 10
+  },
+  "feather_drake": {
+    "id": "feather_drake",
+    "display_name": "Feather Drake",
+    "emoji": "\ud83e\udeb6",
+    "description": "A miniature dragon made entirely of arrow fletching. Surprisingly aerodynamic.",
+    "source": "Fletching (1/1000 per craft)",
+    "effect_type": "xp_boost",
+    "boosted_skill": "fletching",
+    "boost_percent": 10
+  },
+  "forge_imp": {
+    "id": "forge_imp",
+    "display_name": "Forge Imp",
+    "emoji": "\u2692\ufe0f",
+    "description": "A mischievous imp that lives inside the forge. Its heat-hardened hide is impervious to burns.",
+    "source": "Smithing (1/1000 per craft)",
+    "effect_type": "xp_boost",
+    "boosted_skill": "smithing",
+    "boost_percent": 10
+  },
+  "coin_drake": {
+    "id": "coin_drake",
+    "display_name": "Coin Drake",
+    "emoji": "\ud83e\ude99",
+    "description": "A dragon hatchling raised on a diet of gold coins. It has an uncanny nose for profit.",
+    "source": "Mercantile (1/1000 per craft)",
+    "effect_type": "xp_boost",
+    "boosted_skill": "mercantile",
+    "boost_percent": 10
+  },
+  "timber_sprite": {
+    "id": "timber_sprite",
+    "display_name": "Timber Sprite",
+    "emoji": "\ud83e\udeb5",
+    "description": "A wood spirit awakened from sawdust and lumber. It knows exactly where every nail should go.",
+    "source": "Construction (1/1000 per craft)",
+    "effect_type": "xp_boost",
+    "boosted_skill": "construction",
+    "boost_percent": 10
+  },
+  "juggling_imp": {
+    "id": "juggling_imp",
+    "display_name": "Juggling Imp",
+    "emoji": "\ud83e\udd39",
+    "description": "A mischievous imp that juggles your worries away. Boosts all skill XP by 3%.",
+    "source": "Carnival prize shop (4,000 tickets)",
+    "effect_type": "xp_boost",
+    "boosted_skill": "all",
+    "boost_percent": 3
+  },
+  "tower_pet": {
+    "id": "tower_pet",
+    "display_name": "Stone Guardian",
+    "emoji": "\ud83d\uddff",
+    "description": "An ancient stone golem that guards the tower's secrets. Boosts combat XP.",
+    "source": "Infinite Tower milestone: Floor 100",
+    "effect_type": "xp_boost",
+    "boosted_skill": "combat",
+    "boost_percent": 5
+  },
+  "solstice_sprite": {
+    "id": "solstice_sprite",
+    "display_name": "Solstice Sprite",
+    "emoji": "🔥",
+    "description": "A tiny ember spirit from the Sunspire Solstice event that boosts your combat prowess.",
+    "source": "Sol Invictus raid (1/333 per kill during the Summer Solstice event)",
+    "effect_type": "xp_boost",
+    "boosted_skill": "combat",
+    "boost_percent": 5
+  },
+  "lantern_wisp": {
+    "id": "lantern_wisp",
+    "display_name": "Lantern Wisp",
+    "emoji": "🎃",
+    "description": "A grinning gourd-light that escaped the Hollow King's crown and now lights your way to battle.",
+    "source": "The Hollow King raid (Gloomharvest event)",
+    "effect_type": "xp_boost",
+    "boosted_skill": "combat",
+    "boost_percent": 5
+  },
+  "grave_sprout": {
+    "id": "grave_sprout",
+    "display_name": "Grave Sprout",
+    "emoji": "🌱",
+    "description": "A stubborn little seedling that took root in a barrow mound. It knows a thing or two about growing.",
+    "source": "Gloomharvest event reward (125 tokens)",
+    "effect_type": "xp_boost",
+    "boosted_skill": "farming",
+    "boost_percent": 5
+  },
+  "golden_goose": {
+    "id": "golden_goose",
+    "display_name": "Golden Goose",
+    "emoji": "🪿",
+    "description": "A regal goose that roosts atop the gilded Monument. Coins simply seem to find its keeper.",
+    "source": "Grand Monument stage 4 (Gilded)",
+    "effect_type": "coin_boost",
+    "boosted_skill": "coins",
+    "boost_percent": 10
+  }
+}

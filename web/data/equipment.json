@@ -1,0 +1,4535 @@
+{
+  "bronze_dagger": {
+    "name": "bronze_dagger",
+    "display_name": "Bronze Dagger",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A bronze dagger.",
+    "attack_bonus": 5,
+    "strength_bonus": 4,
+    "defense_bonus": 0,
+    "requirements": {}
+  },
+  "bronze_sword": {
+    "name": "bronze_sword",
+    "display_name": "Bronze Sword",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A bronze sword.",
+    "attack_bonus": 6,
+    "strength_bonus": 5,
+    "defense_bonus": 0,
+    "requirements": {}
+  },
+  "bronze_scimitar": {
+    "name": "bronze_scimitar",
+    "display_name": "Bronze Scimitar",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A bronze scimitar.",
+    "attack_bonus": 5,
+    "strength_bonus": 7,
+    "defense_bonus": 0,
+    "requirements": {}
+  },
+  "bronze_longsword": {
+    "name": "bronze_longsword",
+    "display_name": "Bronze Longsword",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A bronze longsword.",
+    "attack_bonus": 8,
+    "strength_bonus": 6,
+    "defense_bonus": 0,
+    "requirements": {}
+  },
+  "bronze_2h_sword": {
+    "name": "bronze_2h_sword",
+    "display_name": "Bronze 2H Sword",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A bronze 2h sword.",
+    "attack_bonus": 10,
+    "strength_bonus": 10,
+    "defense_bonus": 0,
+    "requirements": {},
+    "two_handed": true
+  },
+  "bronze_warhammer": {
+    "name": "bronze_warhammer",
+    "display_name": "Bronze Warhammer",
+    "slot": "weapon",
+    "combat_style": "strength",
+    "description": "A bronze warhammer.",
+    "attack_bonus": 7,
+    "strength_bonus": 9,
+    "defense_bonus": 0,
+    "requirements": {}
+  },
+  "bronze_battleaxe": {
+    "name": "bronze_battleaxe",
+    "display_name": "Bronze Battleaxe",
+    "slot": "weapon",
+    "combat_style": "strength",
+    "description": "A bronze battleaxe.",
+    "attack_bonus": 8,
+    "strength_bonus": 8,
+    "defense_bonus": 0,
+    "requirements": {}
+  },
+  "iron_dagger": {
+    "name": "iron_dagger",
+    "display_name": "Iron Dagger",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A iron dagger.",
+    "attack_bonus": 9,
+    "strength_bonus": 7,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 10
+    }
+  },
+  "iron_sword": {
+    "name": "iron_sword",
+    "display_name": "Iron Sword",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A iron sword.",
+    "attack_bonus": 10,
+    "strength_bonus": 9,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 10
+    }
+  },
+  "iron_scimitar": {
+    "name": "iron_scimitar",
+    "display_name": "Iron Scimitar",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A iron scimitar.",
+    "attack_bonus": 9,
+    "strength_bonus": 12,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 10
+    }
+  },
+  "iron_longsword": {
+    "name": "iron_longsword",
+    "display_name": "Iron Longsword",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A iron longsword.",
+    "attack_bonus": 14,
+    "strength_bonus": 10,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 10
+    }
+  },
+  "iron_2h_sword": {
+    "name": "iron_2h_sword",
+    "display_name": "Iron 2H Sword",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A iron 2h sword.",
+    "attack_bonus": 18,
+    "strength_bonus": 18,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 10
+    },
+    "two_handed": true
+  },
+  "iron_warhammer": {
+    "name": "iron_warhammer",
+    "display_name": "Iron Warhammer",
+    "slot": "weapon",
+    "combat_style": "strength",
+    "description": "A iron warhammer.",
+    "attack_bonus": 12,
+    "strength_bonus": 16,
+    "defense_bonus": 0,
+    "requirements": {
+      "strength": 10
+    }
+  },
+  "iron_battleaxe": {
+    "name": "iron_battleaxe",
+    "display_name": "Iron Battleaxe",
+    "slot": "weapon",
+    "combat_style": "strength",
+    "description": "A iron battleaxe.",
+    "attack_bonus": 14,
+    "strength_bonus": 14,
+    "defense_bonus": 0,
+    "requirements": {
+      "strength": 10
+    }
+  },
+  "shadow_dagger": {
+    "name": "shadow_dagger",
+    "display_name": "Shadow Dagger",
+    "slot": "weapon",
+    "combat_style": "strength",
+    "description": "A black-bladed dagger recovered from the Shadow Den. Wickedly sharp and perfectly balanced for close work.",
+    "attack_bonus": 16,
+    "strength_bonus": 24,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 15
+    }
+  },
+  "steel_dagger": {
+    "name": "steel_dagger",
+    "display_name": "Steel Dagger",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A steel dagger.",
+    "attack_bonus": 14,
+    "strength_bonus": 11,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 20
+    }
+  },
+  "steel_sword": {
+    "name": "steel_sword",
+    "display_name": "Steel Sword",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A steel sword.",
+    "attack_bonus": 16,
+    "strength_bonus": 14,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 20
+    }
+  },
+  "steel_scimitar": {
+    "name": "steel_scimitar",
+    "display_name": "Steel Scimitar",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A steel scimitar.",
+    "attack_bonus": 14,
+    "strength_bonus": 19,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 20
+    }
+  },
+  "steel_longsword": {
+    "name": "steel_longsword",
+    "display_name": "Steel Longsword",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A steel longsword.",
+    "attack_bonus": 22,
+    "strength_bonus": 16,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 20
+    }
+  },
+  "steel_2h_sword": {
+    "name": "steel_2h_sword",
+    "display_name": "Steel 2H Sword",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A steel 2h sword.",
+    "attack_bonus": 28,
+    "strength_bonus": 28,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 20
+    },
+    "two_handed": true
+  },
+  "steel_warhammer": {
+    "name": "steel_warhammer",
+    "display_name": "Steel Warhammer",
+    "slot": "weapon",
+    "combat_style": "strength",
+    "description": "A steel warhammer.",
+    "attack_bonus": 19,
+    "strength_bonus": 25,
+    "defense_bonus": 0,
+    "requirements": {
+      "strength": 20
+    }
+  },
+  "steel_battleaxe": {
+    "name": "steel_battleaxe",
+    "display_name": "Steel Battleaxe",
+    "slot": "weapon",
+    "combat_style": "strength",
+    "description": "A steel battleaxe.",
+    "attack_bonus": 22,
+    "strength_bonus": 22,
+    "defense_bonus": 0,
+    "requirements": {
+      "strength": 20
+    }
+  },
+  "mithril_dagger": {
+    "name": "mithril_dagger",
+    "display_name": "Mithril Dagger",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A mithril dagger.",
+    "attack_bonus": 20,
+    "strength_bonus": 16,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 30
+    }
+  },
+  "mithril_sword": {
+    "name": "mithril_sword",
+    "display_name": "Mithril Sword",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A mithril sword.",
+    "attack_bonus": 24,
+    "strength_bonus": 20,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 30
+    }
+  },
+  "mithril_scimitar": {
+    "name": "mithril_scimitar",
+    "display_name": "Mithril Scimitar",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A mithril scimitar.",
+    "attack_bonus": 20,
+    "strength_bonus": 28,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 30
+    }
+  },
+  "mithril_longsword": {
+    "name": "mithril_longsword",
+    "display_name": "Mithril Longsword",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A mithril longsword.",
+    "attack_bonus": 32,
+    "strength_bonus": 24,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 30
+    }
+  },
+  "mithril_2h_sword": {
+    "name": "mithril_2h_sword",
+    "display_name": "Mithril 2H Sword",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A mithril 2h sword.",
+    "attack_bonus": 40,
+    "strength_bonus": 40,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 30
+    },
+    "two_handed": true
+  },
+  "mithril_warhammer": {
+    "name": "mithril_warhammer",
+    "display_name": "Mithril Warhammer",
+    "slot": "weapon",
+    "combat_style": "strength",
+    "description": "A mithril warhammer.",
+    "attack_bonus": 28,
+    "strength_bonus": 36,
+    "defense_bonus": 0,
+    "requirements": {
+      "strength": 30
+    }
+  },
+  "mithril_battleaxe": {
+    "name": "mithril_battleaxe",
+    "display_name": "Mithril Battleaxe",
+    "slot": "weapon",
+    "combat_style": "strength",
+    "description": "A mithril battleaxe.",
+    "attack_bonus": 32,
+    "strength_bonus": 32,
+    "defense_bonus": 0,
+    "requirements": {
+      "strength": 30
+    }
+  },
+  "adamantite_dagger": {
+    "name": "adamantite_dagger",
+    "display_name": "Adamantite Dagger",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A adamantite dagger.",
+    "attack_bonus": 27,
+    "strength_bonus": 22,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 40
+    }
+  },
+  "adamantite_sword": {
+    "name": "adamantite_sword",
+    "display_name": "Adamantite Sword",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A adamantite sword.",
+    "attack_bonus": 33,
+    "strength_bonus": 27,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 40
+    }
+  },
+  "adamantite_scimitar": {
+    "name": "adamantite_scimitar",
+    "display_name": "Adamantite Scimitar",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A adamantite scimitar.",
+    "attack_bonus": 27,
+    "strength_bonus": 38,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 40
+    }
+  },
+  "adamantite_longsword": {
+    "name": "adamantite_longsword",
+    "display_name": "Adamantite Longsword",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A adamantite longsword.",
+    "attack_bonus": 44,
+    "strength_bonus": 33,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 40
+    }
+  },
+  "adamantite_2h_sword": {
+    "name": "adamantite_2h_sword",
+    "display_name": "Adamantite 2H Sword",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A adamantite 2h sword.",
+    "attack_bonus": 55,
+    "strength_bonus": 55,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 40
+    },
+    "two_handed": true
+  },
+  "adamantite_warhammer": {
+    "name": "adamantite_warhammer",
+    "display_name": "Adamantite Warhammer",
+    "slot": "weapon",
+    "combat_style": "strength",
+    "description": "A adamantite warhammer.",
+    "attack_bonus": 38,
+    "strength_bonus": 49,
+    "defense_bonus": 0,
+    "requirements": {
+      "strength": 40
+    }
+  },
+  "adamantite_battleaxe": {
+    "name": "adamantite_battleaxe",
+    "display_name": "Adamantite Battleaxe",
+    "slot": "weapon",
+    "combat_style": "strength",
+    "description": "A adamantite battleaxe.",
+    "attack_bonus": 44,
+    "strength_bonus": 44,
+    "defense_bonus": 0,
+    "requirements": {
+      "strength": 40
+    }
+  },
+  "runite_dagger": {
+    "name": "runite_dagger",
+    "display_name": "Runite Dagger",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A runite dagger.",
+    "attack_bonus": 37,
+    "strength_bonus": 30,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 50
+    }
+  },
+  "runite_sword": {
+    "name": "runite_sword",
+    "display_name": "Runite Sword",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A runite sword.",
+    "attack_bonus": 45,
+    "strength_bonus": 37,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 50
+    }
+  },
+  "runite_scimitar": {
+    "name": "runite_scimitar",
+    "display_name": "Runite Scimitar",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A runite scimitar.",
+    "attack_bonus": 37,
+    "strength_bonus": 52,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 50
+    }
+  },
+  "runite_longsword": {
+    "name": "runite_longsword",
+    "display_name": "Runite Longsword",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A runite longsword.",
+    "attack_bonus": 60,
+    "strength_bonus": 45,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 50
+    }
+  },
+  "runite_2h_sword": {
+    "name": "runite_2h_sword",
+    "display_name": "Runite 2H Sword",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A runite 2h sword.",
+    "attack_bonus": 75,
+    "strength_bonus": 75,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 50
+    },
+    "two_handed": true
+  },
+  "runite_warhammer": {
+    "name": "runite_warhammer",
+    "display_name": "Runite Warhammer",
+    "slot": "weapon",
+    "combat_style": "strength",
+    "description": "A runite warhammer.",
+    "attack_bonus": 52,
+    "strength_bonus": 67,
+    "defense_bonus": 0,
+    "requirements": {
+      "strength": 50
+    }
+  },
+  "runite_battleaxe": {
+    "name": "runite_battleaxe",
+    "display_name": "Runite Battleaxe",
+    "slot": "weapon",
+    "combat_style": "strength",
+    "description": "A runite battleaxe.",
+    "attack_bonus": 60,
+    "strength_bonus": 60,
+    "defense_bonus": 0,
+    "requirements": {
+      "strength": 50
+    }
+  },
+  "abyssal_whip": {
+    "name": "abyssal_whip",
+    "display_name": "Abyssal Whip",
+    "slot": "weapon",
+    "combat_style": "strength",
+    "description": "A whip forged from abyssal energy.",
+    "attack_bonus": 60,
+    "strength_bonus": 80,
+    "defense_bonus": 0,
+    "requirements": {
+      "strength": 50
+    }
+  },
+  "dragon_scimitar": {
+    "name": "dragon_scimitar",
+    "display_name": "Dragon Scimitar",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A razor-sharp scimitar forged from dragon metal.",
+    "attack_bonus": 47,
+    "strength_bonus": 65,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 60
+    }
+  },
+  "dragon_longsword": {
+    "name": "dragon_longsword",
+    "display_name": "Dragon Longsword",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A powerful longsword forged from dragon metal.",
+    "attack_bonus": 68,
+    "strength_bonus": 50,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 60
+    }
+  },
+  "dwarven_sword": {
+    "name": "dwarven_sword",
+    "display_name": "Dwarven Sword",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "An ancient dwarven blade, forged in the depths of the earth.",
+    "attack_bonus": 65,
+    "strength_bonus": 52,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 60
+    }
+  },
+  "dwarven_scimitar": {
+    "name": "dwarven_scimitar",
+    "display_name": "Dwarven Scimitar",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A curved dwarven blade, perfect for rapid strikes.",
+    "attack_bonus": 60,
+    "strength_bonus": 58,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 60
+    }
+  },
+  "dwarven_warhammer": {
+    "name": "dwarven_warhammer",
+    "display_name": "Dwarven Warhammer",
+    "slot": "weapon",
+    "combat_style": "strength",
+    "description": "A massive dwarven hammer that crushes all in its path.",
+    "attack_bonus": 55,
+    "strength_bonus": 70,
+    "defense_bonus": 0,
+    "requirements": {
+      "strength": 60
+    }
+  },
+  "tower_sword": {
+    "name": "tower_sword",
+    "display_name": "Tower Sword",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A blade that has cleaved through countless tower floors.",
+    "attack_bonus": 72,
+    "strength_bonus": 75,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 70
+    }
+  },
+  "balrog_whip": {
+    "name": "balrog_whip",
+    "display_name": "Gothic Ember's Flaming Whip",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A whip of pure flame, torn from the Gothic Ember itself. Burns with an eternal fire.",
+    "attack_bonus": 85,
+    "strength_bonus": 95,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 80,
+      "strength": 80
+    }
+  },
+  "divine_sword": {
+    "name": "divine_sword",
+    "display_name": "Divine Sword",
+    "slot": "weapon",
+    "combat_style": "attack",
+    "description": "A blade of pure divine light, said to be wielded only by the chosen.",
+    "attack_bonus": 82,
+    "strength_bonus": 65,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 85
+    }
+  },
+  "divine_greatblade": {
+    "name": "divine_greatblade",
+    "display_name": "Divine Greatblade",
+    "slot": "weapon",
+    "combat_style": "strength",
+    "description": "A massive divine blade that channels raw power into every swing.",
+    "attack_bonus": 70,
+    "strength_bonus": 88,
+    "defense_bonus": 0,
+    "requirements": {
+      "strength": 85
+    }
+  },
+  "void_reaver": {
+    "name": "void_reaver",
+    "display_name": "Void Reaver",
+    "slot": "weapon",
+    "combat_style": "strength",
+    "description": "A blade forged from crystallised void energy. Its edge cuts through armour as if it were cloth.",
+    "attack_bonus": 120,
+    "strength_bonus": 130,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 90,
+      "strength": 90
+    }
+  },
+  "wooden_bow": {
+    "name": "wooden_bow",
+    "display_name": "Wooden Bow",
+    "slot": "weapon",
+    "combat_style": "ranged",
+    "description": "A simple wooden bow. Good for training ranged.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "ranged_attack_bonus": 4,
+    "requirements": {},
+    "ranged_strength_bonus": 0
+  },
+  "shortbow": {
+    "name": "shortbow",
+    "display_name": "Shortbow",
+    "slot": "weapon",
+    "combat_style": "ranged",
+    "description": "A shortbow crafted from regular logs.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "ranged_attack_bonus": 8,
+    "requirements": {},
+    "ranged_strength_bonus": 3
+  },
+  "oak_bow": {
+    "name": "oak_bow",
+    "display_name": "Oak Bow",
+    "slot": "weapon",
+    "combat_style": "ranged",
+    "description": "A sturdy oak bow. Better range weapon.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "ranged_attack_bonus": 9,
+    "requirements": {
+      "ranged": 5
+    },
+    "ranged_strength_bonus": 7
+  },
+  "oak_shortbow": {
+    "name": "oak_shortbow",
+    "display_name": "Oak Shortbow",
+    "slot": "weapon",
+    "combat_style": "ranged",
+    "attack_speed": 2.0,
+    "description": "A shortbow crafted from oak logs.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "ranged_attack_bonus": 14,
+    "requirements": {
+      "ranged": 5
+    },
+    "ranged_strength_bonus": 9
+  },
+  "willow_shortbow": {
+    "name": "willow_shortbow",
+    "display_name": "Willow Shortbow",
+    "slot": "weapon",
+    "combat_style": "ranged",
+    "attack_speed": 2.0,
+    "description": "A shortbow crafted from willow logs.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "ranged_attack_bonus": 20,
+    "requirements": {
+      "ranged": 20
+    },
+    "ranged_strength_bonus": 18
+  },
+  "maple_shortbow": {
+    "name": "maple_shortbow",
+    "display_name": "Maple Shortbow",
+    "slot": "weapon",
+    "combat_style": "ranged",
+    "attack_speed": 2.0,
+    "description": "A shortbow crafted from maple logs.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "ranged_attack_bonus": 29,
+    "requirements": {
+      "ranged": 30
+    },
+    "ranged_strength_bonus": 26
+  },
+  "yew_shortbow": {
+    "name": "yew_shortbow",
+    "display_name": "Yew Shortbow",
+    "slot": "weapon",
+    "combat_style": "ranged",
+    "attack_speed": 1.5,
+    "description": "A shortbow crafted from yew logs.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "ranged_attack_bonus": 47,
+    "requirements": {
+      "ranged": 40
+    },
+    "ranged_strength_bonus": 34
+  },
+  "yew_longbow": {
+    "name": "yew_longbow",
+    "display_name": "Yew Longbow",
+    "slot": "weapon",
+    "combat_style": "ranged",
+    "attack_speed": 1.8,
+    "description": "A longbow crafted from yew logs.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "ranged_attack_bonus": 70,
+    "requirements": {
+      "ranged": 50
+    },
+    "ranged_strength_bonus": 48
+  },
+  "magic_shortbow": {
+    "name": "magic_shortbow",
+    "display_name": "Magic Shortbow",
+    "slot": "weapon",
+    "combat_style": "ranged",
+    "attack_speed": 1.5,
+    "description": "A shortbow crafted from magic logs.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "ranged_attack_bonus": 69,
+    "requirements": {
+      "ranged": 50
+    },
+    "ranged_strength_bonus": 42
+  },
+  "magic_longbow": {
+    "name": "magic_longbow",
+    "display_name": "Magic Longbow",
+    "slot": "weapon",
+    "combat_style": "ranged",
+    "attack_speed": 1.8,
+    "description": "A longbow crafted from magic logs.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "ranged_attack_bonus": 92,
+    "requirements": {
+      "ranged": 60
+    },
+    "ranged_strength_bonus": 60
+  },
+  "tower_crossbow": {
+    "name": "tower_crossbow",
+    "display_name": "Tower Crossbow",
+    "slot": "weapon",
+    "combat_style": "ranged",
+    "attack_speed": 1.5,
+    "description": "A precision crossbow wrought from tower metal.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "ranged_attack_bonus": 78,
+    "requirements": {
+      "ranged": 70
+    },
+    "ranged_strength_bonus": 52
+  },
+  "basic_staff": {
+    "name": "basic_staff",
+    "display_name": "Basic Staff",
+    "slot": "weapon",
+    "combat_style": "magic",
+    "description": "A simple wooden staff. Good for training magic.",
+    "attack_bonus": 3,
+    "strength_bonus": 0,
+    "defense_bonus": 1,
+    "requirements": {}
+  },
+  "apprentice_staff": {
+    "name": "apprentice_staff",
+    "display_name": "Apprentice Staff",
+    "slot": "weapon",
+    "combat_style": "magic",
+    "description": "A magical staff for apprentices.",
+    "attack_bonus": 8,
+    "strength_bonus": 0,
+    "defense_bonus": 2,
+    "requirements": {
+      "magic": 5
+    }
+  },
+  "staff_of_air": {
+    "name": "staff_of_air",
+    "display_name": "Staff of Air",
+    "slot": "weapon",
+    "combat_style": "magic",
+    "description": "A staff infused with air runes. Provides infinite air runes.",
+    "attack_bonus": 5,
+    "strength_bonus": 0,
+    "defense_bonus": 2,
+    "magic_attack_bonus": 5,
+    "magic_damage_bonus": 2,
+    "infinite_runes": "air_rune",
+    "requirements": {
+      "magic": 1
+    }
+  },
+  "staff_of_water": {
+    "name": "staff_of_water",
+    "display_name": "Staff of Water",
+    "slot": "weapon",
+    "combat_style": "magic",
+    "description": "A staff infused with water runes. Provides infinite water runes.",
+    "attack_bonus": 7,
+    "strength_bonus": 0,
+    "defense_bonus": 3,
+    "magic_attack_bonus": 8,
+    "magic_damage_bonus": 3,
+    "infinite_runes": "water_rune",
+    "requirements": {
+      "magic": 5
+    }
+  },
+  "staff_of_earth": {
+    "name": "staff_of_earth",
+    "display_name": "Staff of Earth",
+    "slot": "weapon",
+    "combat_style": "magic",
+    "attack_speed": 2.0,
+    "description": "A staff infused with earth runes. Provides infinite earth runes.",
+    "attack_bonus": 10,
+    "strength_bonus": 0,
+    "defense_bonus": 4,
+    "magic_attack_bonus": 12,
+    "magic_damage_bonus": 4,
+    "infinite_runes": "earth_rune",
+    "requirements": {
+      "magic": 10
+    }
+  },
+  "staff_of_fire": {
+    "name": "staff_of_fire",
+    "display_name": "Staff of Fire",
+    "slot": "weapon",
+    "combat_style": "magic",
+    "attack_speed": 2.0,
+    "description": "A staff infused with fire runes. Provides infinite fire runes.",
+    "attack_bonus": 14,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "magic_attack_bonus": 17,
+    "magic_damage_bonus": 5,
+    "infinite_runes": "fire_rune",
+    "requirements": {
+      "magic": 15
+    }
+  },
+  "staff_of_mind": {
+    "name": "staff_of_mind",
+    "display_name": "Staff of Mind",
+    "slot": "weapon",
+    "combat_style": "magic",
+    "attack_speed": 2.0,
+    "description": "A staff infused with mind runes. Provides infinite mind runes.",
+    "attack_bonus": 19,
+    "strength_bonus": 0,
+    "defense_bonus": 6,
+    "magic_attack_bonus": 24,
+    "magic_damage_bonus": 7,
+    "infinite_runes": "mind_rune",
+    "requirements": {
+      "magic": 25
+    }
+  },
+  "staff_of_chaos": {
+    "name": "staff_of_chaos",
+    "display_name": "Staff of Chaos",
+    "slot": "weapon",
+    "combat_style": "magic",
+    "attack_speed": 2.0,
+    "description": "A staff infused with chaos runes. Provides infinite chaos runes.",
+    "attack_bonus": 25,
+    "strength_bonus": 0,
+    "defense_bonus": 8,
+    "magic_attack_bonus": 33,
+    "magic_damage_bonus": 9,
+    "infinite_runes": "chaos_rune",
+    "requirements": {
+      "magic": 35
+    }
+  },
+  "staff_of_death": {
+    "name": "staff_of_death",
+    "display_name": "Staff of Death",
+    "slot": "weapon",
+    "combat_style": "magic",
+    "attack_speed": 2.0,
+    "description": "A staff infused with death runes. Provides infinite death runes.",
+    "attack_bonus": 32,
+    "strength_bonus": 0,
+    "defense_bonus": 10,
+    "magic_attack_bonus": 44,
+    "magic_damage_bonus": 12,
+    "infinite_runes": "death_rune",
+    "requirements": {
+      "magic": 50
+    }
+  },
+  "arcane_staff": {
+    "name": "arcane_staff",
+    "display_name": "Arcane Staff",
+    "slot": "weapon",
+    "combat_style": "magic",
+    "attack_speed": 1.5,
+    "description": "A staff recovered from the Arcane Ruins, still humming with contained magical energy from the catastrophe that destroyed the spire above.",
+    "attack_bonus": 38,
+    "strength_bonus": 0,
+    "defense_bonus": 12,
+    "magic_attack_bonus": 52,
+    "magic_damage_bonus": 15,
+    "requirements": {
+      "magic": 55
+    }
+  },
+  "staff_of_blood": {
+    "name": "staff_of_blood",
+    "display_name": "Staff of Blood",
+    "slot": "weapon",
+    "combat_style": "magic",
+    "attack_speed": 1.5,
+    "description": "A staff infused with blood runes. Provides infinite blood runes.",
+    "attack_bonus": 40,
+    "strength_bonus": 0,
+    "defense_bonus": 12,
+    "magic_attack_bonus": 58,
+    "magic_damage_bonus": 15,
+    "infinite_runes": "blood_rune",
+    "requirements": {
+      "magic": 65
+    }
+  },
+  "hellfire_staff": {
+    "name": "hellfire_staff",
+    "display_name": "Hellfire Staff",
+    "slot": "weapon",
+    "combat_style": "magic",
+    "attack_speed": 1.5,
+    "description": "A staff wreathed in demonic flame, torn from the Demon Lord's grasp.",
+    "attack_bonus": 48,
+    "strength_bonus": 0,
+    "defense_bonus": 12,
+    "magic_attack_bonus": 72,
+    "magic_damage_bonus": 20,
+    "requirements": {
+      "magic": 70
+    }
+  },
+  "void_staff": {
+    "name": "void_staff",
+    "display_name": "Void Staff",
+    "slot": "weapon",
+    "combat_style": "magic",
+    "attack_speed": 1.5,
+    "description": "A staff of pure void energy. Grants infinite runes for all spells.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "magic_attack_bonus": 68,
+    "magic_damage_bonus": 18,
+    "infinite_runes": "all",
+    "requirements": {
+      "magic": 75
+    }
+  },
+  "trident_of_the_seas": {
+    "name": "trident_of_the_seas",
+    "display_name": "Trident of the Seas",
+    "slot": "weapon",
+    "combat_style": "magic",
+    "attack_speed": 1.5,
+    "description": "A fearsome trident imbued with the power of the deep, taken from the Kraken's lair.",
+    "attack_bonus": 55,
+    "strength_bonus": 0,
+    "defense_bonus": 15,
+    "magic_attack_bonus": 88,
+    "magic_damage_bonus": 25,
+    "requirements": {
+      "magic": 85
+    }
+  },
+  "bronze_med_helmet": {
+    "name": "bronze_med_helmet",
+    "display_name": "Bronze Med Helmet",
+    "slot": "head",
+    "combat_style": null,
+    "description": "A bronze med helmet.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 4,
+    "requirements": {}
+  },
+  "bronze_full_helmet": {
+    "name": "bronze_full_helmet",
+    "display_name": "Bronze Full Helmet",
+    "slot": "head",
+    "combat_style": null,
+    "description": "A bronze full helmet.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 6,
+    "requirements": {}
+  },
+  "bronze_chainbody": {
+    "name": "bronze_chainbody",
+    "display_name": "Bronze Chainbody",
+    "slot": "body",
+    "combat_style": null,
+    "description": "A bronze chainbody.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 8,
+    "requirements": {}
+  },
+  "bronze_platebody": {
+    "name": "bronze_platebody",
+    "display_name": "Bronze Platebody",
+    "slot": "body",
+    "combat_style": null,
+    "description": "A bronze platebody.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 12,
+    "requirements": {}
+  },
+  "bronze_platelegs": {
+    "name": "bronze_platelegs",
+    "display_name": "Bronze Platelegs",
+    "slot": "legs",
+    "combat_style": null,
+    "description": "A bronze platelegs.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 10,
+    "requirements": {}
+  },
+  "bronze_plateskirt": {
+    "name": "bronze_plateskirt",
+    "display_name": "Bronze Plateskirt",
+    "slot": "legs",
+    "combat_style": null,
+    "description": "A bronze plateskirt.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 10,
+    "requirements": {}
+  },
+  "bronze_boots": {
+    "name": "bronze_boots",
+    "display_name": "Bronze Boots",
+    "slot": "boots",
+    "combat_style": null,
+    "description": "A pair of bronze boots.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "requirements": {}
+  },
+  "bronze_square_shield": {
+    "name": "bronze_square_shield",
+    "display_name": "Bronze Square Shield",
+    "slot": "shield",
+    "combat_style": null,
+    "description": "A bronze square shield.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 7,
+    "requirements": {}
+  },
+  "bronze_kiteshield": {
+    "name": "bronze_kiteshield",
+    "display_name": "Bronze Kiteshield",
+    "slot": "shield",
+    "combat_style": null,
+    "description": "A bronze kiteshield.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 9,
+    "requirements": {}
+  },
+  "iron_med_helmet": {
+    "name": "iron_med_helmet",
+    "display_name": "Iron Med Helmet",
+    "slot": "head",
+    "combat_style": null,
+    "description": "A iron med helmet.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 7,
+    "requirements": {
+      "defense": 10
+    }
+  },
+  "iron_full_helmet": {
+    "name": "iron_full_helmet",
+    "display_name": "Iron Full Helmet",
+    "slot": "head",
+    "combat_style": null,
+    "description": "A iron full helmet.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 10,
+    "requirements": {
+      "defense": 10
+    }
+  },
+  "iron_chainbody": {
+    "name": "iron_chainbody",
+    "display_name": "Iron Chainbody",
+    "slot": "body",
+    "combat_style": null,
+    "description": "A iron chainbody.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 14,
+    "requirements": {
+      "defense": 10
+    }
+  },
+  "iron_platebody": {
+    "name": "iron_platebody",
+    "display_name": "Iron Platebody",
+    "slot": "body",
+    "combat_style": null,
+    "description": "A iron platebody.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 21,
+    "requirements": {
+      "defense": 10
+    }
+  },
+  "iron_platelegs": {
+    "name": "iron_platelegs",
+    "display_name": "Iron Platelegs",
+    "slot": "legs",
+    "combat_style": null,
+    "description": "A iron platelegs.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 18,
+    "requirements": {
+      "defense": 10
+    }
+  },
+  "iron_plateskirt": {
+    "name": "iron_plateskirt",
+    "display_name": "Iron Plateskirt",
+    "slot": "legs",
+    "combat_style": null,
+    "description": "A iron plateskirt.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 18,
+    "requirements": {
+      "defense": 10
+    }
+  },
+  "iron_boots": {
+    "name": "iron_boots",
+    "display_name": "Iron Boots",
+    "slot": "boots",
+    "combat_style": null,
+    "description": "A pair of iron boots.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 9,
+    "requirements": {
+      "defense": 10
+    }
+  },
+  "iron_square_shield": {
+    "name": "iron_square_shield",
+    "display_name": "Iron Square Shield",
+    "slot": "shield",
+    "combat_style": null,
+    "description": "A iron square shield.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 12,
+    "requirements": {
+      "defense": 10
+    }
+  },
+  "iron_kiteshield": {
+    "name": "iron_kiteshield",
+    "display_name": "Iron Kiteshield",
+    "slot": "shield",
+    "combat_style": null,
+    "description": "A iron kiteshield.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 16,
+    "requirements": {
+      "defense": 10
+    }
+  },
+  "steel_med_helmet": {
+    "name": "steel_med_helmet",
+    "display_name": "Steel Med Helmet",
+    "slot": "head",
+    "combat_style": null,
+    "description": "A steel med helmet.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 11,
+    "requirements": {
+      "defense": 20
+    }
+  },
+  "steel_full_helmet": {
+    "name": "steel_full_helmet",
+    "display_name": "Steel Full Helmet",
+    "slot": "head",
+    "combat_style": null,
+    "description": "A steel full helmet.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 16,
+    "requirements": {
+      "defense": 20
+    }
+  },
+  "steel_chainbody": {
+    "name": "steel_chainbody",
+    "display_name": "Steel Chainbody",
+    "slot": "body",
+    "combat_style": null,
+    "description": "A steel chainbody.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 22,
+    "requirements": {
+      "defense": 20
+    }
+  },
+  "steel_platebody": {
+    "name": "steel_platebody",
+    "display_name": "Steel Platebody",
+    "slot": "body",
+    "combat_style": null,
+    "description": "A steel platebody.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 33,
+    "requirements": {
+      "defense": 20
+    }
+  },
+  "steel_platelegs": {
+    "name": "steel_platelegs",
+    "display_name": "Steel Platelegs",
+    "slot": "legs",
+    "combat_style": null,
+    "description": "A steel platelegs.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 28,
+    "requirements": {
+      "defense": 20
+    }
+  },
+  "steel_plateskirt": {
+    "name": "steel_plateskirt",
+    "display_name": "Steel Plateskirt",
+    "slot": "legs",
+    "combat_style": null,
+    "description": "A steel plateskirt.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 28,
+    "requirements": {
+      "defense": 20
+    }
+  },
+  "steel_boots": {
+    "name": "steel_boots",
+    "display_name": "Steel Boots",
+    "slot": "boots",
+    "combat_style": null,
+    "description": "A pair of steel boots.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 14,
+    "requirements": {
+      "defense": 20
+    }
+  },
+  "steel_square_shield": {
+    "name": "steel_square_shield",
+    "display_name": "Steel Square Shield",
+    "slot": "shield",
+    "combat_style": null,
+    "description": "A steel square shield.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 19,
+    "requirements": {
+      "defense": 20
+    }
+  },
+  "steel_kiteshield": {
+    "name": "steel_kiteshield",
+    "display_name": "Steel Kiteshield",
+    "slot": "shield",
+    "combat_style": null,
+    "description": "A steel kiteshield.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 25,
+    "requirements": {
+      "defense": 20
+    }
+  },
+  "mithril_med_helmet": {
+    "name": "mithril_med_helmet",
+    "display_name": "Mithril Med Helmet",
+    "slot": "head",
+    "combat_style": null,
+    "description": "A mithril med helmet.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 16,
+    "requirements": {
+      "defense": 30
+    }
+  },
+  "mithril_full_helmet": {
+    "name": "mithril_full_helmet",
+    "display_name": "Mithril Full Helmet",
+    "slot": "head",
+    "combat_style": null,
+    "description": "A mithril full helmet.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 24,
+    "requirements": {
+      "defense": 30
+    }
+  },
+  "mithril_chainbody": {
+    "name": "mithril_chainbody",
+    "display_name": "Mithril Chainbody",
+    "slot": "body",
+    "combat_style": null,
+    "description": "A mithril chainbody.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 32,
+    "requirements": {
+      "defense": 30
+    }
+  },
+  "mithril_platebody": {
+    "name": "mithril_platebody",
+    "display_name": "Mithril Platebody",
+    "slot": "body",
+    "combat_style": null,
+    "description": "A mithril platebody.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 48,
+    "requirements": {
+      "defense": 30
+    }
+  },
+  "mithril_platelegs": {
+    "name": "mithril_platelegs",
+    "display_name": "Mithril Platelegs",
+    "slot": "legs",
+    "combat_style": null,
+    "description": "A mithril platelegs.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 40,
+    "requirements": {
+      "defense": 30
+    }
+  },
+  "mithril_plateskirt": {
+    "name": "mithril_plateskirt",
+    "display_name": "Mithril Plateskirt",
+    "slot": "legs",
+    "combat_style": null,
+    "description": "A mithril plateskirt.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 40,
+    "requirements": {
+      "defense": 30
+    }
+  },
+  "mithril_boots": {
+    "name": "mithril_boots",
+    "display_name": "Mithril Boots",
+    "slot": "boots",
+    "combat_style": null,
+    "description": "A pair of mithril boots.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 20,
+    "requirements": {
+      "defense": 30
+    }
+  },
+  "mithril_square_shield": {
+    "name": "mithril_square_shield",
+    "display_name": "Mithril Square Shield",
+    "slot": "shield",
+    "combat_style": null,
+    "description": "A mithril square shield.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 28,
+    "requirements": {
+      "defense": 30
+    }
+  },
+  "mithril_kiteshield": {
+    "name": "mithril_kiteshield",
+    "display_name": "Mithril Kiteshield",
+    "slot": "shield",
+    "combat_style": null,
+    "description": "A mithril kiteshield.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 36,
+    "requirements": {
+      "defense": 30
+    }
+  },
+  "adamantite_med_helmet": {
+    "name": "adamantite_med_helmet",
+    "display_name": "Adamantite Med Helmet",
+    "slot": "head",
+    "combat_style": null,
+    "description": "A adamantite med helmet.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 22,
+    "requirements": {
+      "defense": 40
+    }
+  },
+  "adamantite_full_helmet": {
+    "name": "adamantite_full_helmet",
+    "display_name": "Adamantite Full Helmet",
+    "slot": "head",
+    "combat_style": null,
+    "description": "A adamantite full helmet.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 33,
+    "requirements": {
+      "defense": 40
+    }
+  },
+  "adamantite_chainbody": {
+    "name": "adamantite_chainbody",
+    "display_name": "Adamantite Chainbody",
+    "slot": "body",
+    "combat_style": null,
+    "description": "A adamantite chainbody.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 44,
+    "requirements": {
+      "defense": 40
+    }
+  },
+  "adamantite_platebody": {
+    "name": "adamantite_platebody",
+    "display_name": "Adamantite Platebody",
+    "slot": "body",
+    "combat_style": null,
+    "description": "A adamantite platebody.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 66,
+    "requirements": {
+      "defense": 40
+    }
+  },
+  "adamantite_platelegs": {
+    "name": "adamantite_platelegs",
+    "display_name": "Adamantite Platelegs",
+    "slot": "legs",
+    "combat_style": null,
+    "description": "A adamantite platelegs.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 55,
+    "requirements": {
+      "defense": 40
+    }
+  },
+  "adamantite_plateskirt": {
+    "name": "adamantite_plateskirt",
+    "display_name": "Adamantite Plateskirt",
+    "slot": "legs",
+    "combat_style": null,
+    "description": "A adamantite plateskirt.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 55,
+    "requirements": {
+      "defense": 40
+    }
+  },
+  "adamantite_boots": {
+    "name": "adamantite_boots",
+    "display_name": "Adamantite Boots",
+    "slot": "boots",
+    "combat_style": null,
+    "description": "A pair of adamantite boots.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 27,
+    "requirements": {
+      "defense": 40
+    }
+  },
+  "adamantite_square_shield": {
+    "name": "adamantite_square_shield",
+    "display_name": "Adamantite Square Shield",
+    "slot": "shield",
+    "combat_style": null,
+    "description": "A adamantite square shield.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 38,
+    "requirements": {
+      "defense": 40
+    }
+  },
+  "adamantite_kiteshield": {
+    "name": "adamantite_kiteshield",
+    "display_name": "Adamantite Kiteshield",
+    "slot": "shield",
+    "combat_style": null,
+    "description": "A adamantite kiteshield.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 49,
+    "requirements": {
+      "defense": 40
+    }
+  },
+  "slayer_helm": {
+    "name": "slayer_helm",
+    "display_name": "Slayer Helm",
+    "slot": "head",
+    "combat_style": null,
+    "description": "A sturdy helm worn by veteran slayers.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 40,
+    "requirements": {
+      "defense": 45
+    }
+  },
+  "slayer_platebody": {
+    "name": "slayer_platebody",
+    "display_name": "Slayer Platebody",
+    "slot": "body",
+    "combat_style": null,
+    "description": "Heavy armour etched with slayer runes.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 80,
+    "requirements": {
+      "defense": 45
+    }
+  },
+  "slayer_platelegs": {
+    "name": "slayer_platelegs",
+    "display_name": "Slayer Platelegs",
+    "slot": "legs",
+    "combat_style": null,
+    "description": "Protective legs crafted for extended dungeon runs.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 65,
+    "requirements": {
+      "defense": 45
+    }
+  },
+  "slayer_plateskirt": {
+    "name": "slayer_plateskirt",
+    "display_name": "Slayer Plateskirt",
+    "slot": "legs",
+    "combat_style": null,
+    "description": "Protective skirt crafted for extended dungeon runs.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 65,
+    "requirements": {
+      "defense": 45
+    }
+  },
+  "runite_med_helmet": {
+    "name": "runite_med_helmet",
+    "display_name": "Runite Med Helmet",
+    "slot": "head",
+    "combat_style": null,
+    "description": "A runite med helmet.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 30,
+    "requirements": {
+      "defense": 50
+    }
+  },
+  "runite_full_helmet": {
+    "name": "runite_full_helmet",
+    "display_name": "Runite Full Helmet",
+    "slot": "head",
+    "combat_style": null,
+    "description": "A runite full helmet.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 45,
+    "requirements": {
+      "defense": 50
+    }
+  },
+  "runite_chainbody": {
+    "name": "runite_chainbody",
+    "display_name": "Runite Chainbody",
+    "slot": "body",
+    "combat_style": null,
+    "description": "A runite chainbody.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 60,
+    "requirements": {
+      "defense": 50
+    }
+  },
+  "runite_platebody": {
+    "name": "runite_platebody",
+    "display_name": "Runite Platebody",
+    "slot": "body",
+    "combat_style": null,
+    "description": "A runite platebody.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 90,
+    "requirements": {
+      "defense": 50
+    }
+  },
+  "runite_platelegs": {
+    "name": "runite_platelegs",
+    "display_name": "Runite Platelegs",
+    "slot": "legs",
+    "combat_style": null,
+    "description": "A runite platelegs.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 75,
+    "requirements": {
+      "defense": 50
+    }
+  },
+  "runite_plateskirt": {
+    "name": "runite_plateskirt",
+    "display_name": "Runite Plateskirt",
+    "slot": "legs",
+    "combat_style": null,
+    "description": "A runite plateskirt.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 75,
+    "requirements": {
+      "defense": 50
+    }
+  },
+  "runite_boots": {
+    "name": "runite_boots",
+    "display_name": "Runite Boots",
+    "slot": "boots",
+    "combat_style": null,
+    "description": "A pair of runite boots.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 37,
+    "requirements": {
+      "defense": 50
+    }
+  },
+  "runite_square_shield": {
+    "name": "runite_square_shield",
+    "display_name": "Runite Square Shield",
+    "slot": "shield",
+    "combat_style": null,
+    "description": "A runite square shield.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 52,
+    "requirements": {
+      "defense": 50
+    }
+  },
+  "runite_kiteshield": {
+    "name": "runite_kiteshield",
+    "display_name": "Runite Kiteshield",
+    "slot": "shield",
+    "combat_style": null,
+    "description": "A runite kiteshield.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 67,
+    "requirements": {
+      "defense": 50
+    }
+  },
+  "dwarven_helm": {
+    "name": "dwarven_helm",
+    "display_name": "Dwarven Helm",
+    "slot": "head",
+    "combat_style": null,
+    "description": "A sturdy dwarven helmet, forged from ancient metals.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 58,
+    "requirements": {
+      "defense": 60
+    }
+  },
+  "dwarven_platebody": {
+    "name": "dwarven_platebody",
+    "display_name": "Dwarven Platebody",
+    "slot": "body",
+    "combat_style": null,
+    "description": "Ancient dwarven armor, nearly impenetrable.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 120,
+    "requirements": {
+      "defense": 60
+    }
+  },
+  "dwarven_platelegs": {
+    "name": "dwarven_platelegs",
+    "display_name": "Dwarven Platelegs",
+    "slot": "legs",
+    "combat_style": null,
+    "description": "Dwarven leg armor, perfectly balanced for combat.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 110,
+    "requirements": {
+      "defense": 60
+    }
+  },
+  "dwarven_boots": {
+    "name": "dwarven_boots",
+    "display_name": "Dwarven Boots",
+    "slot": "boots",
+    "combat_style": null,
+    "description": "Masterwork dwarven boots, heavier than steel but nearly indestructible.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 50,
+    "requirements": {
+      "defense": 60
+    }
+  },
+  "dwarven_shield": {
+    "name": "dwarven_shield",
+    "display_name": "Dwarven Shield",
+    "slot": "shield",
+    "combat_style": null,
+    "description": "A dwarven shield that has withstood countless battles.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 68,
+    "requirements": {
+      "defense": 60
+    }
+  },
+  "dragon_boots": {
+    "name": "dragon_boots",
+    "display_name": "Dragon Boots",
+    "slot": "boots",
+    "combat_style": null,
+    "description": "A pair of dragon boots.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 55,
+    "requirements": {
+      "defense": 60
+    }
+  },
+  "tower_helm": {
+    "name": "tower_helm",
+    "display_name": "Tower Helm",
+    "slot": "head",
+    "description": "A helmet carved from the tower's upper floors.",
+    "attack_bonus": 0,
+    "strength_bonus": 8,
+    "defense_bonus": 82,
+    "requirements": {
+      "defense": 60
+    }
+  },
+  "tower_body": {
+    "name": "tower_body",
+    "display_name": "Tower Plate",
+    "slot": "body",
+    "description": "Impenetrable armour from the tower's inner sanctum.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 132,
+    "requirements": {
+      "defense": 70
+    }
+  },
+  "tower_legs": {
+    "name": "tower_legs",
+    "display_name": "Tower Greaves",
+    "slot": "legs",
+    "description": "Greaves forged in the tower's deepest forge.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 125,
+    "requirements": {
+      "defense": 70
+    }
+  },
+  "tower_plateskirt": {
+    "name": "tower_plateskirt",
+    "display_name": "Tower Plateskirt",
+    "slot": "legs",
+    "description": "A plateskirt forged in the tower's deepest forge.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 125,
+    "requirements": {
+      "defense": 70
+    }
+  },
+  "tower_boots": {
+    "name": "tower_boots",
+    "display_name": "Tower Boots",
+    "slot": "boots",
+    "description": "Boots forged in the tower's deepest forge.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 58,
+    "requirements": {
+      "defense": 70
+    }
+  },
+  "tower_shield": {
+    "name": "tower_shield",
+    "display_name": "Tower Shield",
+    "slot": "shield",
+    "description": "A massive shield hewn from tower stone.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 80,
+    "requirements": {
+      "defense": 50
+    }
+  },
+  "balrog_wings": {
+    "name": "balrog_wings",
+    "display_name": "Gothic Ember Wings",
+    "slot": "body",
+    "combat_style": null,
+    "description": "The mighty wings of the Gothic Ember, imbued with dark power. The ultimate armor.",
+    "attack_bonus": 10,
+    "strength_bonus": 15,
+    "defense_bonus": 150,
+    "requirements": {
+      "defense": 80,
+      "strength": 75
+    }
+  },
+  "sovereign_crown": {
+    "name": "sovereign_crown",
+    "display_name": "Sovereign Crown",
+    "slot": "head",
+    "combat_style": null,
+    "description": "The crown of the Void Sovereign itself, radiating dark majesty. Offers unparalleled protection.",
+    "attack_bonus": 8,
+    "strength_bonus": 5,
+    "defense_bonus": 80,
+    "requirements": {
+      "defense": 85
+    }
+  },
+  "divine_helm": {
+    "name": "divine_helm",
+    "display_name": "Divine Helm",
+    "slot": "head",
+    "combat_style": null,
+    "description": "A radiant helm blessed by the gods. Turns aside blows that would fell any mortal.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 73,
+    "requirements": {
+      "defense": 85
+    }
+  },
+  "divine_platebody": {
+    "name": "divine_platebody",
+    "display_name": "Divine Platebody",
+    "slot": "body",
+    "combat_style": null,
+    "description": "Armour forged from celestial metal. Said to be nearly indestructible.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 150,
+    "requirements": {
+      "defense": 85
+    }
+  },
+  "divine_platelegs": {
+    "name": "divine_platelegs",
+    "display_name": "Divine Platelegs",
+    "slot": "legs",
+    "combat_style": null,
+    "description": "Leg armour of divine craft. Heavier than it looks, lighter than it should be.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 138,
+    "requirements": {
+      "defense": 85
+    }
+  },
+  "divine_boots": {
+    "name": "divine_boots",
+    "display_name": "Divine Boots",
+    "slot": "boots",
+    "combat_style": null,
+    "description": "Boots of divine make. Leave no footprints.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 63,
+    "requirements": {
+      "defense": 85
+    }
+  },
+  "divine_shield": {
+    "name": "divine_shield",
+    "display_name": "Divine Shield",
+    "slot": "shield",
+    "combat_style": null,
+    "description": "A blessed shield that radiates a faint golden light.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 85,
+    "requirements": {
+      "defense": 85
+    }
+  },
+  "silver_necklace": {
+    "name": "silver_necklace",
+    "display_name": "Silver Necklace",
+    "slot": "necklace",
+    "combat_style": null,
+    "description": "A simple silver necklace.",
+    "attack_bonus": 2,
+    "strength_bonus": 1,
+    "defense_bonus": 1,
+    "requirements": {}
+  },
+  "silver_sapphire_necklace": {
+    "name": "silver_sapphire_necklace",
+    "display_name": "Silver Sapphire Necklace",
+    "slot": "necklace",
+    "combat_style": "magic",
+    "description": "A silver necklace with a sapphire. Enhances magic.",
+    "attack_bonus": 2,
+    "strength_bonus": 0,
+    "defense_bonus": 3,
+    "magic_attack_bonus": 6,
+    "magic_damage_bonus": 3,
+    "requirements": {}
+  },
+  "silver_emerald_necklace": {
+    "name": "silver_emerald_necklace",
+    "display_name": "Silver Emerald Necklace",
+    "slot": "necklace",
+    "combat_style": "ranged",
+    "description": "A silver necklace with an emerald. Enhances ranged.",
+    "attack_bonus": 3,
+    "strength_bonus": 0,
+    "defense_bonus": 3,
+    "ranged_attack_bonus": 7,
+    "ranged_strength_bonus": 3,
+    "requirements": {}
+  },
+  "silver_ruby_necklace": {
+    "name": "silver_ruby_necklace",
+    "display_name": "Silver Ruby Necklace",
+    "slot": "necklace",
+    "combat_style": "attack",
+    "description": "A silver necklace with a ruby. Enhances melee.",
+    "attack_bonus": 6,
+    "strength_bonus": 4,
+    "defense_bonus": 3,
+    "requirements": {}
+  },
+  "silver_diamond_necklace": {
+    "name": "silver_diamond_necklace",
+    "display_name": "Silver Diamond Necklace",
+    "slot": "necklace",
+    "combat_style": null,
+    "description": "A silver necklace with a diamond. Balanced combat.",
+    "attack_bonus": 4,
+    "strength_bonus": 4,
+    "defense_bonus": 7,
+    "requirements": {}
+  },
+  "gold_necklace": {
+    "name": "gold_necklace",
+    "display_name": "Gold Necklace",
+    "slot": "necklace",
+    "combat_style": null,
+    "description": "A gold necklace.",
+    "attack_bonus": 3,
+    "strength_bonus": 2,
+    "defense_bonus": 2,
+    "requirements": {}
+  },
+  "gold_sapphire_necklace": {
+    "name": "gold_sapphire_necklace",
+    "display_name": "Gold Sapphire Necklace",
+    "slot": "necklace",
+    "combat_style": "magic",
+    "description": "A gold necklace with a sapphire. Enhances magic.",
+    "attack_bonus": 3,
+    "strength_bonus": 0,
+    "defense_bonus": 4,
+    "magic_attack_bonus": 9,
+    "magic_damage_bonus": 4,
+    "requirements": {}
+  },
+  "gold_emerald_necklace": {
+    "name": "gold_emerald_necklace",
+    "display_name": "Gold Emerald Necklace",
+    "slot": "necklace",
+    "combat_style": "ranged",
+    "description": "A gold necklace with an emerald. Enhances ranged.",
+    "attack_bonus": 4,
+    "strength_bonus": 0,
+    "defense_bonus": 4,
+    "ranged_attack_bonus": 10,
+    "ranged_strength_bonus": 4,
+    "requirements": {}
+  },
+  "gold_ruby_necklace": {
+    "name": "gold_ruby_necklace",
+    "display_name": "Gold Ruby Necklace",
+    "slot": "necklace",
+    "combat_style": "attack",
+    "description": "A gold necklace with a ruby. Enhances melee.",
+    "attack_bonus": 11,
+    "strength_bonus": 5,
+    "defense_bonus": 4,
+    "requirements": {}
+  },
+  "gold_diamond_necklace": {
+    "name": "gold_diamond_necklace",
+    "display_name": "Gold Diamond Necklace",
+    "slot": "necklace",
+    "combat_style": null,
+    "description": "A gold necklace with a diamond. Provides balanced bonuses.",
+    "attack_bonus": 6,
+    "strength_bonus": 5,
+    "defense_bonus": 8,
+    "requirements": {}
+  },
+  "platinum_necklace": {
+    "name": "platinum_necklace",
+    "display_name": "Platinum Necklace",
+    "slot": "necklace",
+    "combat_style": null,
+    "description": "A platinum necklace.",
+    "attack_bonus": 4,
+    "strength_bonus": 3,
+    "defense_bonus": 3,
+    "requirements": {}
+  },
+  "platinum_sapphire_necklace": {
+    "name": "platinum_sapphire_necklace",
+    "display_name": "Platinum Sapphire Necklace",
+    "slot": "necklace",
+    "combat_style": "magic",
+    "description": "A platinum necklace with a sapphire. Enhances magic.",
+    "attack_bonus": 4,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "magic_attack_bonus": 12,
+    "magic_damage_bonus": 5,
+    "requirements": {}
+  },
+  "platinum_emerald_necklace": {
+    "name": "platinum_emerald_necklace",
+    "display_name": "Platinum Emerald Necklace",
+    "slot": "necklace",
+    "combat_style": "ranged",
+    "description": "A platinum necklace with an emerald. Enhances ranged.",
+    "attack_bonus": 5,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "ranged_attack_bonus": 13,
+    "ranged_strength_bonus": 5,
+    "requirements": {}
+  },
+  "platinum_ruby_necklace": {
+    "name": "platinum_ruby_necklace",
+    "display_name": "Platinum Ruby Necklace",
+    "slot": "necklace",
+    "combat_style": "attack",
+    "description": "A platinum necklace with a ruby. Enhances melee.",
+    "attack_bonus": 14,
+    "strength_bonus": 6,
+    "defense_bonus": 5,
+    "requirements": {}
+  },
+  "platinum_diamond_necklace": {
+    "name": "platinum_diamond_necklace",
+    "display_name": "Platinum Diamond Necklace",
+    "slot": "necklace",
+    "combat_style": null,
+    "description": "A platinum necklace with a diamond. Provides excellent balanced bonuses.",
+    "attack_bonus": 8,
+    "strength_bonus": 6,
+    "defense_bonus": 10,
+    "requirements": {}
+  },
+  "tricksters_amulet": {
+    "name": "tricksters_amulet",
+    "display_name": "Trickster's Amulet",
+    "slot": "necklace",
+    "description": "A lucky charm worn by carnival performers. Grants a small combat edge.",
+    "attack_bonus": 5,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "requirements": {}
+  },
+  "amulet_of_strength": {
+    "name": "amulet_of_strength",
+    "display_name": "Amulet of Strength",
+    "slot": "necklace",
+    "combat_style": null,
+    "description": "Increases melee strength bonus.",
+    "attack_bonus": 6,
+    "strength_bonus": 10,
+    "defense_bonus": 2,
+    "requirements": {}
+  },
+  "tower_amulet": {
+    "name": "tower_amulet",
+    "display_name": "Tower Amulet",
+    "slot": "necklace",
+    "description": "An amulet pulsing with the tower's ancient power.",
+    "attack_bonus": 15,
+    "strength_bonus": 15,
+    "defense_bonus": 10,
+    "requirements": {
+      "attack": 50
+    },
+    "ranged_attack_bonus": 10,
+    "ranged_strength_bonus": 4,
+    "magic_attack_bonus": 10,
+    "magic_damage_bonus": 3
+  },
+  "amulet_of_fury": {
+    "name": "amulet_of_fury",
+    "display_name": "Amulet of Fury",
+    "slot": "necklace",
+    "combat_style": null,
+    "description": "A powerful amulet granting bonuses to all combat styles.",
+    "attack_bonus": 12,
+    "strength_bonus": 12,
+    "defense_bonus": 12,
+    "ranged_attack_bonus": 10,
+    "ranged_strength_bonus": 4,
+    "magic_attack_bonus": 10,
+    "magic_damage_bonus": 4,
+    "requirements": {
+      "attack": 60,
+      "defense": 50
+    }
+  },
+  "dragon_amulet": {
+    "name": "dragon_amulet",
+    "display_name": "Dragon Amulet",
+    "slot": "necklace",
+    "combat_style": null,
+    "description": "A powerful amulet forged from dragon scales. Enhances all combat styles.",
+    "attack_bonus": 14,
+    "strength_bonus": 15,
+    "defense_bonus": 10,
+    "ranged_attack_bonus": 6,
+    "ranged_strength_bonus": 2,
+    "magic_attack_bonus": 6,
+    "magic_damage_bonus": 2,
+    "requirements": {
+      "attack": 70
+    }
+  },
+  "flame_heart_amulet": {
+    "name": "flame_heart_amulet",
+    "display_name": "Flame Heart Amulet",
+    "slot": "necklace",
+    "combat_style": null,
+    "description": "The crystallized heart of an ancient flame demon. Radiates immense power.",
+    "attack_bonus": 20,
+    "strength_bonus": 25,
+    "defense_bonus": 15,
+    "magic_attack_bonus": 30,
+    "requirements": {
+      "attack": 75,
+      "magic": 75
+    }
+  },
+  "necklace_of_anguish": {
+    "name": "necklace_of_anguish",
+    "display_name": "Necklace of Anguish",
+    "slot": "necklace",
+    "combat_style": "ranged",
+    "description": "Provides exceptional ranged attack bonuses.",
+    "attack_bonus": 3,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "ranged_attack_bonus": 22,
+    "ranged_strength_bonus": 8,
+    "requirements": {
+      "ranged": 75
+    }
+  },
+  "tormented_necklace": {
+    "name": "tormented_necklace",
+    "display_name": "Tormented Necklace",
+    "slot": "necklace",
+    "combat_style": "magic",
+    "description": "Provides exceptional magic bonuses.",
+    "attack_bonus": 3,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "magic_attack_bonus": 20,
+    "magic_damage_bonus": 8,
+    "requirements": {
+      "magic": 75
+    }
+  },
+  "amulet_of_the_void": {
+    "name": "amulet_of_the_void",
+    "display_name": "Amulet of the Void",
+    "slot": "necklace",
+    "combat_style": null,
+    "description": "A pendant of pure void essence. Enhances all combat stats of the wearer.",
+    "attack_bonus": 18,
+    "strength_bonus": 18,
+    "defense_bonus": 18,
+    "requirements": {
+      "attack": 80,
+      "defense": 80
+    }
+  },
+  "amulet_of_the_kraken": {
+    "name": "amulet_of_the_kraken",
+    "display_name": "Amulet of the Kraken",
+    "slot": "necklace",
+    "combat_style": "magic",
+    "description": "A dark amulet pulsing with the Kraken's magical energy.",
+    "attack_bonus": 4,
+    "strength_bonus": 0,
+    "defense_bonus": 7,
+    "magic_attack_bonus": 24,
+    "magic_damage_bonus": 10,
+    "requirements": {
+      "magic": 80
+    }
+  },
+  "silver_ring": {
+    "name": "silver_ring",
+    "display_name": "Silver Ring",
+    "slot": "ring",
+    "combat_style": null,
+    "description": "A simple silver ring.",
+    "attack_bonus": 1,
+    "strength_bonus": 1,
+    "defense_bonus": 1,
+    "requirements": {}
+  },
+  "silver_sapphire_ring": {
+    "name": "silver_sapphire_ring",
+    "display_name": "Silver Sapphire Ring",
+    "slot": "ring",
+    "combat_style": "magic",
+    "description": "A silver ring with a sapphire. Enhances magic.",
+    "attack_bonus": 1,
+    "strength_bonus": 0,
+    "defense_bonus": 2,
+    "magic_attack_bonus": 4,
+    "magic_damage_bonus": 2,
+    "requirements": {}
+  },
+  "silver_emerald_ring": {
+    "name": "silver_emerald_ring",
+    "display_name": "Silver Emerald Ring",
+    "slot": "ring",
+    "combat_style": "ranged",
+    "description": "A silver ring with an emerald. Enhances ranged.",
+    "attack_bonus": 2,
+    "strength_bonus": 0,
+    "defense_bonus": 2,
+    "ranged_attack_bonus": 5,
+    "ranged_strength_bonus": 2,
+    "requirements": {}
+  },
+  "silver_ruby_ring": {
+    "name": "silver_ruby_ring",
+    "display_name": "Silver Ruby Ring",
+    "slot": "ring",
+    "combat_style": "attack",
+    "description": "A silver ring with a ruby. Enhances melee.",
+    "attack_bonus": 5,
+    "strength_bonus": 3,
+    "defense_bonus": 2,
+    "requirements": {}
+  },
+  "silver_diamond_ring": {
+    "name": "silver_diamond_ring",
+    "display_name": "Silver Diamond Ring",
+    "slot": "ring",
+    "combat_style": null,
+    "description": "A silver ring with a diamond. Balanced combat.",
+    "attack_bonus": 3,
+    "strength_bonus": 3,
+    "defense_bonus": 5,
+    "requirements": {}
+  },
+  "gold_ring": {
+    "name": "gold_ring",
+    "display_name": "Gold Ring",
+    "slot": "ring",
+    "combat_style": null,
+    "description": "A gold ring.",
+    "attack_bonus": 2,
+    "strength_bonus": 2,
+    "defense_bonus": 2,
+    "requirements": {}
+  },
+  "gold_sapphire_ring": {
+    "name": "gold_sapphire_ring",
+    "display_name": "Gold Sapphire Ring",
+    "slot": "ring",
+    "combat_style": "magic",
+    "description": "A gold ring with a sapphire. Enhances magic.",
+    "attack_bonus": 2,
+    "strength_bonus": 0,
+    "defense_bonus": 3,
+    "magic_attack_bonus": 6,
+    "magic_damage_bonus": 3,
+    "requirements": {}
+  },
+  "gold_emerald_ring": {
+    "name": "gold_emerald_ring",
+    "display_name": "Gold Emerald Ring",
+    "slot": "ring",
+    "combat_style": "ranged",
+    "description": "A gold ring with an emerald. Enhances ranged.",
+    "attack_bonus": 3,
+    "strength_bonus": 0,
+    "defense_bonus": 3,
+    "ranged_attack_bonus": 7,
+    "ranged_strength_bonus": 3,
+    "requirements": {}
+  },
+  "gold_ruby_ring": {
+    "name": "gold_ruby_ring",
+    "display_name": "Gold Ruby Ring",
+    "slot": "ring",
+    "combat_style": "attack",
+    "description": "A gold ring with a ruby. Enhances melee.",
+    "attack_bonus": 8,
+    "strength_bonus": 4,
+    "defense_bonus": 3,
+    "requirements": {}
+  },
+  "gold_diamond_ring": {
+    "name": "gold_diamond_ring",
+    "display_name": "Gold Diamond Ring",
+    "slot": "ring",
+    "combat_style": null,
+    "description": "A gold ring with a diamond. Provides balanced bonuses.",
+    "attack_bonus": 5,
+    "strength_bonus": 4,
+    "defense_bonus": 6,
+    "requirements": {}
+  },
+  "platinum_ring": {
+    "name": "platinum_ring",
+    "display_name": "Platinum Ring",
+    "slot": "ring",
+    "combat_style": null,
+    "description": "A platinum ring.",
+    "attack_bonus": 3,
+    "strength_bonus": 3,
+    "defense_bonus": 3,
+    "requirements": {}
+  },
+  "platinum_sapphire_ring": {
+    "name": "platinum_sapphire_ring",
+    "display_name": "Platinum Sapphire Ring",
+    "slot": "ring",
+    "combat_style": "magic",
+    "description": "A platinum ring with a sapphire. Enhances magic.",
+    "attack_bonus": 3,
+    "strength_bonus": 0,
+    "defense_bonus": 4,
+    "magic_attack_bonus": 8,
+    "magic_damage_bonus": 4,
+    "requirements": {}
+  },
+  "platinum_emerald_ring": {
+    "name": "platinum_emerald_ring",
+    "display_name": "Platinum Emerald Ring",
+    "slot": "ring",
+    "combat_style": "ranged",
+    "description": "A platinum ring with an emerald. Enhances ranged.",
+    "attack_bonus": 4,
+    "strength_bonus": 0,
+    "defense_bonus": 4,
+    "ranged_attack_bonus": 9,
+    "ranged_strength_bonus": 4,
+    "requirements": {}
+  },
+  "platinum_ruby_ring": {
+    "name": "platinum_ruby_ring",
+    "display_name": "Platinum Ruby Ring",
+    "slot": "ring",
+    "combat_style": "attack",
+    "description": "A platinum ring with a ruby. Enhances melee.",
+    "attack_bonus": 10,
+    "strength_bonus": 5,
+    "defense_bonus": 4,
+    "requirements": {}
+  },
+  "platinum_diamond_ring": {
+    "name": "platinum_diamond_ring",
+    "display_name": "Platinum Diamond Ring",
+    "slot": "ring",
+    "combat_style": null,
+    "description": "A platinum ring with a diamond. Provides excellent balanced bonuses.",
+    "attack_bonus": 6,
+    "strength_bonus": 5,
+    "defense_bonus": 7,
+    "requirements": {}
+  },
+  "ring_of_recoil": {
+    "name": "ring_of_recoil",
+    "display_name": "Ring of Recoil",
+    "slot": "ring",
+    "combat_style": null,
+    "description": "Returns a portion of damage taken to attackers.",
+    "attack_bonus": 2,
+    "strength_bonus": 2,
+    "defense_bonus": 4,
+    "requirements": {}
+  },
+  "ring_of_wealth": {
+    "name": "ring_of_wealth",
+    "display_name": "Ring of Wealth",
+    "slot": "ring",
+    "combat_style": null,
+    "description": "A ring said to attract wealth. Provides balanced combat bonuses.",
+    "attack_bonus": 4,
+    "strength_bonus": 3,
+    "defense_bonus": 5,
+    "requirements": {}
+  },
+  "tower_ring": {
+    "name": "tower_ring",
+    "display_name": "Tower Ring",
+    "slot": "ring",
+    "description": "A band forged from the stone of the infinite tower.",
+    "attack_bonus": 6,
+    "strength_bonus": 6,
+    "defense_bonus": 0,
+    "requirements": {
+      "attack": 30
+    }
+  },
+  "strongmans_sigil": {
+    "name": "strongmans_sigil",
+    "display_name": "Strongman's Sigil",
+    "slot": "ring",
+    "description": "A heavy iron ring etched with the mark of the strongman champion. Boosts Strength.",
+    "attack_bonus": 0,
+    "strength_bonus": 8,
+    "defense_bonus": 0,
+    "requirements": {
+      "strength": 30
+    }
+  },
+  "shadow_signet": {
+    "name": "shadow_signet",
+    "display_name": "Shadow Signet",
+    "slot": "ring",
+    "combat_style": "attack",
+    "description": "A ring bearing the seal of the Guild of Shadows. Only the guild's most dangerous operatives ever wore one.",
+    "attack_bonus": 8,
+    "strength_bonus": 14,
+    "defense_bonus": 5,
+    "requirements": {
+      "attack": 50
+    }
+  },
+  "berserker_ring": {
+    "name": "berserker_ring",
+    "display_name": "Berserker Ring",
+    "slot": "ring",
+    "combat_style": "strength",
+    "description": "A powerful ring for those who favour brute strength in combat.",
+    "attack_bonus": 3,
+    "strength_bonus": 10,
+    "defense_bonus": 1,
+    "requirements": {
+      "strength": 60
+    }
+  },
+  "archers_ring": {
+    "name": "archers_ring",
+    "display_name": "Archer's Ring",
+    "slot": "ring",
+    "combat_style": "ranged",
+    "description": "Sharpens ranged accuracy beyond that of any crafted ring.",
+    "attack_bonus": 2,
+    "strength_bonus": 0,
+    "defense_bonus": 2,
+    "ranged_attack_bonus": 12,
+    "ranged_strength_bonus": 3,
+    "requirements": {
+      "ranged": 60
+    }
+  },
+  "seers_ring": {
+    "name": "seers_ring",
+    "display_name": "Seers' Ring",
+    "slot": "ring",
+    "combat_style": "magic",
+    "description": "Enhances magical focus and accuracy.",
+    "attack_bonus": 2,
+    "strength_bonus": 0,
+    "defense_bonus": 2,
+    "magic_attack_bonus": 12,
+    "magic_damage_bonus": 3,
+    "requirements": {
+      "magic": 60
+    }
+  },
+  "ring_of_flame": {
+    "name": "ring_of_flame",
+    "display_name": "Ring of Eternal Flame",
+    "slot": "ring",
+    "combat_style": null,
+    "description": "Forged in the fires of the deep earth. Those who wear it feel the Gothic Ember's strength.",
+    "attack_bonus": 15,
+    "strength_bonus": 18,
+    "defense_bonus": 12,
+    "requirements": {
+      "attack": 75,
+      "defense": 70
+    }
+  },
+  "ring_of_suffering": {
+    "name": "ring_of_suffering",
+    "display_name": "Ring of Suffering",
+    "slot": "ring",
+    "combat_style": null,
+    "description": "A ring of immense defensive power.",
+    "attack_bonus": 5,
+    "strength_bonus": 2,
+    "defense_bonus": 18,
+    "requirements": {
+      "defense": 70
+    }
+  },
+  "ring_of_dragons_might": {
+    "name": "ring_of_dragons_might",
+    "display_name": "Ring of Dragon's Might",
+    "slot": "ring",
+    "combat_style": "strength",
+    "description": "A ring imbued with dragonfire. Greatly increases melee strength.",
+    "attack_bonus": 4,
+    "strength_bonus": 16,
+    "defense_bonus": 3,
+    "requirements": {
+      "strength": 70
+    }
+  },
+  "ring_of_the_seas": {
+    "name": "ring_of_the_seas",
+    "display_name": "Ring of the Seas",
+    "slot": "ring",
+    "combat_style": "ranged",
+    "description": "A ring blessed by the deep sea. Enhances ranged precision and power.",
+    "attack_bonus": 2,
+    "strength_bonus": 0,
+    "defense_bonus": 3,
+    "ranged_attack_bonus": 18,
+    "ranged_strength_bonus": 6,
+    "requirements": {
+      "ranged": 80
+    }
+  },
+  "kraken_tentacle": {
+    "name": "kraken_tentacle",
+    "display_name": "Kraken Tentacle",
+    "slot": "ring",
+    "combat_style": "magic",
+    "description": "A coiling tentacle ring that channels the Kraken's arcane power.",
+    "attack_bonus": 2,
+    "strength_bonus": 0,
+    "defense_bonus": 3,
+    "magic_attack_bonus": 18,
+    "magic_damage_bonus": 6,
+    "requirements": {
+      "magic": 80
+    }
+  },
+  "carnival_cape": {
+    "name": "carnival_cape",
+    "display_name": "Carnival Cape",
+    "slot": "cape",
+    "description": "A vibrant cape worn by carnival champions. Grants 5% more tickets from Carnival sessions.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 3,
+    "cape_skill": "carnival",
+    "cape_bonus": 0.05,
+    "requirements": {}
+  },
+  "tower_cape": {
+    "name": "tower_cape",
+    "display_name": "Tower Cape",
+    "slot": "cape",
+    "description": "A flowing cape that radiates the tower's energy.",
+    "attack_bonus": 14,
+    "strength_bonus": 14,
+    "defense_bonus": 14,
+    "requirements": {
+      "attack": 70
+    },
+    "ranged_attack_bonus": 12,
+    "ranged_strength_bonus": 10,
+    "magic_attack_bonus": 12,
+    "magic_damage_bonus": 5
+  },
+  "mining_cape": {
+    "name": "mining_cape",
+    "display_name": "Mining Cape",
+    "slot": "cape",
+    "combat_style": null,
+    "description": "Awarded for reaching level 99 Mining. Grants 10% more ore per session.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "mining",
+    "requirements": {},
+    "cape_bonus": 0.1
+  },
+  "construction_guild_cape": {
+    "name": "construction_guild_cape",
+    "display_name": "Builders Guild Cape",
+    "slot": "cape",
+    "description": "Awarded for reaching Builders Guild level 10. Grants 5% more furniture per session.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "construction",
+    "cape_bonus": 0.05,
+    "requirements": {}
+  },
+  "mining_guild_cape": {
+    "name": "mining_guild_cape",
+    "display_name": "Mining Guild Cape",
+    "slot": "cape",
+    "description": "Awarded for reaching Mining Guild level 10. Grants 5% more ore per session.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "mining",
+    "cape_bonus": 0.05,
+    "requirements": {}
+  },
+  "fishing_cape": {
+    "name": "fishing_cape",
+    "display_name": "Fishing Cape",
+    "slot": "cape",
+    "combat_style": null,
+    "description": "Awarded for reaching level 99 Fishing. Grants 10% more fish per session.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "fishing",
+    "requirements": {},
+    "cape_bonus": 0.1
+  },
+  "fishing_guild_cape": {
+    "name": "fishing_guild_cape",
+    "display_name": "Fishing Guild Cape",
+    "slot": "cape",
+    "description": "Awarded for reaching Fishing Guild level 10. Grants 5% more fish per session.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "fishing",
+    "cape_bonus": 0.05,
+    "requirements": {}
+  },
+  "woodcutting_cape": {
+    "name": "woodcutting_cape",
+    "display_name": "Woodcutting Cape",
+    "slot": "cape",
+    "combat_style": null,
+    "description": "Awarded for reaching level 99 Woodcutting. Grants 10% more logs per session.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "woodcutting",
+    "requirements": {},
+    "cape_bonus": 0.1
+  },
+  "woodcutting_guild_cape": {
+    "name": "woodcutting_guild_cape",
+    "display_name": "Woodcutting Guild Cape",
+    "slot": "cape",
+    "description": "Awarded for reaching Woodcutting Guild level 10. Grants 5% more logs per session.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "woodcutting",
+    "cape_bonus": 0.05,
+    "requirements": {}
+  },
+  "farming_cape": {
+    "name": "farming_cape",
+    "display_name": "Farming Cape",
+    "slot": "cape",
+    "combat_style": null,
+    "description": "Awarded for reaching level 99 Farming. Grants 10% more harvest per session.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "farming",
+    "requirements": {},
+    "cape_bonus": 0.1
+  },
+  "farming_guild_cape": {
+    "name": "farming_guild_cape",
+    "display_name": "Farming Guild Cape",
+    "slot": "cape",
+    "description": "Awarded for reaching Farming Guild level 10. Grants 5% more harvest per session.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "farming",
+    "cape_bonus": 0.05,
+    "requirements": {}
+  },
+  "thieving_cape": {
+    "name": "thieving_cape",
+    "display_name": "Thieving Cape",
+    "slot": "cape",
+    "combat_style": null,
+    "description": "Awarded for reaching level 99 Thieving. Grants 10% more successful pickpockets per session.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "thieving",
+    "requirements": {},
+    "cape_bonus": 0.1
+  },
+  "thieving_guild_cape": {
+    "name": "thieving_guild_cape",
+    "display_name": "Thieves Guild Cape",
+    "slot": "cape",
+    "description": "Awarded for reaching Thieves Guild level 10. Grants 5% more successful pickpockets per session.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "thieving",
+    "cape_bonus": 0.05,
+    "requirements": {}
+  },
+  "smithing_cape": {
+    "name": "smithing_cape",
+    "display_name": "Smithing Cape",
+    "slot": "cape",
+    "combat_style": null,
+    "description": "Awarded for reaching level 99 Smithing. Grants 10% more items per session.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "smithing",
+    "requirements": {},
+    "cape_bonus": 0.1
+  },
+  "smithing_guild_cape": {
+    "name": "smithing_guild_cape",
+    "display_name": "Smithing Guild Cape",
+    "slot": "cape",
+    "description": "Awarded for reaching Smithing Guild level 10. Grants 5% more items per session.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "smithing",
+    "cape_bonus": 0.05,
+    "requirements": {}
+  },
+  "cooking_cape": {
+    "name": "cooking_cape",
+    "display_name": "Cooking Cape",
+    "slot": "cape",
+    "combat_style": null,
+    "description": "Awarded for reaching level 99 Cooking. Grants 10% more food per session.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "cooking",
+    "requirements": {},
+    "cape_bonus": 0.1
+  },
+  "cooking_guild_cape": {
+    "name": "cooking_guild_cape",
+    "display_name": "Cooking Guild Cape",
+    "slot": "cape",
+    "description": "Awarded for reaching Cooking Guild level 10. Grants 5% more food per session.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "cooking",
+    "cape_bonus": 0.05,
+    "requirements": {}
+  },
+  "fletching_cape": {
+    "name": "fletching_cape",
+    "display_name": "Fletching Cape",
+    "slot": "cape",
+    "combat_style": null,
+    "description": "Awarded for reaching level 99 Fletching. Grants 10% more arrows per session.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "fletching",
+    "requirements": {},
+    "cape_bonus": 0.1
+  },
+  "fletching_guild_cape": {
+    "name": "fletching_guild_cape",
+    "display_name": "Fletching Guild Cape",
+    "slot": "cape",
+    "description": "Awarded for reaching Fletching Guild level 10. Grants 5% more arrows per session.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "fletching",
+    "cape_bonus": 0.05,
+    "requirements": {}
+  },
+  "crafting_cape": {
+    "name": "crafting_cape",
+    "display_name": "Crafting Cape",
+    "slot": "cape",
+    "combat_style": null,
+    "description": "Awarded for reaching level 99 Crafting. Grants 10% more items per session.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "crafting",
+    "requirements": {},
+    "cape_bonus": 0.1
+  },
+  "crafting_guild_cape": {
+    "name": "crafting_guild_cape",
+    "display_name": "Crafting Guild Cape",
+    "slot": "cape",
+    "description": "Awarded for reaching Crafting Guild level 10. Grants 5% more items per session.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "crafting",
+    "cape_bonus": 0.05,
+    "requirements": {}
+  },
+  "firemaking_cape": {
+    "name": "firemaking_cape",
+    "display_name": "Firemaking Cape",
+    "slot": "cape",
+    "combat_style": null,
+    "description": "Awarded for reaching level 99 Firemaking. Grants 10% more ashes per session.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "firemaking",
+    "requirements": {},
+    "cape_bonus": 0.1
+  },
+  "firemaking_guild_cape": {
+    "name": "firemaking_guild_cape",
+    "display_name": "Firemaking Guild Cape",
+    "slot": "cape",
+    "description": "Awarded for reaching Firemaking Guild level 10. Grants 5% more ashes per session.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "firemaking",
+    "cape_bonus": 0.05,
+    "requirements": {}
+  },
+  "runecrafting_cape": {
+    "name": "runecrafting_cape",
+    "display_name": "Runecrafting Cape",
+    "slot": "cape",
+    "combat_style": null,
+    "description": "Awarded for reaching level 99 Runecrafting. Grants 10% more runes per session.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "runecrafting",
+    "requirements": {},
+    "cape_bonus": 0.1
+  },
+  "runecrafting_guild_cape": {
+    "name": "runecrafting_guild_cape",
+    "display_name": "Runecrafting Guild Cape",
+    "slot": "cape",
+    "description": "Awarded for reaching Runecrafting Guild level 10. Grants 5% more runes per session.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "runecrafting",
+    "cape_bonus": 0.05,
+    "requirements": {}
+  },
+  "herblore_cape": {
+    "name": "herblore_cape",
+    "display_name": "Herblore Cape",
+    "slot": "cape",
+    "combat_style": null,
+    "description": "Awarded for reaching level 99 Herblore. Grants 10% more potions per session.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "herblore",
+    "requirements": {},
+    "cape_bonus": 0.1
+  },
+  "herblore_guild_cape": {
+    "name": "herblore_guild_cape",
+    "display_name": "Herblore Guild Cape",
+    "slot": "cape",
+    "description": "Awarded for reaching Herblore Guild level 10. Grants 5% more potions per session.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "herblore",
+    "cape_bonus": 0.05,
+    "requirements": {}
+  },
+  "construction_cape": {
+    "name": "construction_cape",
+    "display_name": "Construction Cape",
+    "slot": "cape",
+    "combat_style": null,
+    "description": "Awarded for reaching level 99 Construction. Grants 10% more items per session.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "construction",
+    "requirements": {},
+    "cape_bonus": 0.1
+  },
+  "prayer_cape": {
+    "name": "prayer_cape",
+    "display_name": "Prayer Cape",
+    "slot": "cape",
+    "combat_style": null,
+    "description": "Awarded for reaching level 99 Prayer. Strengthens your active blessing by 10%.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "prayer",
+    "requirements": {},
+    "cape_bonus": 0.1
+  },
+  "prayer_guild_cape": {
+    "name": "prayer_guild_cape",
+    "display_name": "Prayer Guild Cape",
+    "slot": "cape",
+    "description": "Awarded for reaching Prayer Guild level 10. Strengthens your active blessing by 5%.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "prayer",
+    "cape_bonus": 0.05,
+    "requirements": {}
+  },
+  "mercantile_cape": {
+    "name": "mercantile_cape",
+    "display_name": "Mercantile Cape",
+    "slot": "cape",
+    "description": "Awarded for reaching level 99 Mercantile. Grants 10% better shop prices and trade returns.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "mercantile",
+    "cape_bonus": 0.1,
+    "requirements": {}
+  },
+  "mercantile_guild_cape": {
+    "name": "mercantile_guild_cape",
+    "display_name": "Merchants Guild Cape",
+    "slot": "cape",
+    "description": "Awarded for reaching Merchants Guild level 10. Grants 5% better shop prices and trade returns.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "mercantile",
+    "cape_bonus": 0.05,
+    "requirements": {}
+  },
+  "agility_cape": {
+    "name": "agility_cape",
+    "display_name": "Agility Cape",
+    "slot": "cape",
+    "combat_style": null,
+    "description": "Awarded for reaching level 99 Agility. Grants 10% more XP per session.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "agility",
+    "requirements": {},
+    "cape_bonus": 0.1
+  },
+  "agility_guild_cape": {
+    "name": "agility_guild_cape",
+    "display_name": "Agility Guild Cape",
+    "slot": "cape",
+    "description": "Awarded for reaching Agility Guild level 10. Grants 5% more XP per session.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "agility",
+    "cape_bonus": 0.05,
+    "requirements": {}
+  },
+  "slayer_cape": {
+    "name": "slayer_cape",
+    "display_name": "Slayer Cape",
+    "slot": "cape",
+    "combat_style": null,
+    "description": "Awarded for reaching level 99 Slayer. Grants 10% more Slayer points.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "slayer",
+    "requirements": {},
+    "cape_bonus": 0.1
+  },
+  "attack_cape": {
+    "name": "attack_cape",
+    "display_name": "Attack Cape",
+    "slot": "cape",
+    "combat_style": null,
+    "description": "Awarded for reaching level 99 Attack. Grants 10% bonus Attack XP.",
+    "attack_bonus": 5,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "attack",
+    "requirements": {},
+    "cape_bonus": 0.1
+  },
+  "strength_cape": {
+    "name": "strength_cape",
+    "display_name": "Strength Cape",
+    "slot": "cape",
+    "combat_style": null,
+    "description": "Awarded for reaching level 99 Strength. Grants 10% bonus Strength XP.",
+    "attack_bonus": 0,
+    "strength_bonus": 5,
+    "defense_bonus": 5,
+    "cape_skill": "strength",
+    "requirements": {},
+    "cape_bonus": 0.1
+  },
+  "defense_cape": {
+    "name": "defense_cape",
+    "display_name": "Defense Cape",
+    "slot": "cape",
+    "combat_style": null,
+    "description": "Awarded for reaching level 99 Defense. Grants 10% bonus Defense XP.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 15,
+    "cape_skill": "defense",
+    "requirements": {},
+    "cape_bonus": 0.1
+  },
+  "warriors_guild_cape": {
+    "name": "warriors_guild_cape",
+    "display_name": "Warriors Guild Cape",
+    "slot": "cape",
+    "description": "Awarded for reaching Warriors Guild level 10. Grants 5% bonus Attack, Strength, and Defense XP.",
+    "attack_bonus": 5,
+    "strength_bonus": 5,
+    "defense_bonus": 5,
+    "cape_skill": "warriors",
+    "cape_bonus": 0.05,
+    "requirements": {}
+  },
+  "ranged_cape": {
+    "name": "ranged_cape",
+    "display_name": "Ranged Cape",
+    "slot": "cape",
+    "combat_style": null,
+    "description": "Awarded for reaching level 99 Ranged. Grants 10% bonus Ranged XP.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "ranged_attack_bonus": 5,
+    "ranged_strength_bonus": 5,
+    "cape_skill": "ranged",
+    "requirements": {},
+    "cape_bonus": 0.1
+  },
+  "archers_guild_cape": {
+    "name": "archers_guild_cape",
+    "display_name": "Archers Guild Cape",
+    "slot": "cape",
+    "description": "Awarded for reaching Archers Guild level 10. Grants 5% bonus Ranged XP.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "ranged_attack_bonus": 5,
+    "ranged_strength_bonus": 5,
+    "cape_skill": "archers",
+    "cape_bonus": 0.05,
+    "requirements": {}
+  },
+  "magic_cape": {
+    "name": "magic_cape",
+    "display_name": "Magic Cape",
+    "slot": "cape",
+    "combat_style": null,
+    "description": "Awarded for reaching level 99 Magic. Grants 10% bonus Magic XP.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "magic_attack_bonus": 5,
+    "magic_damage_bonus": 5,
+    "cape_skill": "magic",
+    "requirements": {},
+    "cape_bonus": 0.1
+  },
+  "mages_guild_cape": {
+    "name": "mages_guild_cape",
+    "display_name": "Mages Guild Cape",
+    "slot": "cape",
+    "description": "Awarded for reaching Mages Guild level 10. Grants 5% bonus Magic XP.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "magic_attack_bonus": 5,
+    "magic_damage_bonus": 5,
+    "cape_skill": "mages",
+    "cape_bonus": 0.05,
+    "requirements": {}
+  },
+  "slayer_guild_cape": {
+    "name": "slayer_guild_cape",
+    "display_name": "Slayers Guild Cape",
+    "slot": "cape",
+    "description": "Awarded for reaching Slayers Guild level 10. Grants 5% bonus Slayer XP.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "slayer",
+    "cape_bonus": 0.05,
+    "requirements": {}
+  },
+  "hp_cape": {
+    "name": "hp_cape",
+    "display_name": "HP Cape",
+    "slot": "cape",
+    "combat_style": null,
+    "description": "Awarded for reaching level 99 HP. Grants 10% bonus Hitpoints XP.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 5,
+    "cape_skill": "hp",
+    "requirements": {},
+    "cape_bonus": 0.1
+  },
+  "bronze_pickaxe": {
+    "name": "bronze_pickaxe",
+    "display_name": "Bronze Pickaxe",
+    "slot": "pickaxe",
+    "combat_style": null,
+    "description": "A bronze pickaxe for mining.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "mining_efficiency": 1.0,
+    "requirements": {
+      "mining": 1
+    }
+  },
+  "iron_pickaxe": {
+    "name": "iron_pickaxe",
+    "display_name": "Iron Pickaxe",
+    "slot": "pickaxe",
+    "combat_style": null,
+    "description": "An iron pickaxe for mining.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "mining_efficiency": 1.25,
+    "requirements": {
+      "mining": 15
+    }
+  },
+  "steel_pickaxe": {
+    "name": "steel_pickaxe",
+    "display_name": "Steel Pickaxe",
+    "slot": "pickaxe",
+    "combat_style": null,
+    "description": "A steel pickaxe for mining.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "mining_efficiency": 1.5,
+    "requirements": {
+      "mining": 30
+    }
+  },
+  "mithril_pickaxe": {
+    "name": "mithril_pickaxe",
+    "display_name": "Mithril Pickaxe",
+    "slot": "pickaxe",
+    "combat_style": null,
+    "description": "A mithril pickaxe for mining.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "mining_efficiency": 1.75,
+    "requirements": {
+      "mining": 55
+    }
+  },
+  "adamantite_pickaxe": {
+    "name": "adamantite_pickaxe",
+    "display_name": "Adamantite Pickaxe",
+    "slot": "pickaxe",
+    "combat_style": null,
+    "description": "An adamantite pickaxe for mining.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "mining_efficiency": 2.0,
+    "requirements": {
+      "mining": 70
+    }
+  },
+  "runite_pickaxe": {
+    "name": "runite_pickaxe",
+    "display_name": "Runite Pickaxe",
+    "slot": "pickaxe",
+    "combat_style": null,
+    "description": "A runite pickaxe for mining.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "mining_efficiency": 2.25,
+    "requirements": {
+      "mining": 85
+    }
+  },
+  "deep_iron_pickaxe": {
+    "name": "deep_iron_pickaxe",
+    "display_name": "Deep Iron Pickaxe",
+    "slot": "pickaxe",
+    "combat_style": null,
+    "description": "Forged from ore found in the Collapsed Mine's deepest shafts. Strikes with uncanny precision.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "mining_efficiency": 2.5,
+    "requirements": {
+      "mining": 40
+    }
+  },
+  "dwarven_pickaxe": {
+    "name": "dwarven_pickaxe",
+    "display_name": "Dwarven Pickaxe",
+    "slot": "pickaxe",
+    "combat_style": null,
+    "description": "A masterwork dwarven pickaxe. The finest mining tool ever crafted.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "mining_efficiency": 2.75,
+    "requirements": {
+      "mining": 60
+    }
+  },
+  "forge_pickaxe": {
+    "name": "forge_pickaxe",
+    "display_name": "Forge Pickaxe",
+    "slot": "pickaxe",
+    "combat_style": null,
+    "description": "Tempered in the flames of the Ancient Forge itself. The rarest and most powerful pickaxe in existence.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "mining_efficiency": 3.25,
+    "requirements": {
+      "mining": 70
+    }
+  },
+  "divine_pickaxe": {
+    "name": "divine_pickaxe",
+    "display_name": "Divine Pickaxe",
+    "slot": "pickaxe",
+    "combat_style": null,
+    "description": "A pickaxe touched by divine light. Stone parts before it like water.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "mining_efficiency": 3.5,
+    "requirements": {
+      "mining": 85
+    }
+  },
+  "bronze_axe": {
+    "name": "bronze_axe",
+    "display_name": "Bronze Axe",
+    "slot": "axe",
+    "combat_style": null,
+    "description": "A bronze axe for woodcutting.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "woodcutting_efficiency": 1.0,
+    "requirements": {
+      "woodcutting": 1
+    }
+  },
+  "iron_axe": {
+    "name": "iron_axe",
+    "display_name": "Iron Axe",
+    "slot": "axe",
+    "combat_style": null,
+    "description": "An iron axe for woodcutting.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "woodcutting_efficiency": 1.25,
+    "requirements": {
+      "woodcutting": 15
+    }
+  },
+  "steel_axe": {
+    "name": "steel_axe",
+    "display_name": "Steel Axe",
+    "slot": "axe",
+    "combat_style": null,
+    "description": "A steel axe for woodcutting.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "woodcutting_efficiency": 1.5,
+    "requirements": {
+      "woodcutting": 30
+    }
+  },
+  "mithril_axe": {
+    "name": "mithril_axe",
+    "display_name": "Mithril Axe",
+    "slot": "axe",
+    "combat_style": null,
+    "description": "A mithril axe for woodcutting.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "woodcutting_efficiency": 1.75,
+    "requirements": {
+      "woodcutting": 45
+    }
+  },
+  "adamantite_axe": {
+    "name": "adamantite_axe",
+    "display_name": "Adamantite Axe",
+    "slot": "axe",
+    "combat_style": null,
+    "description": "An adamantite axe for woodcutting.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "woodcutting_efficiency": 2.0,
+    "requirements": {
+      "woodcutting": 60
+    }
+  },
+  "runite_axe": {
+    "name": "runite_axe",
+    "display_name": "Runite Axe",
+    "slot": "axe",
+    "combat_style": null,
+    "description": "A runite axe for woodcutting.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "woodcutting_efficiency": 2.25,
+    "requirements": {
+      "woodcutting": 75
+    }
+  },
+  "ironwood_axe": {
+    "name": "ironwood_axe",
+    "display_name": "Ironwood Axe",
+    "slot": "axe",
+    "combat_style": null,
+    "description": "Hewn from the ironwood trees that once stood in the Ancient Forest Ruins. Exceptionally durable.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "woodcutting_efficiency": 2.5,
+    "requirements": {
+      "woodcutting": 40
+    }
+  },
+  "dwarven_axe": {
+    "name": "dwarven_axe",
+    "display_name": "Dwarven Axe",
+    "slot": "axe",
+    "combat_style": null,
+    "description": "A legendary dwarven axe. Cuts through any tree with ease.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "woodcutting_efficiency": 2.75,
+    "requirements": {
+      "woodcutting": 60
+    }
+  },
+  "sanctum_axe": {
+    "name": "sanctum_axe",
+    "display_name": "Sanctum Axe",
+    "slot": "axe",
+    "combat_style": null,
+    "description": "Forged in the shadow of the Corrupted Sanctum. Its blade cuts through even magic logs with ease.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "woodcutting_efficiency": 3.25,
+    "requirements": {
+      "woodcutting": 70
+    }
+  },
+  "divine_axe": {
+    "name": "divine_axe",
+    "display_name": "Divine Axe",
+    "slot": "axe",
+    "combat_style": null,
+    "description": "An axe that fells even the oldest trees with a single blow.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "woodcutting_efficiency": 3.5,
+    "requirements": {
+      "woodcutting": 85
+    }
+  },
+  "bronze_fishing_rod": {
+    "name": "bronze_fishing_rod",
+    "display_name": "Bronze Fishing Rod",
+    "slot": "fishing_rod",
+    "combat_style": null,
+    "description": "A bronze fishing rod for fishing.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "fishing_efficiency": 1.0,
+    "requirements": {
+      "fishing": 1
+    }
+  },
+  "iron_fishing_rod": {
+    "name": "iron_fishing_rod",
+    "display_name": "Iron Fishing Rod",
+    "slot": "fishing_rod",
+    "combat_style": null,
+    "description": "An iron fishing rod for fishing.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "fishing_efficiency": 1.25,
+    "requirements": {
+      "fishing": 15
+    }
+  },
+  "steel_fishing_rod": {
+    "name": "steel_fishing_rod",
+    "display_name": "Steel Fishing Rod",
+    "slot": "fishing_rod",
+    "combat_style": null,
+    "description": "A steel fishing rod for fishing.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "fishing_efficiency": 1.5,
+    "requirements": {
+      "fishing": 30
+    }
+  },
+  "mithril_fishing_rod": {
+    "name": "mithril_fishing_rod",
+    "display_name": "Mithril Fishing Rod",
+    "slot": "fishing_rod",
+    "combat_style": null,
+    "description": "A mithril fishing rod for fishing.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "fishing_efficiency": 1.75,
+    "requirements": {
+      "fishing": 45
+    }
+  },
+  "adamantite_fishing_rod": {
+    "name": "adamantite_fishing_rod",
+    "display_name": "Adamantite Fishing Rod",
+    "slot": "fishing_rod",
+    "combat_style": null,
+    "description": "An adamantite fishing rod for fishing.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "fishing_efficiency": 2.0,
+    "requirements": {
+      "fishing": 60
+    }
+  },
+  "runite_fishing_rod": {
+    "name": "runite_fishing_rod",
+    "display_name": "Runite Fishing Rod",
+    "slot": "fishing_rod",
+    "combat_style": null,
+    "description": "A runite fishing rod for fishing.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "fishing_efficiency": 2.25,
+    "requirements": {
+      "fishing": 75
+    }
+  },
+  "blessed_fishing_rod": {
+    "name": "blessed_fishing_rod",
+    "display_name": "Blessed Fishing Rod",
+    "slot": "fishing_rod",
+    "combat_style": null,
+    "description": "Crafted from driftwood recovered from the Drowned Temple, blessed by ancient sea rites.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "fishing_efficiency": 2.5,
+    "requirements": {
+      "fishing": 40
+    }
+  },
+  "dwarven_fishing_rod": {
+    "name": "dwarven_fishing_rod",
+    "display_name": "Dwarven Fishing Rod",
+    "slot": "fishing_rod",
+    "combat_style": null,
+    "description": "A dwarven-crafted fishing rod. Practically hauls fish out of the water.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "fishing_efficiency": 2.75,
+    "requirements": {
+      "fishing": 60
+    }
+  },
+  "abyssal_rod": {
+    "name": "abyssal_rod",
+    "display_name": "Abyssal Rod",
+    "slot": "fishing_rod",
+    "combat_style": null,
+    "description": "Woven from void-touched filament recovered from the Abyssal Ruins. Fish practically leap onto it.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "fishing_efficiency": 3.25,
+    "requirements": {
+      "fishing": 70
+    }
+  },
+  "divine_fishing_rod": {
+    "name": "divine_fishing_rod",
+    "display_name": "Divine Fishing Rod",
+    "slot": "fishing_rod",
+    "combat_style": null,
+    "description": "A rod blessed by the sea gods. Fish practically leap onto it.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "fishing_efficiency": 3.5,
+    "requirements": {
+      "fishing": 85
+    }
+  },
+  "bronze_hoe": {
+    "name": "bronze_hoe",
+    "display_name": "Bronze Hoe",
+    "slot": "hoe",
+    "combat_style": null,
+    "description": "A basic bronze hoe. Slightly increases harvest yield.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "requirements": {}
+  },
+  "iron_hoe": {
+    "name": "iron_hoe",
+    "display_name": "Iron Hoe",
+    "slot": "hoe",
+    "combat_style": null,
+    "description": "An iron hoe. Increases harvest yield.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "farming_efficiency": 1.25,
+    "requirements": {
+      "farming": 10
+    }
+  },
+  "steel_hoe": {
+    "name": "steel_hoe",
+    "display_name": "Steel Hoe",
+    "slot": "hoe",
+    "combat_style": null,
+    "description": "A steel hoe. Noticeably increases harvest yield.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "farming_efficiency": 1.5,
+    "requirements": {
+      "farming": 20
+    }
+  },
+  "mithril_hoe": {
+    "name": "mithril_hoe",
+    "display_name": "Mithril Hoe",
+    "slot": "hoe",
+    "combat_style": null,
+    "description": "A mithril hoe. Greatly increases harvest yield.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "farming_efficiency": 1.75,
+    "requirements": {
+      "farming": 35
+    }
+  },
+  "adamantite_hoe": {
+    "name": "adamantite_hoe",
+    "display_name": "Adamantite Hoe",
+    "slot": "hoe",
+    "combat_style": null,
+    "description": "An adamantite hoe. Substantially increases harvest yield.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "farming_efficiency": 2.0,
+    "requirements": {
+      "farming": 50
+    }
+  },
+  "runite_hoe": {
+    "name": "runite_hoe",
+    "display_name": "Runite Hoe",
+    "slot": "hoe",
+    "combat_style": null,
+    "description": "A runite hoe. The finest farming tool available.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "farming_efficiency": 2.25,
+    "requirements": {
+      "farming": 65
+    }
+  },
+  "dwarven_hoe": {
+    "name": "dwarven_hoe",
+    "display_name": "Dwarven Hoe",
+    "slot": "hoe",
+    "combat_style": null,
+    "description": "A legendary dwarven hoe. Doubles the harvest of any crop.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "farming_efficiency": 2.75,
+    "requirements": {
+      "farming": 60
+    }
+  },
+  "divine_hoe": {
+    "name": "divine_hoe",
+    "display_name": "Divine Hoe",
+    "slot": "hoe",
+    "combat_style": null,
+    "description": "A hoe blessed by divine light. Crops flourish at its touch.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "farming_efficiency": 3.0,
+    "requirements": {
+      "farming": 85
+    }
+  },
+  "bronze_hammer": {
+    "name": "bronze_hammer",
+    "display_name": "Bronze Hammer",
+    "slot": "hammer",
+    "combat_style": null,
+    "description": "A bronze hammer for smithing.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "smithing_efficiency": 1.0,
+    "requirements": {
+      "smithing": 1
+    }
+  },
+  "iron_hammer": {
+    "name": "iron_hammer",
+    "display_name": "Iron Hammer",
+    "slot": "hammer",
+    "combat_style": null,
+    "description": "An iron hammer for smithing.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "smithing_efficiency": 1.25,
+    "requirements": {
+      "smithing": 15
+    }
+  },
+  "steel_hammer": {
+    "name": "steel_hammer",
+    "display_name": "Steel Hammer",
+    "slot": "hammer",
+    "combat_style": null,
+    "description": "A steel hammer for smithing.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "smithing_efficiency": 1.5,
+    "requirements": {
+      "smithing": 30
+    }
+  },
+  "mithril_hammer": {
+    "name": "mithril_hammer",
+    "display_name": "Mithril Hammer",
+    "slot": "hammer",
+    "combat_style": null,
+    "description": "A mithril hammer for smithing.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "smithing_efficiency": 1.75,
+    "requirements": {
+      "smithing": 55
+    }
+  },
+  "adamantite_hammer": {
+    "name": "adamantite_hammer",
+    "display_name": "Adamantite Hammer",
+    "slot": "hammer",
+    "combat_style": null,
+    "description": "An adamantite hammer for smithing.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "smithing_efficiency": 2.0,
+    "requirements": {
+      "smithing": 70
+    }
+  },
+  "runite_hammer": {
+    "name": "runite_hammer",
+    "display_name": "Runite Hammer",
+    "slot": "hammer",
+    "combat_style": null,
+    "description": "A runite hammer for smithing.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "smithing_efficiency": 2.25,
+    "requirements": {
+      "smithing": 85
+    }
+  },
+  "dwarven_hammer": {
+    "name": "dwarven_hammer",
+    "display_name": "Dwarven Hammer",
+    "slot": "hammer",
+    "combat_style": null,
+    "description": "A dwarven-forged hammer. Strikes true every time.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "smithing_efficiency": 2.5,
+    "requirements": {
+      "smithing": 60
+    }
+  },
+  "divine_hammer": {
+    "name": "divine_hammer",
+    "display_name": "Divine Hammer",
+    "slot": "hammer",
+    "combat_style": null,
+    "description": "A hammer touched by divine light. Metal bends to its will.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "smithing_efficiency": 3.0,
+    "requirements": {
+      "smithing": 85
+    }
+  },
+  "bronze_tinderbox": {
+    "name": "bronze_tinderbox",
+    "display_name": "Bronze Tinderbox",
+    "slot": "tinderbox",
+    "combat_style": null,
+    "description": "A bronze tinderbox for firemaking.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "firemaking_efficiency": 1.0,
+    "requirements": {
+      "firemaking": 1
+    }
+  },
+  "iron_tinderbox": {
+    "name": "iron_tinderbox",
+    "display_name": "Iron Tinderbox",
+    "slot": "tinderbox",
+    "combat_style": null,
+    "description": "An iron tinderbox for firemaking.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "firemaking_efficiency": 1.25,
+    "requirements": {
+      "firemaking": 15
+    }
+  },
+  "steel_tinderbox": {
+    "name": "steel_tinderbox",
+    "display_name": "Steel Tinderbox",
+    "slot": "tinderbox",
+    "combat_style": null,
+    "description": "A steel tinderbox for firemaking.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "firemaking_efficiency": 1.5,
+    "requirements": {
+      "firemaking": 30
+    }
+  },
+  "mithril_tinderbox": {
+    "name": "mithril_tinderbox",
+    "display_name": "Mithril Tinderbox",
+    "slot": "tinderbox",
+    "combat_style": null,
+    "description": "A mithril tinderbox for firemaking.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "firemaking_efficiency": 1.75,
+    "requirements": {
+      "firemaking": 55
+    }
+  },
+  "adamantite_tinderbox": {
+    "name": "adamantite_tinderbox",
+    "display_name": "Adamantite Tinderbox",
+    "slot": "tinderbox",
+    "combat_style": null,
+    "description": "An adamantite tinderbox for firemaking.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "firemaking_efficiency": 2.0,
+    "requirements": {
+      "firemaking": 70
+    }
+  },
+  "runite_tinderbox": {
+    "name": "runite_tinderbox",
+    "display_name": "Runite Tinderbox",
+    "slot": "tinderbox",
+    "combat_style": null,
+    "description": "A runite tinderbox for firemaking.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "firemaking_efficiency": 2.25,
+    "requirements": {
+      "firemaking": 85
+    }
+  },
+  "dwarven_tinderbox": {
+    "name": "dwarven_tinderbox",
+    "display_name": "Dwarven Tinderbox",
+    "slot": "tinderbox",
+    "combat_style": null,
+    "description": "A dwarven-forged tinderbox. Sparks a roaring flame instantly.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "firemaking_efficiency": 2.5,
+    "requirements": {
+      "firemaking": 60
+    }
+  },
+  "divine_tinderbox": {
+    "name": "divine_tinderbox",
+    "display_name": "Divine Tinderbox",
+    "slot": "tinderbox",
+    "combat_style": null,
+    "description": "A tinderbox touched by divine light. Kindles flame from the faintest spark.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "firemaking_efficiency": 3.0,
+    "requirements": {
+      "firemaking": 85
+    }
+  },
+  "bronze_grappling_hook": {
+    "name": "bronze_grappling_hook",
+    "display_name": "Bronze Grappling Hook",
+    "slot": "grappling_hook",
+    "combat_style": null,
+    "description": "A bronze grappling hook for agility.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "agility_efficiency": 1.0,
+    "requirements": {
+      "agility": 1
+    }
+  },
+  "iron_grappling_hook": {
+    "name": "iron_grappling_hook",
+    "display_name": "Iron Grappling Hook",
+    "slot": "grappling_hook",
+    "combat_style": null,
+    "description": "An iron grappling hook for agility.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "agility_efficiency": 1.25,
+    "requirements": {
+      "agility": 15
+    }
+  },
+  "steel_grappling_hook": {
+    "name": "steel_grappling_hook",
+    "display_name": "Steel Grappling Hook",
+    "slot": "grappling_hook",
+    "combat_style": null,
+    "description": "A steel grappling hook for agility.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "agility_efficiency": 1.5,
+    "requirements": {
+      "agility": 30
+    }
+  },
+  "mithril_grappling_hook": {
+    "name": "mithril_grappling_hook",
+    "display_name": "Mithril Grappling Hook",
+    "slot": "grappling_hook",
+    "combat_style": null,
+    "description": "A mithril grappling hook for agility.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "agility_efficiency": 1.75,
+    "requirements": {
+      "agility": 55
+    }
+  },
+  "adamantite_grappling_hook": {
+    "name": "adamantite_grappling_hook",
+    "display_name": "Adamantite Grappling Hook",
+    "slot": "grappling_hook",
+    "combat_style": null,
+    "description": "An adamantite grappling hook for agility.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "agility_efficiency": 2.0,
+    "requirements": {
+      "agility": 70
+    }
+  },
+  "runite_grappling_hook": {
+    "name": "runite_grappling_hook",
+    "display_name": "Runite Grappling Hook",
+    "slot": "grappling_hook",
+    "combat_style": null,
+    "description": "A runite grappling hook for agility.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "agility_efficiency": 2.25,
+    "requirements": {
+      "agility": 85
+    }
+  },
+  "shadow_grappling_hook": {
+    "name": "shadow_grappling_hook",
+    "display_name": "Shadow Grappling Hook",
+    "slot": "grappling_hook",
+    "combat_style": null,
+    "description": "A grappling hook woven from shadow. Grips even where there's nothing to grip.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "agility_efficiency": 2.5,
+    "requirements": {
+      "agility": 40
+    }
+  },
+  "dwarven_grappling_hook": {
+    "name": "dwarven_grappling_hook",
+    "display_name": "Dwarven Grappling Hook",
+    "slot": "grappling_hook",
+    "combat_style": null,
+    "description": "A dwarven-forged grappling hook. Never slips.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "agility_efficiency": 2.75,
+    "requirements": {
+      "agility": 60
+    }
+  },
+  "arcane_grappling_hook": {
+    "name": "arcane_grappling_hook",
+    "display_name": "Arcane Grappling Hook",
+    "slot": "grappling_hook",
+    "combat_style": null,
+    "description": "A grappling hook humming with arcane energy. Pulls you across gaps in an instant.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "agility_efficiency": 3.0,
+    "requirements": {
+      "agility": 70
+    }
+  },
+  "divine_grappling_hook": {
+    "name": "divine_grappling_hook",
+    "display_name": "Divine Grappling Hook",
+    "slot": "grappling_hook",
+    "combat_style": null,
+    "description": "A grappling hook touched by divine light. Finds purchase anywhere it's thrown.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "agility_efficiency": 3.5,
+    "requirements": {
+      "agility": 85
+    }
+  },
+  "bronze_frying_pan": {
+    "name": "bronze_frying_pan",
+    "display_name": "Bronze Frying Pan",
+    "slot": "frying_pan",
+    "combat_style": null,
+    "description": "A bronze frying pan for cooking.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "cooking_efficiency": 1.0,
+    "requirements": {
+      "cooking": 1
+    }
+  },
+  "iron_frying_pan": {
+    "name": "iron_frying_pan",
+    "display_name": "Iron Frying Pan",
+    "slot": "frying_pan",
+    "combat_style": null,
+    "description": "An iron frying pan for cooking.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "cooking_efficiency": 1.25,
+    "requirements": {
+      "cooking": 15
+    }
+  },
+  "steel_frying_pan": {
+    "name": "steel_frying_pan",
+    "display_name": "Steel Frying Pan",
+    "slot": "frying_pan",
+    "combat_style": null,
+    "description": "A steel frying pan for cooking.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "cooking_efficiency": 1.5,
+    "requirements": {
+      "cooking": 30
+    }
+  },
+  "mithril_frying_pan": {
+    "name": "mithril_frying_pan",
+    "display_name": "Mithril Frying Pan",
+    "slot": "frying_pan",
+    "combat_style": null,
+    "description": "A mithril frying pan for cooking.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "cooking_efficiency": 1.75,
+    "requirements": {
+      "cooking": 55
+    }
+  },
+  "adamantite_frying_pan": {
+    "name": "adamantite_frying_pan",
+    "display_name": "Adamantite Frying Pan",
+    "slot": "frying_pan",
+    "combat_style": null,
+    "description": "An adamantite frying pan for cooking.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "cooking_efficiency": 2.0,
+    "requirements": {
+      "cooking": 70
+    }
+  },
+  "runite_frying_pan": {
+    "name": "runite_frying_pan",
+    "display_name": "Runite Frying Pan",
+    "slot": "frying_pan",
+    "combat_style": null,
+    "description": "A runite frying pan for cooking.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "cooking_efficiency": 2.25,
+    "requirements": {
+      "cooking": 85
+    }
+  },
+  "dwarven_frying_pan": {
+    "name": "dwarven_frying_pan",
+    "display_name": "Dwarven Frying Pan",
+    "slot": "frying_pan",
+    "combat_style": null,
+    "description": "A dwarven-forged frying pan. Cooks food to perfection every time.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "cooking_efficiency": 2.5,
+    "requirements": {
+      "cooking": 60
+    }
+  },
+  "divine_frying_pan": {
+    "name": "divine_frying_pan",
+    "display_name": "Divine Frying Pan",
+    "slot": "frying_pan",
+    "combat_style": null,
+    "description": "A frying pan touched by divine light. Never burns a single meal.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "cooking_efficiency": 3.0,
+    "requirements": {
+      "cooking": 85
+    }
+  },
+  "bronze_lockpick": {
+    "name": "bronze_lockpick",
+    "display_name": "Bronze Lockpick",
+    "slot": "lockpick",
+    "combat_style": null,
+    "description": "A basic bronze lockpick for thieving.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "thieving_efficiency": 1.0,
+    "requirements": {
+      "thieving": 1
+    }
+  },
+  "iron_lockpick": {
+    "name": "iron_lockpick",
+    "display_name": "Iron Lockpick",
+    "slot": "lockpick",
+    "combat_style": null,
+    "description": "An iron lockpick for thieving.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "thieving_efficiency": 1.25,
+    "requirements": {
+      "thieving": 15
+    }
+  },
+  "steel_lockpick": {
+    "name": "steel_lockpick",
+    "display_name": "Steel Lockpick",
+    "slot": "lockpick",
+    "combat_style": null,
+    "description": "A steel lockpick for thieving.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "thieving_efficiency": 1.5,
+    "requirements": {
+      "thieving": 30
+    }
+  },
+  "mithril_lockpick": {
+    "name": "mithril_lockpick",
+    "display_name": "Mithril Lockpick",
+    "slot": "lockpick",
+    "combat_style": null,
+    "description": "A mithril lockpick for thieving.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "thieving_efficiency": 1.75,
+    "requirements": {
+      "thieving": 55
+    }
+  },
+  "adamantite_lockpick": {
+    "name": "adamantite_lockpick",
+    "display_name": "Adamantite Lockpick",
+    "slot": "lockpick",
+    "combat_style": null,
+    "description": "An adamantite lockpick for thieving.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "thieving_efficiency": 2.0,
+    "requirements": {
+      "thieving": 70
+    }
+  },
+  "runite_lockpick": {
+    "name": "runite_lockpick",
+    "display_name": "Runite Lockpick",
+    "slot": "lockpick",
+    "combat_style": null,
+    "description": "A runite lockpick for thieving.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "thieving_efficiency": 2.25,
+    "requirements": {
+      "thieving": 85
+    }
+  },
+  "rogues_lockpick": {
+    "name": "rogues_lockpick",
+    "display_name": "Rogue's Lockpick",
+    "slot": "lockpick",
+    "combat_style": null,
+    "description": "A well-worn lockpick favored by the guild's rogues. Slips into any lock.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "thieving_efficiency": 2.5,
+    "requirements": {
+      "thieving": 40
+    }
+  },
+  "dwarven_lockpick": {
+    "name": "dwarven_lockpick",
+    "display_name": "Dwarven Lockpick",
+    "slot": "lockpick",
+    "combat_style": null,
+    "description": "A dwarven-forged lockpick. Finds the tumblers instantly.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "thieving_efficiency": 2.75,
+    "requirements": {
+      "thieving": 60
+    }
+  },
+  "shadow_lockpick": {
+    "name": "shadow_lockpick",
+    "display_name": "Shadow Lockpick",
+    "slot": "lockpick",
+    "combat_style": null,
+    "description": "A lockpick forged from shadow. No lock can resist it for long.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "thieving_efficiency": 3.0,
+    "requirements": {
+      "thieving": 70
+    }
+  },
+  "divine_lockpick": {
+    "name": "divine_lockpick",
+    "display_name": "Divine Lockpick",
+    "slot": "lockpick",
+    "combat_style": null,
+    "description": "A lockpick touched by divine light. Every lock yields to it.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 0,
+    "thieving_efficiency": 3.5,
+    "requirements": {
+      "thieving": 85
+    }
+  },
+  "wraithbone_ring": {
+    "name": "wraithbone_ring",
+    "display_name": "Wraithbone Ring",
+    "slot": "ring",
+    "combat_style": null,
+    "description": "A pale ring carved from wight bone during the Gloomharvest. Steadies the hand and the heart.",
+    "attack_bonus": 8,
+    "strength_bonus": 8,
+    "defense_bonus": 8,
+    "requirements": {
+      "defense": 40
+    }
+  },
+  "reaper_scythe": {
+    "name": "reaper_scythe",
+    "display_name": "Reaper's Scythe",
+    "slot": "weapon",
+    "combat_style": "strength",
+    "description": "The Hollow King's own harvest tool. It reaps more than wheat.",
+    "attack_bonus": 58,
+    "strength_bonus": 75,
+    "defense_bonus": 0,
+    "requirements": {
+      "strength": 55
+    }
+  },
+  "gloomweave_cape": {
+    "name": "gloomweave_cape",
+    "display_name": "Gloomweave Cape",
+    "slot": "cape",
+    "combat_style": null,
+    "description": "Woven from dusk and lantern smoke at the Night Market. Only sold during the Gloomharvest.",
+    "attack_bonus": 3,
+    "strength_bonus": 3,
+    "defense_bonus": 8,
+    "requirements": {}
+  },
+  "gilded_full_helmet": {
+    "name": "gilded_full_helmet",
+    "display_name": "Gilded Full Helmet",
+    "slot": "head",
+    "combat_style": null,
+    "description": "Runite plate wrapped in monument gold. Dropped by the Vault Guardian.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 48,
+    "requirements": {
+      "defense": 60
+    }
+  },
+  "gilded_platebody": {
+    "name": "gilded_platebody",
+    "display_name": "Gilded Platebody",
+    "slot": "body",
+    "combat_style": null,
+    "description": "Runite plate wrapped in monument gold. Dropped by the Vault Guardian.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 95,
+    "requirements": {
+      "defense": 60
+    }
+  },
+  "gilded_kiteshield": {
+    "name": "gilded_kiteshield",
+    "display_name": "Gilded Kiteshield",
+    "slot": "shield",
+    "combat_style": null,
+    "description": "Runite plate wrapped in monument gold. Dropped by the Vault Guardian.",
+    "attack_bonus": 0,
+    "strength_bonus": 0,
+    "defense_bonus": 71,
+    "requirements": {
+      "defense": 60
+    }
+  }
+}

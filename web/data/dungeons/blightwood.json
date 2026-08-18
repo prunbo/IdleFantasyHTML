@@ -1,0 +1,22 @@
+{
+  "name": "blightwood",
+  "display_name": "The Blightwood",
+  "description": "A rotting forest deep past the Hollowfen, where the Gloomharvest's strongest horrors gather. Part of the Gloomharvest event.",
+  "recommended_level": 62,
+  "encounter_rate": 0.38,
+  "enemy_spawns": [
+    {
+      "enemy": "shade_stalker",
+      "weight": 8
+    },
+    {
+      "enemy": "bone_colossus",
+      "weight": 4
+    },
+    {
+      "enemy": "dread_dullahan",
+      "weight": 1
+    }
+  ],
+  "event_key": "gloomharvest_2026"
+}
