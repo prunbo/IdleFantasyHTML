@@ -40,6 +40,7 @@ and on tab close). Use 📤/📥 in the top bar to export/import a save code.
 | **Infinite Tower** | Endless floors with the app's tier table, 100+ floor enemy scaling (HP → 10× at 250), 25 milestone rewards (gear, pets, permanent XP/HP/coin bonuses), death checkpoints every 25 floors, ammo/rune reclaim. |
 | **Carnival** | The four idle minigames (Archery, Strongman, Wizard's Duel, Fishing Derby) convert skill levels into tickets, an animated Ring Toss with difficulty + cooldown, and the full prize shop (XP lamps, gear, the Juggling Imp pet). |
 | **Pets** | All 25 pets as passive collectibles — ≈6% drop chance per gathering/crafting session, farming harvests, the Tower floor-100 pet, and the Carnival pet. Owned pets stack their XP boosts. |
+| **Quality of life** | Live tick-by-tick combat feed with HP bar during dungeon/tower runs, 🔁 Repeat-last-session (persisted across reloads), welcome-back banner for offline progress, session-complete toasts, bulk Plant-all / Harvest-all farming, grouped skill board with pet/cape badges, pet collection silhouettes with hints, tower survival rating, 💾 save indicator, and a mobile-friendly layout. |
 
 ### Not in the web edition (yet)
 

@@ -22,6 +22,7 @@ const State = {
       styleWeapons: {},      // style -> weapon key memory
       activePotion: null,    // potion selected for the next combat session
       session: null,
+      lastStart: null,       // {kind, skill, activityKey} for the Repeat button
       quests: {},            // id -> {claimed:bool}
       stats: {
         itemsGathered: {}, itemsCrafted: {}, killsByEnemy: {}, totalKills: 0,
@@ -58,9 +59,12 @@ const State = {
 
   /* ------------------------------ persistence ------------------------------ */
 
+  _savedAt: 0,
+
   save() {
     try {
       localStorage.setItem(this.SAVE_KEY, JSON.stringify(this.state));
+      this._savedAt = Date.now();
     } catch (e) { console.warn('Save failed', e); }
   },
 

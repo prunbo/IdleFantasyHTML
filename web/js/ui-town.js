@@ -386,6 +386,7 @@
     const throwBtn = Util.el('button', 'btn small', cd > 0 ? `Cooldown ${Util.fmtTime(cd)}` : 'Throw!');
     throwBtn.id = 'ring-toss-btn';
     throwBtn.disabled = cd > 0;
+    if (cd > 0) throwBtn.dataset.cooldownAt = String(State.state.carnivalCooldowns.ring_toss || 0);
     throwBtn.onclick = () => this._throwRing(ringBox, marker);
     ringActions.appendChild(throwBtn);
     ringCard.appendChild(ringActions);
@@ -461,11 +462,12 @@
   };
 
   UI.updateTownLive = function () {
-    // Ring toss cooldown countdown
+    // Ring toss cooldown countdown (live re-enable)
     const btn = document.getElementById('ring-toss-btn');
-    if (btn && btn.dataset.cooldownAt) {
+    if (btn && btn.dataset && btn.dataset.cooldownAt) {
       const left = parseInt(btn.dataset.cooldownAt, 10) - Date.now();
       if (left > 0) btn.textContent = `Cooldown ${Util.fmtTime(left)}`;
+      else { btn.textContent = 'Throw!'; btn.disabled = false; delete btn.dataset.cooldownAt; }
     }
     // Farming patch timers
     const timers = document.querySelectorAll('[data-patch-timer]');
@@ -484,9 +486,17 @@
     const t = State.state.tower;
 
     const card = Util.el('div', 'card');
-    card.appendChild(Util.el('h2', null, `🗼 Infinite Tower <span class="tag blue">Floor ${t.current}</span> <span class="tag gold">Best ${t.best}</span>`));
     const floor = t.current + 1;
     const enemies = [...new Set(Sim.towerTierSpawns(floor).map(([k]) => GameData.enemies[k]?.display_name || k))].join(', ');
+    // Survival estimate badge (same math as the dungeon list)
+    let ratingTag = '';
+    try {
+      const ctxT = State.combatContext();
+      const foodHeal = Object.entries(ctxT.food).reduce((sm, [k, v]) => sm + (GameData.foodHeals[k] || 0) * v, 0);
+      const rating = Sim.estimateSurvival(Sim.buildTowerFloor(floor), ctxT.defense, ctxT.hitpoints, foodHeal);
+      ratingTag = `<span class="tag ${{ LIKELY: 'green', RISKY: 'orange', UNLIKELY: 'red' }[rating]}">${{ LIKELY: 'Likely survive', RISKY: 'Risky', UNLIKELY: 'Unlikely' }[rating]}</span>`;
+    } catch (e) { /* non-fatal */ }
+    card.appendChild(Util.el('h2', null, `🗼 Infinite Tower <span class="tag blue">Floor ${t.current}</span> <span class="tag gold">Best ${t.best}</span> ${ratingTag}`));
     const progress = floor <= 100 ? 0 : (Util.clamp(floor, 101, 250) - 100) / 150;
     card.appendChild(Util.el('p', 'card-sub',
       `Climb one floor per session. Next up — floor ${floor}: ${enemies}. ` +
@@ -553,7 +563,38 @@
     card.appendChild(Util.el('h2', null, `🌾 Farm <span class="tag blue">${patchCount} patches</span>`));
     card.appendChild(Util.el('p', 'card-sub', 'Crops grow in real time — plant, leave, come back. Buy seeds at the 🛒 Shop. Ashes from Firemaking work as fertilizer for bigger yields.'));
 
-    // Plant-all crop picker state
+    // Bulk actions
+    const bulkRow = Util.el('div');
+    bulkRow.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px';
+    const bulkSel = Util.el('select', 'fancy');
+    bulkSel.innerHTML = Object.values(GameData.crops).filter(c => c.id !== 'magic_bean').map(c =>
+      `<option value="${c.id}" ${State.level('farming') < c.farming_level_required ? 'disabled' : ''}>${c.emoji} ${c.display_name} (${Util.fmt(State.count(c.seed_name))} seeds)</option>`).join('');
+    const plantAllBtn = Util.el('button', 'btn small', '🌱 Plant all patches');
+    plantAllBtn.onclick = () => {
+      const planted = Systems.plantAll(bulkSel.value, false);
+      if (planted > 0) this.toast(`Planted ${planted}× ${GameData.crops[bulkSel.value].display_name}!`, 'success');
+      else this.toast('No patches planted — check seeds and empty patches.', 'error');
+      this.render();
+    };
+    const harvestAllBtn = Util.el('button', 'btn small success', '🌾 Harvest all ready');
+    harvestAllBtn.onclick = () => {
+      const results = Systems.harvestAll();
+      if (!results.length) { this.toast('Nothing is ready to harvest.', 'error'); return; }
+      const totalXp = results.reduce((a, r) => a + r.xp, 0);
+      const byCrop = {};
+      results.forEach(r => byCrop[r.crop] = (byCrop[r.crop] || 0) + r.yield);
+      const desc = Object.entries(byCrop).map(([k, v]) => `${v}× ${GameData.name(k)}`).join(', ');
+      this.toast(`Harvested ${desc} (+${Util.fmt(totalXp)} XP)`, 'success');
+      this.render();
+    };
+    const seedShopBtn = Util.el('button', 'btn small secondary', '🛒 Buy seeds');
+    seedShopBtn.onclick = () => { this.tab = 'shop'; this._setTab(); };
+    bulkRow.appendChild(bulkSel);
+    bulkRow.appendChild(plantAllBtn);
+    bulkRow.appendChild(harvestAllBtn);
+    bulkRow.appendChild(seedShopBtn);
+    card.appendChild(bulkRow);
+
     const grid = Util.el('div');
     grid.style.display = 'grid';
     grid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(240px, 1fr))';
@@ -673,20 +714,22 @@
     const card = Util.el('div', 'card');
     card.appendChild(Util.el('h2', null, `🐾 Pets <span class="tag blue">${State.state.petsOwned.length}/${Object.keys(GameData.pets).length}</span>`));
     card.appendChild(Util.el('p', 'card-sub', 'Rare companions from training, raids, the Tower and the Carnival. Every pet you own passively boosts its skill\'s XP — they stack!'));
-    if (!State.state.petsOwned.length) {
-      card.appendChild(Util.el('div', 'empty-note', 'No pets yet. Rare drops from gathering and crafting sessions (≈6% per session), Tower floor 100, and Carnival prizes.'));
-    } else {
-      const grid = Util.el('div', 'skills-grid');
-      for (const id of State.state.petsOwned) {
-        const p = GameData.pets[id];
-        if (!p) continue;
-        const tile = Util.el('div', 'skill-tile');
-        tile.title = p.source;
-        tile.innerHTML = `<div class="sk-emoji">${p.emoji || '🐾'}</div><div class="sk-name">${p.display_name}</div><div class="sk-level" style="font-size:12px">+${p.boost_percent}% ${Util.prettify(p.boosted_skill)}</div>`;
-        grid.appendChild(tile);
-      }
-      card.appendChild(grid);
+    const grid = Util.el('div', 'skills-grid');
+    const owned = new Set(State.state.petsOwned);
+    // Web-obtainable pets first, then the raid/event exclusives
+    const webPets = Object.values(GameData.pets).filter(p =>
+      !String(p.source).includes('raid') && !String(p.source).includes('event') && !String(p.source).includes('Monument'));
+    const otherPets = Object.values(GameData.pets).filter(p => !webPets.includes(p));
+    for (const p of [...webPets, ...otherPets]) {
+      const has = owned.has(p.id);
+      const tile = Util.el('div', 'skill-tile' + (has ? '' : ' pet-locked'));
+      tile.title = has ? `${p.description} — ${p.source}` : `Found via: ${p.source}`;
+      tile.innerHTML = has
+        ? `<div class="sk-emoji">${p.emoji || '🐾'}</div><div class="sk-name">${p.display_name}</div><div class="sk-level" style="font-size:12px">+${p.boost_percent}% ${Util.prettify(p.boosted_skill)}</div>`
+        : `<div class="sk-emoji">❓</div><div class="sk-name">???</div><div class="sk-level" style="font-size:10px;color:var(--muted)">${p.source.length > 26 ? p.source.slice(0, 26) + '…' : p.source}</div>`;
+      grid.appendChild(tile);
     }
+    card.appendChild(grid);
     wrap.appendChild(card);
     return wrap;
   };

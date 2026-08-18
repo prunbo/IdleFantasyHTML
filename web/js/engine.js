@@ -36,6 +36,50 @@ const Engine = {
     return { xp, bySkill };
   },
 
+  /** Descriptor of the most recently started session (for the Repeat button). */
+  lastStart: null,
+
+  _rememberStart(kind, skill, activityKey) {
+    this.lastStart = { kind, skill, activityKey };
+    State.state.lastStart = this.lastStart;
+  },
+
+  /** Restore the Repeat button across page reloads. */
+  restoreLastStart() {
+    if (!this.lastStart && State.state.lastStart) this.lastStart = State.state.lastStart;
+  },
+
+  /** Human label for the Repeat button. */
+  lastStartLabel() {
+    const ls = this.lastStart;
+    if (!ls) return null;
+    if (ls.kind === 'dungeon') return GameData.dungeons[ls.activityKey]?.display_name || 'last dungeon';
+    if (ls.kind === 'tower') return 'Tower Floor ' + (State.state.tower.current + 1);
+    if (ls.kind === 'carnival') return Systems.CARNIVAL_GAMES.find(g => g.key === ls.activityKey)?.name || 'carnival';
+    const def = GameData.skillDefs.find(d => d.key === ls.skill);
+    const actLabel = ({
+      mining: k => GameData.ores[k]?.display_name,
+      woodcutting: k => GameData.trees[k]?.display_name,
+      fishing: k => GameData.name(k),
+      thieving: k => GameData.thievingNpcs.find(n => n.key === k)?.display_name,
+      agility: k => GameData.agilityCourses[k]?.display_name,
+      firemaking: k => GameData.name(k),
+      herblore: k => GameData.herbloreRecipes[k]?.display_name,
+      prayer: k => GameData.bones[k]?.display_name,
+    }[ls.skill] || (k => GameData.recipes[ls.skill]?.[k]?.display_name || GameData.name(k)))(ls.activityKey);
+    return `${def?.name || ls.skill}: ${actLabel || ls.activityKey}`;
+  },
+
+  /** Restart whatever the player ran last (materials/levels re-validated). */
+  repeatLast() {
+    const ls = this.lastStart;
+    if (!ls) return { error: 'Nothing to repeat yet.' };
+    if (ls.kind === 'dungeon') return this.startDungeonSession(ls.activityKey);
+    if (ls.kind === 'tower') return Systems.startTowerSession();
+    if (ls.kind === 'carnival') return Systems.startCarnivalSession(ls.activityKey);
+    return this.startSkillSession(ls.skill, ls.activityKey);
+  },
+
   _makeSession(kind, skill, activityKey, label, result, extra = {}) {
     const agilityLevel = State.level('agility');
     const nFrames = Math.max(1, result.frames.length);
@@ -62,6 +106,7 @@ const Engine = {
       }
     }
     State.state.session = sess;
+    this._rememberStart(kind, skill, activityKey);
     State.save();
     return sess;
   },

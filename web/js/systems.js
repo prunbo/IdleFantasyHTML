@@ -105,6 +105,32 @@ const Systems = {
     return { ok: true, yield: yieldQty, crop: crop.id, xp: crop.harvest_xp * yieldQty };
   },
 
+  /** Harvest every ready patch at once. Returns a per-crop yield summary. */
+  harvestAll() {
+    const results = [];
+    for (let i = 1; i <= State.patchCount(); i++) {
+      const patch = State.state.farmingPatches[i - 1];
+      if (patch && this.cropReady(patch)) {
+        const r = this.harvestPatch(i);
+        if (r.ok && !r.bean) results.push(r);
+      }
+    }
+    return results;
+  },
+
+  /** Plant a crop into every empty patch (stops when seeds run out). */
+  plantAll(cropId, useAsh) {
+    let planted = 0;
+    for (let i = 1; i <= State.patchCount(); i++) {
+      if (!State.state.farmingPatches[i - 1]) {
+        const r = this.plantCrop(i, cropId, useAsh);
+        if (r.error) break;
+        planted++;
+      }
+    }
+    return planted;
+  },
+
   /* ================================================================== *
    *  SLAYER — task assignment, foretelling, points shop
    * ================================================================== */

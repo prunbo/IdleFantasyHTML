@@ -84,6 +84,65 @@ const UI = {
     live.innerHTML = this._liveStatsHtml(sess);
     btn.disabled = !Engine.isComplete(sess);
     btn.textContent = Engine.isComplete(sess) ? '📦 Collect rewards' : '⏳ In progress…';
+
+    // Live combat feed + HP bar for dungeon/tower sessions
+    const hpEl = document.getElementById('combat-hp');
+    const feedEl = document.getElementById('combat-feed');
+    if (hpEl && feedEl) {
+      if (sess.kind === 'dungeon' || sess.kind === 'tower') {
+        const feed = this._combatFeed(sess);
+        hpEl.innerHTML = feed.hpBar;
+        feedEl.innerHTML = feed.html;
+        hpEl.style.display = '';
+        feedEl.style.display = '';
+      } else {
+        hpEl.style.display = 'none';
+        feedEl.style.display = 'none';
+      }
+    }
+
+    // One-time completion ping
+    if (Engine.isComplete(sess) && !sess._notified) {
+      sess._notified = true;
+      this.toast(`✅ ${sess.label} — ready to collect!`, 'success');
+      State.pushLog(`✅ Finished: ${sess.label}`);
+    }
+
+    // Save indicator
+    const saveEl = document.getElementById('save-ind');
+    if (saveEl) saveEl.style.opacity = (Date.now() - (State._savedAt || 0)) < 1600 ? '1' : '0';
+  },
+
+  /** Tick-accurate combat log for the frame currently in progress. */
+  _combatFeed(sess) {
+    const n = Engine.revealedFrames(sess);
+    const idx = Math.min(n, sess.frames.length) - 1;
+    if (idx < 0 || !sess.frames[idx] || !sess.frames[idx].playerHits) return { html: '', hpBar: '' };
+    const f = sess.frames[idx];
+    const enemyName = GameData.enemies[f.enemyKey]?.display_name || Util.prettify(f.enemyKey || 'enemy');
+    const ticks = Math.max(f.playerHits.length, Sim.TICKS_PER_FRAME);
+    const elapsedInFrame = (Date.now() - sess.startedAt) - idx * sess.frameMs;
+    const done = Engine.isComplete(sess);
+    const tick = done ? f.playerHits.length : Util.clamp(Math.floor(elapsedInFrame / sess.frameMs * ticks), 0, f.playerHits.length);
+
+    let hp = idx > 0 && sess.frames[idx - 1].hpAfter != null ? sess.frames[idx - 1].hpAfter : f.maxHp;
+    const lines = [];
+    for (let i = 0; i < tick; i++) {
+      const pH = f.playerHits[i] || 0, eH = f.enemyHits[i] || 0, heal = f.playerHeals[i] || 0;
+      lines.push(pH > 0
+        ? `<div class="cf-line cf-hit">⚔️ You hit ${Util.esc(enemyName)} — <b>${pH}</b></div>`
+        : `<div class="cf-line cf-miss">⚔️ You miss ${Util.esc(enemyName)}</div>`);
+      if (eH > 0) { hp -= eH; lines.push(`<div class="cf-line cf-dmg">🩸 ${Util.esc(enemyName)} hits you — <b>${eH}</b></div>`); }
+      if (heal > 0) { hp = Math.min(f.maxHp, hp + heal); lines.push(`<div class="cf-line cf-heal">🍖 You eat — <b>+${heal}</b> HP</div>`); }
+    }
+    hp = Math.max(0, Math.min(f.maxHp, hp));
+    const shown = lines.slice(-6);
+    const hpBar = `
+      <div class="hpbar ${hp <= f.maxHp * 0.25 ? 'low' : ''}">
+        <div class="hpbar-fill" style="width:${(hp / f.maxHp) * 100}%"></div>
+      </div>
+      <div style="text-align:center;font-size:12px;color:var(--muted)">❤️ ${hp} / ${f.maxHp}${f.died ? ' — 💀 defeated' : done ? ' — complete' : ''}</div>`;
+    return { html: `<div class="combat-feed">${shown.join('') || '<div class="cf-line cf-miss">…</div>'}</div>`, hpBar };
   },
 
   renderTopbar() {
@@ -107,12 +166,15 @@ const UI = {
         <div class="session-title">Your hero is idle</div>
         <div class="session-meta">Send them to work: train a skill or clear a dungeon.<br>They keep going for up to an hour while this tab is closed.</div>
         <div style="display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap">
-          <button class="btn" data-go="skills">🎯 Train a skill</button>
+          ${Engine.lastStart ? '<button class="btn" data-act="repeat">🔁 Repeat: ' + Util.esc(Engine.lastStartLabel()) + '</button>' : ''}
+          <button class="btn ${Engine.lastStart ? 'secondary' : ''}" data-go="skills">🎯 Train a skill</button>
           <button class="btn secondary" data-go="dungeons">🏰 Fight in a dungeon</button>
         </div>`;
       idle.querySelectorAll('[data-go]').forEach(b => b.onclick = () => {
         this.tab = b.dataset.go; this._setTab();
       });
+      const repeatBtn = idle.querySelector('[data-act=repeat]');
+      if (repeatBtn) repeatBtn.onclick = () => this._tryRepeat();
       wrap.appendChild(idle);
     }
 
@@ -153,7 +215,8 @@ const UI = {
         <div id="session-progress-label" class="progress-label"></div>
       </div>
       <div id="session-live" class="session-live"></div>
-      <div id="combat-hp"></div>`;
+      <div id="combat-hp"></div>
+      <div id="combat-feed"></div>`;
 
     const collectBtn = Util.el('button', 'btn success full', '⏳ In progress…');
     collectBtn.id = 'btn-collect';
@@ -214,13 +277,23 @@ const UI = {
       <h2>${summary.died ? '💀 You died!' : '🎉 Session complete!'}</h2>
       ${summary.died ? '<p class="card-sub">Your hero was overwhelmed and the remaining loot was lost. XP earned before death is kept — bring more food or train Defense next time.</p>' : ''}
       ${summary.kills ? `<p class="card-sub" style="color:var(--gold)">${summary.kills} enemies defeated</p>` : ''}
+      ${summary.leveled?.length ? `<p class="card-sub" style="color:var(--accent)">⬆️ Level up: ${summary.leveled.map(l => Util.esc(l)).join(' · ')}</p>` : ''}
+      ${summary.petsGained?.length ? `<p class="card-sub" style="color:var(--green)">🐾 A pet has joined you: ${summary.petsGained.map(k => GameData.pets[k]?.display_name || k).join(', ')}!</p>` : ''}
+      ${Object.keys(summary.reclaimed || {}).length ? `<p class="card-sub">♻️ Reclaimed ${Object.entries(summary.reclaimed).map(([k, v]) => `${Util.fmt(v)}× ${GameData.name(k)}`).join(', ')}</p>` : ''}
       <div class="reward-list">
         ${xpRows || '<div class="rw"><span>No XP gained</span><b>—</b></div>'}
         ${itemRows}
         ${ammoRows}
       </div>
-      <div class="modal-actions"><button class="btn" data-act="close">Nice!</button></div>
-    `, m => { m.querySelector('[data-act=close]').onclick = () => this.closeModal(); });
+      <div class="modal-actions">
+        ${Engine.lastStart ? '<button class="btn secondary" data-act="again">🔁 Repeat</button>' : ''}
+        <button class="btn" data-act="close">Nice!</button>
+      </div>
+    `, m => {
+      m.querySelector('[data-act=close]').onclick = () => this.closeModal();
+      const again = m.querySelector('[data-act=again]');
+      if (again) again.onclick = () => { this.closeModal(); this._tryRepeat(); };
+    });
 
     State.save();
     this.render();
@@ -233,15 +306,30 @@ const UI = {
     const card = Util.el('div', 'card');
     card.appendChild(Util.el('h2', null, '🎯 Skills'));
     card.appendChild(Util.el('p', 'card-sub', 'Tap a skill to start a training session. Each session runs in real time — even with the tab closed.'));
+    const groupOrder = ['Gathering', 'Production', 'Combat'];
+    const groupIcons = { Gathering: '🌤️', Production: '⚒️', Combat: '⚔️' };
+    const defs = [...GameData.skillDefs].sort((a, b) =>
+      groupOrder.indexOf(a.group) - groupOrder.indexOf(b.group));
+    let lastGroup = null;
     const grid = Util.el('div', 'skills-grid');
-    for (const def of GameData.skillDefs) {
+    for (const def of defs) {
+      if (def.group !== lastGroup) {
+        lastGroup = def.group;
+        const header = Util.el('h3', 'skills-group-header', `${groupIcons[def.group] || ''} ${def.group}`);
+        grid.appendChild(header);
+      }
       const lvl = State.level(def.key);
       const tile = Util.el('div', 'skill-tile');
       const cur = State.xp(def.key);
       const next = lvl < 99 ? Sim.xpForLevel(lvl + 1) : cur;
       const prev = Sim.xpForLevel(lvl);
       const pct = lvl >= 99 ? 100 : Util.clamp(((cur - prev) / Math.max(1, next - prev)) * 100, 0, 100);
-      tile.innerHTML = `<div class="sk-emoji">${def.icon}</div><div class="sk-name">${def.name}</div><div class="sk-level">${lvl}</div><div class="sk-xpbar"><div style="width:${pct}%"></div></div>`;
+      const petPct = State.petBoost(def.key);
+      const badges = [
+        petPct > 0 ? `<span class="tag green" title="Pet XP boost">🐾 +${petPct}%</span>` : '',
+        State.capeBonus(def.key) > 0 ? `<span class="tag gold" title="Skill cape yield bonus">🎓</span>` : '',
+      ].join('');
+      tile.innerHTML = `<div class="sk-emoji">${def.icon}</div><div class="sk-name">${def.name}</div><div class="sk-level">${lvl}</div><div style="min-height:16px">${badges}</div><div class="sk-xpbar"><div style="width:${pct}%"></div></div>`;
       tile.onclick = () => { this.skillView = def.key; this.render(); };
       grid.appendChild(tile);
     }
@@ -452,6 +540,10 @@ const UI = {
       }
     }
     return rows;
+  },
+
+  _tryRepeat() {
+    this._tryStart(() => Engine.repeatLast());
   },
 
   _tryStart(fn) {

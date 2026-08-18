@@ -258,6 +258,31 @@ const check = (name, cond, extra) => {
   State.state.tower.hpBonus = 5;
   check('tower hp bonus in effective hp', State.effectiveHpLevel() === State.level('hitpoints') + 5);
 
+  console.log('— bulk farming + repeat session —');
+  State.addItem('potato_seed', 10);
+  const seedsBeforeBulk = State.count('potato_seed');
+  State.state.farmingPatches = [null, null, null, null, null];
+  const plantedAll = Systems.plantAll('potato', false);
+  check('plant all fills 3 patches at level 1', plantedAll === 3, `planted=${plantedAll}`);
+  check('plant all consumed 3 seeds', State.count('potato_seed') === seedsBeforeBulk - 3);
+  check('harvest all yields nothing while growing', Systems.harvestAll().length === 0);
+  State.state.farmingPatches.forEach((pt, i) => { if (pt) pt.plantedAt -= 99 * 3600000; });
+  const harvestedAll = Systems.harvestAll();
+  check('harvest all collects every ready patch', harvestedAll.length === 3);
+  check('patches cleared after bulk harvest', State.state.farmingPatches.every(x => x === null));
+
+  // Repeat last session
+  Engine.startSkillSession('mining', 'iron_ore');
+  Engine.session().endsAt = Date.now() - 1;
+  Engine.collect();
+  check('lastStart recorded', Engine.lastStart && Engine.lastStart.skill === 'mining' && Engine.lastStart.activityKey === 'iron_ore');
+  check('lastStartLabel readable', typeof Engine.lastStartLabel() === 'string' && Engine.lastStartLabel().includes('Iron'));
+  State.state.skills.mining.xp = Sim.xpForLevel(15); // iron needs 15
+  const rep = Engine.repeatLast();
+  check('repeatLast restarts same activity', !!rep.ok && Engine.session().activityKey === 'iron_ore', rep.error);
+  Engine.session().endsAt = Date.now() - 1;
+  Engine.collect();
+
   console.log('— cloud kingdom gating —');
   State.state.unlockedDungeonsExtra = [];
   check('cloud kingdom re-locked without bean', !!Engine.startDungeonSession('cloud_kingdom').error);

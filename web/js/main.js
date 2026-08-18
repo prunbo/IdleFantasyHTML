@@ -17,22 +17,26 @@
 
   State.init();
   const loaded = State.load();
-  State.state.lastSeenAt = Date.now();
-  State.save();
+  // Compute away-time BEFORE overwriting the timestamp
+  const awayMs = loaded && State.state.lastSeenAt ? Date.now() - State.state.lastSeenAt : 0;
 
+  Engine.restoreLastStart();
   UI.bindTabs();
   UI.render();
 
   // Offline welcome-back banner
-  if (loaded) {
-    const awayMs = Date.now() - (State.state.lastSeenAt || Date.now());
-    const sess = Engine.session();
-    if (sess && awayMs > 60000) {
-      const banner = Util.el('div', 'offline-banner',
-        `🌙 Welcome back! Your hero kept working while you were away (${Util.fmtTime(Math.min(awayMs, sess.endsAt - sess.startedAt))} of training).`);
-      document.getElementById('screen').prepend(banner);
-    }
+  const awaySess = Engine.session();
+  if (awaySess && awayMs > 60000) {
+    const doneWhileAway = awaySess.endsAt <= Date.now();
+    const banner = Util.el('div', 'offline-banner',
+      doneWhileAway
+        ? `🌙 Welcome back! ${awaySess.label} finished while you were away — collect your rewards below.`
+        : `🌙 Welcome back! Your hero is still working on ${awaySess.label} (${Util.fmtTime(awaySess.endsAt - Date.now())} to go).`);
+    document.getElementById('screen').prepend(banner);
   }
+
+  State.state.lastSeenAt = Date.now();
+  State.save();
 
   // Tick: refresh live session readouts
   setInterval(() => UI.updateLive(), 500);
