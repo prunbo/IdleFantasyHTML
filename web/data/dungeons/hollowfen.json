@@ -1,0 +1,26 @@
+{
+  "name": "hollowfen",
+  "display_name": "The Hollowfen",
+  "description": "A mist-drowned marsh of sunken barrows where the harvest dead walk. Part of the Gloomharvest event.",
+  "recommended_level": 45,
+  "encounter_rate": 0.38,
+  "enemy_spawns": [
+    {
+      "enemy": "will_o_wisp",
+      "weight": 8
+    },
+    {
+      "enemy": "grave_ghoul",
+      "weight": 5
+    },
+    {
+      "enemy": "husk_horror",
+      "weight": 3
+    },
+    {
+      "enemy": "barrow_wight",
+      "weight": 1
+    }
+  ],
+  "event_key": "gloomharvest_2026"
+}

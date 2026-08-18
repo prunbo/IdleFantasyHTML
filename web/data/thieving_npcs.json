@@ -1,0 +1,162 @@
+[
+  {
+    "key": "peasant",
+    "display_name": "Peasant",
+    "level_required": 1,
+    "base_xp": 8,
+    "coins_min": 5,
+    "coins_max": 15,
+    "loot_table": [
+      { "item": "bread", "chance": 0.25 },
+      { "item": "cabbage", "chance": 0.20 },
+      { "item": "flour", "chance": 0.15 },
+      { "item": "potato_seed", "chance": 0.075 },
+      { "item": "onion_seed", "chance": 0.05 },
+      { "item": "cabbage_seed", "chance": 0.04 },
+      { "item": "carrot_seed", "chance": 0.03 }
+    ]
+  },
+  {
+    "key": "merchant",
+    "display_name": "Merchant",
+    "level_required": 15,
+    "base_xp": 20,
+    "coins_min": 20,
+    "coins_max": 50,
+    "loot_table": [
+      { "item": "trout", "chance": 0.20 },
+      { "item": "air_rune", "chance": 0.25, "min_qty": 3, "max_qty": 8 },
+      { "item": "water_rune", "chance": 0.20, "min_qty": 3, "max_qty": 8 },
+      { "item": "tomato_seed", "chance": 0.1 },
+      { "item": "corn_seed", "chance": 0.08 }
+    ]
+  },
+  {
+    "key": "guardsman",
+    "display_name": "Guardsman",
+    "level_required": 30,
+    "base_xp": 40,
+    "coins_min": 30,
+    "coins_max": 80,
+    "loot_table": [
+      { "item": "iron_arrow", "chance": 0.30, "min_qty": 5, "max_qty": 12 },
+      { "item": "mind_rune", "chance": 0.20, "min_qty": 3, "max_qty": 6 },
+      { "item": "chaos_rune", "chance": 0.15, "min_qty": 2, "max_qty": 4 },
+      { "item": "pumpkin_seed", "chance": 0.08 },
+      { "item": "watermelon_seed", "chance": 0.06 },
+      { "item": "amulet_of_strength", "chance": 0.008 }
+    ]
+  },
+  {
+    "key": "artisan",
+    "display_name": "Artisan",
+    "level_required": 45,
+    "base_xp": 70,
+    "coins_min": 50,
+    "coins_max": 150,
+    "loot_table": [
+      { "item": "sapphire", "chance": 0.15 },
+      { "item": "emerald", "chance": 0.08 },
+      { "item": "leather", "chance": 0.25, "min_qty": 2, "max_qty": 5 },
+      { "item": "thread", "chance": 0.20, "min_qty": 3, "max_qty": 8 },
+      { "item": "strawberry_seed", "chance": 0.08 },
+      { "item": "magic_herb_seed", "chance": 0.05 },
+      { "item": "ring_of_recoil", "chance": 0.008 }
+    ]
+  },
+  {
+    "key": "noble",
+    "display_name": "Noble",
+    "level_required": 60,
+    "base_xp": 110,
+    "coins_min": 100,
+    "coins_max": 300,
+    "loot_table": [
+      { "item": "chaos_rune", "chance": 0.25, "min_qty": 3, "max_qty": 6 },
+      { "item": "death_rune", "chance": 0.15, "min_qty": 2, "max_qty": 4 },
+      { "item": "ruby", "chance": 0.10 },
+      { "item": "silver_necklace", "chance": 0.05 },
+      { "item": "dragon_fruit_seed", "chance": 0.06 },
+      { "item": "golden_wheat_seed", "chance": 0.05 },
+      { "item": "ring_of_wealth", "chance": 0.008 }
+    ]
+  },
+  {
+    "key": "city_guard",
+    "display_name": "City Guard",
+    "level_required": 70,
+    "base_xp": 155,
+    "coins_min": 150,
+    "coins_max": 400,
+    "loot_table": [
+      { "item": "death_rune", "chance": 0.25, "min_qty": 3, "max_qty": 6 },
+      { "item": "blood_rune", "chance": 0.10, "min_qty": 1, "max_qty": 3 },
+      { "item": "gold_necklace", "chance": 0.06 },
+      { "item": "ruby_ring", "chance": 0.05 }
+    ]
+  },
+  {
+    "key": "royal_guard",
+    "display_name": "Royal Guard",
+    "level_required": 75,
+    "base_xp": 182,
+    "coins_min": 175,
+    "coins_max": 500,
+    "loot_table": [
+      { "item": "blood_rune", "chance": 0.25, "min_qty": 2, "max_qty": 6 },
+      { "item": "diamond", "chance": 0.06 },
+      { "item": "ruby_ring", "chance": 0.08 },
+      { "item": "gold_necklace", "chance": 0.07 },
+      { "item": "spirit_seed", "chance": 0.05 },
+      { "item": "archers_ring", "chance": 0.008 }
+    ]
+  },
+  {
+    "key": "knight",
+    "display_name": "Knight",
+    "level_required": 80,
+    "base_xp": 210,
+    "coins_min": 200,
+    "coins_max": 600,
+    "loot_table": [
+      { "item": "blood_rune", "chance": 0.25, "min_qty": 3, "max_qty": 8 },
+      { "item": "diamond", "chance": 0.08 },
+      { "item": "gold_ring", "chance": 0.06 },
+      { "item": "gold_necklace", "chance": 0.06 },
+      { "item": "ring_of_suffering", "chance": 0.006 }
+    ]
+  },
+  {
+    "key": "bishop",
+    "display_name": "Bishop",
+    "level_required": 85,
+    "base_xp": 245,
+    "coins_min": 250,
+    "coins_max": 800,
+    "loot_table": [
+      { "item": "blood_rune", "chance": 0.30, "min_qty": 4, "max_qty": 8 },
+      { "item": "diamond", "chance": 0.08 },
+      { "item": "diamond_ring", "chance": 0.06 },
+      { "item": "tormented_necklace", "chance": 0.005 },
+      { "item": "celestial_bloom_seed", "chance": 0.04 },
+      { "item": "seers_ring", "chance": 0.008 }
+    ]
+  },
+  {
+    "key": "high_priest",
+    "display_name": "High Priest",
+    "level_required": 90,
+    "base_xp": 280,
+    "coins_min": 300,
+    "coins_max": 1000,
+    "loot_table": [
+      { "item": "blood_rune", "chance": 0.30, "min_qty": 5, "max_qty": 10 },
+      { "item": "diamond_ring", "chance": 0.05 },
+      { "item": "diamond_necklace", "chance": 0.05 },
+      { "item": "tormented_necklace", "chance": 0.01 },
+      { "item": "starfruit_seed", "chance": 0.04 },
+      { "item": "void_lotus_seed", "chance": 0.03 },
+      { "item": "necklace_of_anguish", "chance": 0.005 }
+    ]
+  }
+]

@@ -1,0 +1,15 @@
+{
+  "raw_shrimp":    { "display_name": "Shrimp",     "level_required": 1,  "xp_per_catch": 5,   "time_per_catch": 1 },
+  "raw_sardine":   { "display_name": "Sardine",    "level_required": 5,  "xp_per_catch": 10,  "time_per_catch": 1 },
+  "raw_herring":   { "display_name": "Herring",    "level_required": 10, "xp_per_catch": 15,  "time_per_catch": 1 },
+  "raw_mackerel":  { "display_name": "Mackerel",   "level_required": 15, "xp_per_catch": 20,  "time_per_catch": 1 },
+  "raw_trout":     { "display_name": "Trout",      "level_required": 20, "xp_per_catch": 30,  "time_per_catch": 1 },
+  "raw_salmon":    { "display_name": "Salmon",     "level_required": 30, "xp_per_catch": 45,  "time_per_catch": 1 },
+  "raw_tuna":      { "display_name": "Tuna",       "level_required": 40, "xp_per_catch": 65,  "time_per_catch": 1 },
+  "raw_lobster":   { "display_name": "Lobster",    "level_required": 50, "xp_per_catch": 90,  "time_per_catch": 1 },
+  "raw_swordfish": { "display_name": "Swordfish",  "level_required": 55, "xp_per_catch": 120, "time_per_catch": 1 },
+  "raw_monkfish":  { "display_name": "Monkfish",   "level_required": 60, "xp_per_catch": 150, "time_per_catch": 1 },
+  "raw_shark":     { "display_name": "Shark",      "level_required": 70, "xp_per_catch": 200, "time_per_catch": 1 },
+  "raw_sea_turtle":{ "display_name": "Sea Turtle", "level_required": 80, "xp_per_catch": 250, "time_per_catch": 1 },
+  "raw_manta_ray": { "display_name": "Manta Ray",  "level_required": 85, "xp_per_catch": 300, "time_per_catch": 1 }
+}
