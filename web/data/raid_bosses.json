@@ -1,0 +1,533 @@
+{
+  "king_black_dragon": {
+    "id": "king_black_dragon",
+    "display_name": "King Black Dragon",
+    "emoji": "🐉",
+    "description": "The legendary three-headed dragon, feared across the realm.",
+    "combat_level_required": 50,
+    "duration_minutes": 45,
+    "hp": 1500,
+    "combat_stats": {
+      "attack_level": 50,
+      "strength_level": 40,
+      "defense_level": 50,
+      "attack_bonus": 34,
+      "strength_bonus": 60
+    },
+    "defensive_stats": {
+      "attack_defense": 60,
+      "strength_defense": 60,
+      "ranged_defense": 30,
+      "magic_defense": 80
+    },
+    "xp_rewards": {
+      "attack": 1000,
+      "strength": 1000,
+      "defense": 1000,
+      "hitpoints": 800,
+      "magic": 500,
+      "ranged": 500
+    },
+    "common_loot": {
+      "coins_min": 10000,
+      "coins_max": 20000,
+      "items": {
+        "dragon_bone": {"min": 30, "max": 50},
+        "coal": {"min": 100, "max": 200},
+        "mithril_ore": {"min": 50, "max": 100},
+        "adamantite_ore": {"min": 20, "max": 40}
+      }
+    },
+    "rare_drops": [
+      {
+        "item": "dragon_longsword",
+        "chance": 0.005,
+        "comment": "1/200"
+      },
+      {
+        "item": "dragon_scimitar",
+        "chance": 0.005,
+        "comment": "1/200"
+      },
+      {
+        "item": "dragon_amulet",
+        "chance": 0.005,
+        "comment": "1/200"
+      },
+      {
+        "item": "ring_of_dragons_might",
+        "chance": 0.005,
+        "comment": "1/200"
+      }
+    ],
+    "pet": {
+      "id": "dragon_whelp",
+      "display_name": "Dragon Whelp",
+      "emoji": "🐉",
+      "chance": 0.01,
+      "comment": "1/100 per kill"
+    },
+    "tags": ["dragon"]
+  },
+  "demon_lord": {
+    "id": "demon_lord",
+    "display_name": "Demon Lord",
+    "emoji": "😈",
+    "description": "An ancient demon from the abyss, master of dark magic.",
+    "combat_level_required": 70,
+    "duration_minutes": 60,
+    "hp": 2200,
+    "combat_stats": {
+      "attack_level": 70,
+      "strength_level": 64,
+      "defense_level": 70,
+      "attack_bonus": 84,
+      "strength_bonus": 60
+    },
+    "defensive_stats": {
+      "attack_defense": 70,
+      "strength_defense": 70,
+      "ranged_defense": 70,
+      "magic_defense": 50
+    },
+    "xp_rewards": {
+      "attack": 2000,
+      "strength": 2000,
+      "defense": 2000,
+      "hitpoints": 1500,
+      "magic": 2500,
+      "ranged": 1000,
+      "prayer": 1500
+    },
+    "common_loot": {
+      "coins_min": 20000,
+      "coins_max": 40000,
+      "items": {
+        "giant_bones": {"min": 20, "max": 40},
+        "coal": {"min": 150, "max": 300},
+        "adamantite_ore": {"min": 80, "max": 150},
+        "runite_ore": {"min": 30, "max": 60},
+        "fire_rune": {"min": 100, "max": 200}
+      }
+    },
+    "rare_drops": [
+      {
+        "item": "abyssal_whip",
+        "chance": 0.005,
+        "comment": "1/200"
+      },
+      {
+        "item": "hellfire_staff",
+        "chance": 0.005,
+        "comment": "1/200"
+      },
+      {
+        "item": "amulet_of_fury",
+        "chance": 0.005,
+        "comment": "1/200"
+      },
+      {
+        "item": "berserker_ring",
+        "chance": 0.005,
+        "comment": "1/200"
+      }
+    ],
+    "pet": {
+      "id": "imp_pet",
+      "display_name": "Imp Pet",
+      "emoji": "😈",
+      "chance": 0.01,
+      "comment": "1/100 per kill"
+    },
+    "tags": ["demon"]
+  },
+  "kraken": {
+    "id": "kraken",
+    "display_name": "Kraken",
+    "emoji": "🦑",
+    "description": "The terror of the deep seas, a colossal sea monster.",
+    "combat_level_required": 90,
+    "duration_minutes": 90,
+    "hp": 2200,
+    "combat_stats": {
+      "attack_level": 90,
+      "strength_level": 90,
+      "defense_level": 80,
+      "attack_bonus": 112,
+      "strength_bonus": 60
+    },
+    "defensive_stats": {
+      "attack_defense": 80,
+      "strength_defense": 80,
+      "ranged_defense": 100,
+      "magic_defense": 40
+    },
+    "xp_rewards": {
+      "attack": 4000,
+      "strength": 4000,
+      "defense": 4000,
+      "hitpoints": 3000,
+      "magic": 5000,
+      "ranged": 2000
+    },
+    "common_loot": {
+      "coins_min": 50000,
+      "coins_max": 100000,
+      "items": {
+        "raw_shark": {"min": 100, "max": 200},
+        "dragon_bone": {"min": 50, "max": 100},
+        "coal": {"min": 200, "max": 400},
+        "runite_ore": {"min": 100, "max": 200},
+        "platinum_ore": {"min": 50, "max": 100},
+        "water_rune": {"min": 200, "max": 400}
+      }
+    },
+    "rare_drops": [
+      {
+        "item": "trident_of_the_seas",
+        "chance": 0.005,
+        "comment": "1/200"
+      },
+      {
+        "item": "kraken_tentacle",
+        "chance": 0.005,
+        "comment": "1/200"
+      },
+      {
+        "item": "amulet_of_the_kraken",
+        "chance": 0.005,
+        "comment": "1/200"
+      },
+      {
+        "item": "ring_of_the_seas",
+        "chance": 0.005,
+        "comment": "1/200"
+      }
+    ],
+    "pet": {
+      "id": "baby_kraken",
+      "display_name": "Baby Kraken",
+      "emoji": "🦑",
+      "chance": 0.01,
+      "comment": "1/100 per kill"
+    }
+  },
+  "balrog": {
+    "id": "balrog",
+    "display_name": "Gothic Ember, Ancient Flame of the Deep",
+    "emoji": "🔥",
+    "description": "An ancient demon of flame and shadow, awakened from its slumber deep beneath the earth.",
+    "combat_level_required": 100,
+    "duration_minutes": 120,
+    "hp": 2800,
+    "combat_stats": {
+      "attack_level": 100,
+      "strength_level": 94,
+      "defense_level": 100,
+      "attack_bonus": 78,
+      "strength_bonus": 80
+    },
+    "defensive_stats": {
+      "attack_defense": 90,
+      "strength_defense": 90,
+      "ranged_defense": 70,
+      "magic_defense": 60
+    },
+    "xp_rewards": {
+      "attack": 10000,
+      "strength": 10000,
+      "defense": 10000,
+      "hitpoints": 8000,
+      "magic": 12000,
+      "ranged": 5000,
+      "prayer": 5000
+    },
+    "common_loot": {
+      "coins_min": 100000,
+      "coins_max": 250000,
+      "items": {
+        "dragon_bone": {"min": 100, "max": 200},
+        "coal": {"min": 500, "max": 1000},
+        "runite_ore": {"min": 200, "max": 400},
+        "platinum_ore": {"min": 100, "max": 200},
+        "fire_rune": {"min": 500, "max": 1000},
+        "ancient_treasure": {"min": 5, "max": 10}
+      }
+    },
+    "rare_drops": [
+      {
+        "item": "balrog_whip",
+        "chance": 0.003,
+        "comment": "1/333"
+      },
+      {
+        "item": "flame_heart_amulet",
+        "chance": 0.003,
+        "comment": "1/333"
+      },
+      {
+        "item": "ring_of_flame",
+        "chance": 0.003,
+        "comment": "1/333"
+      },
+      {
+        "item": "balrog_wings",
+        "chance": 0.002,
+        "comment": "1/500"
+      }
+    ],
+    "pet": {
+      "id": "baby_balrog",
+      "display_name": "Gothic Emberling",
+      "emoji": "🔥",
+      "chance": 0.005,
+      "comment": "1/200 per kill"
+    }
+  },
+  "void_sovereign": {
+    "id": "void_sovereign",
+    "display_name": "The Void Sovereign",
+    "emoji": "🌑",
+    "description": "The primordial entity behind the void rifts. Ancient beyond reckoning, it regards mortal challengers with contempt.",
+    "combat_level_required": 110,
+    "duration_minutes": 150,
+    "hp": 4000,
+    "combat_stats": {
+      "attack_level": 115,
+      "strength_level": 110,
+      "defense_level": 115,
+      "attack_bonus": 140,
+      "strength_bonus": 130
+    },
+    "defensive_stats": {
+      "attack_defense": 130,
+      "strength_defense": 120,
+      "ranged_defense": 110,
+      "magic_defense": 150
+    },
+    "xp_rewards": {
+      "attack": 15000,
+      "strength": 15000,
+      "defense": 15000,
+      "hitpoints": 12000,
+      "magic": 18000,
+      "ranged": 8000,
+      "prayer": 8000
+    },
+    "common_loot": {
+      "coins_min": 200000,
+      "coins_max": 500000,
+      "items": {
+        "dragon_bone": {"min": 150, "max": 300},
+        "platinum_ore": {"min": 200, "max": 400},
+        "runite_ore": {"min": 300, "max": 600},
+        "blood_rune": {"min": 500, "max": 1000},
+        "death_rune": {"min": 500, "max": 1000},
+        "ancient_treasure": {"min": 10, "max": 20}
+      }
+    },
+    "rare_drops": [
+      {
+        "item": "void_reaver",
+        "chance": 0.002,
+        "comment": "1/500"
+      },
+      {
+        "item": "sovereign_crown",
+        "chance": 0.002,
+        "comment": "1/500"
+      },
+      {
+        "item": "amulet_of_the_void",
+        "chance": 0.002,
+        "comment": "1/500"
+      }
+    ],
+    "pet": {
+      "id": "void_wisp",
+      "display_name": "Void Wisp",
+      "emoji": "💫",
+      "chance": 0.003,
+      "comment": "1/333 per kill"
+    }
+  },
+  "sol_invictus": {
+    "id": "sol_invictus",
+    "display_name": "Sol Invictus, the Sundered Flame",
+    "emoji": "☀️",
+    "description": "A shard of the sun itself, torn loose from the Sunspire ruin. Only the boldest warriors dare approach.",
+    "combat_level_required": 65,
+    "duration_minutes": 50,
+    "hp": 2200,
+    "combat_stats": {
+      "attack_level": 60,
+      "strength_level": 55,
+      "defense_level": 60,
+      "attack_bonus": 45,
+      "strength_bonus": 75
+    },
+    "defensive_stats": {
+      "attack_defense": 75,
+      "strength_defense": 75,
+      "ranged_defense": 45,
+      "magic_defense": 100
+    },
+    "xp_rewards": {
+      "attack": 1400,
+      "strength": 1400,
+      "defense": 1400,
+      "hitpoints": 1100,
+      "magic": 700,
+      "ranged": 700
+    },
+    "common_loot": {
+      "coins_min": 15000,
+      "coins_max": 30000,
+      "items": {
+        "fire_rune": {"min": 100, "max": 200},
+        "adamantite_ore": {"min": 40, "max": 80},
+        "runite_ore": {"min": 10, "max": 20}
+      }
+    },
+    "rare_drops": [
+      {
+        "item": "runite_bar",
+        "chance": 0.02,
+        "comment": "1/50"
+      }
+    ],
+    "pet": {
+      "id": "solstice_sprite",
+      "display_name": "Solstice Sprite",
+      "emoji": "🔥",
+      "chance": 0.01,
+      "comment": "1/100 per kill"
+    },
+    "event_key": "sunspire_solstice_2026"
+  },
+  "the_hollow_king": {
+    "id": "the_hollow_king",
+    "display_name": "The Hollow King",
+    "emoji": "🎃",
+    "description": "The headless sovereign of the Gloomharvest, riding out from the Blightwood to reap what the living have sown.",
+    "combat_level_required": 70,
+    "duration_minutes": 55,
+    "hp": 2600,
+    "combat_stats": {
+      "attack_level": 66,
+      "strength_level": 62,
+      "defense_level": 64,
+      "attack_bonus": 50,
+      "strength_bonus": 85
+    },
+    "defensive_stats": {
+      "attack_defense": 85,
+      "strength_defense": 85,
+      "ranged_defense": 50,
+      "magic_defense": 110
+    },
+    "xp_rewards": {
+      "attack": 1600,
+      "strength": 1600,
+      "defense": 1600,
+      "hitpoints": 1250,
+      "magic": 800,
+      "ranged": 800
+    },
+    "common_loot": {
+      "coins_min": 20000,
+      "coins_max": 40000,
+      "items": {
+        "death_rune": {
+          "min": 120,
+          "max": 240
+        },
+        "adamantite_ore": {
+          "min": 50,
+          "max": 90
+        },
+        "runite_ore": {
+          "min": 12,
+          "max": 24
+        }
+      }
+    },
+    "rare_drops": [
+      {
+        "item": "runite_bar",
+        "chance": 0.02,
+        "comment": "1/50"
+      }
+    ],
+    "pet": {
+      "id": "lantern_wisp",
+      "display_name": "Lantern Wisp",
+      "emoji": "🎃",
+      "chance": 0.01,
+      "comment": "1/100 per kill"
+    },
+    "event_key": "gloomharvest_2026"
+  },
+  "the_vault_guardian": {
+    "id": "the_vault_guardian",
+    "display_name": "The Vault Guardian",
+    "emoji": "🏆",
+    "description": "A colossus of living gold, woken by the lighting of the Eternal Flame. Only patrons of the Grand Monument may face it.",
+    "combat_level_required": 100,
+    "duration_minutes": 90,
+    "hp": 3000,
+    "combat_stats": {
+      "attack_level": 85,
+      "strength_level": 80,
+      "defense_level": 85,
+      "attack_bonus": 70,
+      "strength_bonus": 110
+    },
+    "defensive_stats": {
+      "attack_defense": 110,
+      "strength_defense": 110,
+      "ranged_defense": 80,
+      "magic_defense": 130
+    },
+    "xp_rewards": {
+      "attack": 2200,
+      "strength": 2200,
+      "defense": 2200,
+      "hitpoints": 1700,
+      "magic": 1100,
+      "ranged": 1100
+    },
+    "common_loot": {
+      "coins_min": 50000,
+      "coins_max": 100000,
+      "items": {
+        "runite_bar": {
+          "min": 5,
+          "max": 10
+        },
+        "diamond": {
+          "min": 2,
+          "max": 4
+        }
+      }
+    },
+    "rare_drops": [
+      {
+        "item": "gilded_full_helmet",
+        "chance": 0.04,
+        "comment": "1/25"
+      },
+      {
+        "item": "gilded_platebody",
+        "chance": 0.04,
+        "comment": "1/25"
+      },
+      {
+        "item": "gilded_kiteshield",
+        "chance": 0.04,
+        "comment": "1/25"
+      }
+    ],
+    "requires_monument": true
+  }
+}

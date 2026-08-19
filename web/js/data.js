@@ -11,9 +11,14 @@ const GameData = {
   dungeons: {}, marketplace: {}, quests: {},
   crops: {}, slayerTasks: {}, pets: {}, carnivalPrizes: {},
   guildQuests: {}, guildDailies: [], herbloreRecipes: {},
+  townBuildings: {}, raidBosses: {}, seasonalEvents: {},
+  tradeRoutes: {},          // id -> route data
+  tradeRouteList: [],       // sorted by level
+  skillingDungeons: {},     // key -> expedition data
+  skillingDungeonList: [],  // sorted by level
   potionEffects: {},   // potion itemKey -> {stat: bonus}
   petBySkill: {},      // boosted_skill -> pet data (first match)
-  recipes: { smithing: {}, cooking: {}, fletching: {}, crafting: {}, herblore: {} },
+  recipes: { smithing: {}, cooking: {}, fletching: {}, crafting: {}, herblore: {}, construction: {} },
   names: {},            // itemKey -> display name
   foodHeals: {},        // itemKey -> heal value
   arrowBonuses: {},     // arrow itemKey -> ranged strength bonus
@@ -29,16 +34,18 @@ const GameData = {
 
     const [xp, ores, gems, trees, logs, fish, runes, spells, bones, agility, thieving,
       marketplace, quests, equipment, enemies, fishingSkill,
-      smithing, cooking, fletching, crafting, manifest,
-      crops, slayerTasks, pets, carnivalPrizes, guildQuests, guildDailies, herblore] = await Promise.all([
+      smithing, cooking, fletching, crafting, construction, manifest,
+      crops, slayerTasks, pets, carnivalPrizes, guildQuests, guildDailies, herblore,
+      buildings, raidBosses, seasonalEvents] = await Promise.all([
       j('xp_table.json'), j('ores.json'), j('gems.json'), j('trees.json'), j('logs.json'),
       j('fish.json'), j('runes.json'), j('spells.json'), j('bones.json'),
       j('agility_courses.json'), j('thieving_npcs.json'), j('marketplace.json'),
       j('quests.json'), j('equipment.json'), j('enemies.json'), j('skills/fishing.json'),
       j('recipes/smithing.json'), j('recipes/cooking.json'), j('recipes/fletching.json'),
-      j('recipes/crafting.json'), j('dungeons.json'),
+      j('recipes/crafting.json'), j('recipes/construction.json'), j('dungeons.json'),
       j('crops.json'), j('slayer_tasks.json'), j('pets.json'), j('carnival_prizes.json'),
       j('guild_quests.json'), j('guild_daily_quests.json'), j('recipes/herblore.json'),
+      j('buildings.json'), j('raid_bosses.json'), j('seasonal_events.json'),
     ]);
 
     this.xpTable = xp.levels;
@@ -48,14 +55,29 @@ const GameData = {
     this.marketplace = marketplace; this.quests = quests; this.equipment = equipment;
     this.enemies = enemies;
     this.fishingSkill = fishingSkill;
-    this.recipes = { smithing, cooking, fletching, crafting, herblore };
+    this.recipes = { smithing, cooking, fletching, crafting, herblore, construction };
     this.crops = crops; this.slayerTasks = slayerTasks; this.pets = pets;
     this.carnivalPrizes = carnivalPrizes; this.guildQuests = guildQuests;
     this.guildDailies = guildDailies; this.herbloreRecipes = herblore;
+    this.townBuildings = buildings; this.raidBosses = raidBosses; this.seasonalEvents = seasonalEvents;
 
     // Dungeons (explicit manifest so the game works on any static host)
     const dungeonList = await Promise.all(manifest.map(f => j('dungeons/' + f + '.json')));
     manifest.forEach((name, i) => { this.dungeons[name] = dungeonList[i]; });
+
+    // Skilling dungeons (expeditions) + trade routes (mercantile) — same idea
+    const SKILLING_KEYS = [
+      'copper_caverns', 'whispering_grove', 'sunken_grotto', 'crumbling_watchtower', 'thieves_den',
+      'dwarven_depths', 'corrupted_canopy', 'abyssal_lagoon', 'shattered_spire', 'shadow_vault',
+    ];
+    const ROUTE_KEYS = ['local_market', 'river_trading_post', 'merchants_quarter',
+      'eastern_caravan', 'northern_ports', 'grand_exchange'];
+    const skilling = await Promise.all(SKILLING_KEYS.map(f => j('skilling_dungeons/' + f + '.json')));
+    SKILLING_KEYS.forEach((k, i) => { this.skillingDungeons[k] = skilling[i]; });
+    this.skillingDungeonList = skilling.slice().sort((a, b) => a.level_required - b.level_required);
+    const routes = await Promise.all(ROUTE_KEYS.map(f => j('trade_routes/' + f + '.json')));
+    ROUTE_KEYS.forEach((k, i) => { this.tradeRoutes[k] = routes[i]; });
+    this.tradeRouteList = routes.slice().sort((a, b) => a.level_required - b.level_required);
 
     this._buildLookups();
     this.loaded = true;
@@ -93,6 +115,14 @@ const GameData = {
 
     for (const [k, v] of Object.entries(this.crops)) N[k] = v.display_name;
 
+    // Construction materials & furniture names
+    for (const [k, v] of Object.entries(this.recipes.construction)) N[k] = v.display_name;
+    N['stone'] = 'Stone'; N['plank'] = 'Plank'; N['magic_plank'] = 'Magic Plank';
+    N['redwood_plank'] = 'Redwood Plank';
+    for (const nail of ['iron_nail', 'steel_nail', 'mithril_nail', 'runite_nail'])
+      if (!N[nail]) N[nail] = Util.prettify(nail) + 's';
+
+
     // Herblore potion effects
     for (const [k, v] of Object.entries(this.herbloreRecipes)) {
       N[k] = v.display_name;
@@ -111,6 +141,49 @@ const GameData = {
   },
 
   name(key) { return this.names[key] || Util.prettify(key); },
+
+  /** All blessings (port of ChurchRepository.ALL_BLESSINGS). Names via blessing_<key>_name. */
+  BLESSINGS: [
+    { key: 'blessed_focus', lvl: 1, type: 'XP', mag: 1.05 },
+    { key: 'stone_skin', lvl: 1, type: 'DEFENSE', mag: 2 },
+    { key: 'blessed_focus_ii', lvl: 10, type: 'XP', mag: 1.10 },
+    { key: 'stone_skin_ii', lvl: 10, type: 'DEFENSE', mag: 4 },
+    { key: 'blessed_focus_iii', lvl: 20, type: 'XP', mag: 1.15 },
+    { key: 'stone_skin_iii', lvl: 20, type: 'DEFENSE', mag: 6 },
+    { key: 'tithe_blessing', lvl: 30, type: 'XP', mag: 1.18 },
+    { key: 'stone_skin_iv', lvl: 30, type: 'DEFENSE', mag: 9 },
+    { key: 'fortune_i', lvl: 30, type: 'COINS', mag: 0.08 },
+    { key: 'tithe_blessing_ii', lvl: 40, type: 'XP', mag: 1.20 },
+    { key: 'iron_ward', lvl: 40, type: 'DEFENSE', mag: 12 },
+    { key: 'fortune_ii', lvl: 40, type: 'COINS', mag: 0.10 },
+    { key: 'tithe_blessing_iii', lvl: 50, type: 'XP', mag: 1.25 },
+    { key: 'iron_ward_ii', lvl: 50, type: 'DEFENSE', mag: 15 },
+    { key: 'fortune_iii', lvl: 50, type: 'COINS', mag: 0.13 },
+    { key: 'divine_focus', lvl: 60, type: 'XP', mag: 1.28 },
+    { key: 'diamond_skin', lvl: 60, type: 'DEFENSE', mag: 18 },
+    { key: 'fortune_iv', lvl: 60, type: 'COINS', mag: 0.15 },
+    { key: 'divine_focus_ii', lvl: 70, type: 'XP', mag: 1.32 },
+    { key: 'diamond_skin_ii', lvl: 70, type: 'DEFENSE', mag: 22 },
+    { key: 'fortune_v', lvl: 70, type: 'COINS', mag: 0.18 },
+    { key: 'divine_grace', lvl: 80, type: 'XP', mag: 1.37 },
+    { key: 'holy_shield', lvl: 80, type: 'DEFENSE', mag: 26 },
+    { key: 'abundance', lvl: 80, type: 'COINS', mag: 0.20 },
+    { key: 'divine_grace_ii', lvl: 90, type: 'XP', mag: 1.43 },
+    { key: 'holy_shield_ii', lvl: 90, type: 'DEFENSE', mag: 30 },
+    { key: 'abundance_ii', lvl: 90, type: 'COINS', mag: 0.23 },
+    { key: 'sacred_grace', lvl: 99, type: 'XP', mag: 1.50 },
+    { key: 'aegis', lvl: 99, type: 'DEFENSE', mag: 35 },
+    { key: 'abundance_iii', lvl: 99, type: 'COINS', mag: 0.25 },
+  ],
+
+  blessing(key) { return this.BLESSINGS.find(b => b.key === key) || null; },
+
+  blessingName(b) { return this.blessingStr(b, 'name', b.key.split('_').map((w, i) => i ? w.toUpperCase() : w.charAt(0).toUpperCase() + w.slice(1)).join(' ')); },
+
+  blessingStr(b, suffix, fallback) {
+    const k = 'blessing_' + b.key + '_' + suffix;
+    return (typeof I18n !== 'undefined' && I18n.has(k)) ? I18n.t(k) : fallback;
+  },
 
   /** All dungeons sorted by recommended level. */
   dungeonList() {
@@ -132,9 +205,11 @@ const GameData = {
     { key: 'crafting', name: 'Crafting', icon: '💎', group: 'Production', desc: 'Fashion jewelry from bars and gems' },
     { key: 'firemaking', name: 'Firemaking', icon: '🔥', group: 'Production', desc: 'Burn logs into ashes' },
     { key: 'runecrafting', name: 'Runecrafting', icon: '✨', group: 'Production', desc: 'Bind rune essence into casting runes' },
+    { key: 'construction', name: 'Construction', icon: '🏗️', group: 'Production', desc: 'Build furniture from planks, nails and stone — the Workshop upgrades the town' },
     { key: 'prayer', name: 'Prayer', icon: '🙏', group: 'Production', desc: 'Scatter bones and ashes for blessing XP' },
     { key: 'farming', name: 'Farming', icon: '🌾', group: 'Gathering', desc: 'Plant seeds in real-time patches and harvest crops' },
     { key: 'herblore', name: 'Herblore', icon: '🧪', group: 'Production', desc: 'Brew combat potions from crops and monster parts' },
+    { key: 'mercantile', name: 'Mercantile', icon: '🛒', group: 'Gathering', desc: 'Dispatch trade caravans — invest coins for profit and Mercantile XP' },
     { key: 'slayer', name: 'Slayer', icon: '🗡️', group: 'Combat', desc: 'Complete Slayer Master tasks for points and gear' },
     { key: 'attack', name: 'Attack', icon: '⚔️', group: 'Combat', desc: 'Melee accuracy' },
     { key: 'strength', name: 'Strength', icon: '💪', group: 'Combat', desc: 'Melee damage' },

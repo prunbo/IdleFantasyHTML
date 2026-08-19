@@ -33,6 +33,7 @@
         </div>
       </div>
       <div class="topbar-actions">
+        <button id="btn-lang" class="btn-icon" title="Language">🌐</button>
         <button id="btn-export" class="btn-icon" title="Export save code">📤</button>
         <button id="btn-import" class="btn-icon" title="Import save code">📥</button>
         <button id="btn-reset" class="btn-icon danger" title="Reset game">🗑️</button>
@@ -40,13 +41,13 @@
     </header>
 
     <nav class="tabs" id="tabs">
-      <button data-tab="home" class="tab active">🏠 Home</button>
-      <button data-tab="skills" class="tab">🎯 Skills</button>
-      <button data-tab="dungeons" class="tab">🏰 Dungeons</button>
-      <button data-tab="character" class="tab">🧝 Character</button>
-      <button data-tab="shop" class="tab">🛒 Shop</button>
-      <button data-tab="quests" class="tab">📜 Quests</button>
-      <button data-tab="town" class="tab">🏘️ Town</button>
+      <button data-tab="home" class="tab active" data-i18n="nav_home">🏠 Home</button>
+      <button data-tab="skills" class="tab" data-i18n="nav_skills">🎯 Skills</button>
+      <button data-tab="dungeons" class="tab" data-i18n="label_dungeons_tab">🏰 Dungeons</button>
+      <button data-tab="character" class="tab" data-i18n="nav_profile">🧝 Character</button>
+      <button data-tab="shop" class="tab" data-i18n="web_tab_shop">🛒 Shop</button>
+      <button data-tab="quests" class="tab" data-i18n="nav_quests">📜 Quests</button>
+      <button data-tab="town" class="tab" data-i18n="home_town_title">🏘️ Town</button>
     </nav>
 
     <main id="screen" class="screen"></main>
@@ -64,10 +65,12 @@
   <div id="modal-root"></div>
 
   <script src="js/util.js"></script>
+  <script src="js/i18n.js"></script>
   <script src="js/data.js"></script>
   <script src="js/sim.js"></script>
   <script src="js/state.js"></script>
   <script src="js/systems.js"></script>
+  <script src="js/systems-town.js"></script>
   <script src="js/engine.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/ui-town.js"></script>

@@ -1,0 +1,360 @@
+{
+  "sunspire_solstice_2026": {
+    "id": "sunspire_solstice_2026",
+    "display_name": "Sunspire Solstice",
+    "start_ms": 1780272000000,
+    "end_ms": 1788220800000,
+    "token_goal": 100,
+    "pillars": ["bounty", "expedition", "boss", "minigame"],
+    "bounty_tasks": [
+      {
+        "id": "sunspire_firewood",
+        "type": "gather",
+        "target": "oak_log",
+        "amount": 20,
+        "display_name": "Bring firewood for the bonfire",
+        "hint": "Chop Oak Logs — Woodcutting",
+        "skill": "woodcutting"
+      },
+      {
+        "id": "sunspire_kindling",
+        "type": "gather",
+        "target": "willow_log",
+        "amount": 25,
+        "display_name": "Gather kindling for the bonfire",
+        "hint": "Chop Willow Logs — Woodcutting",
+        "skill": "woodcutting"
+      },
+      {
+        "id": "sunspire_sunore",
+        "type": "gather",
+        "target": "gold_ore",
+        "amount": 15,
+        "display_name": "Mine gold to gild the sun-tower",
+        "hint": "Mine Gold Ore — Mining",
+        "skill": "mining"
+      },
+      {
+        "id": "sunspire_draughts",
+        "type": "craft",
+        "target": "strength_potion",
+        "amount": 5,
+        "display_name": "Brew Strength Potions",
+        "hint": "Herblore",
+        "skill": "herblore"
+      },
+      {
+        "id": "sunspire_embers_brew",
+        "type": "craft",
+        "target": "attack_potion",
+        "amount": 5,
+        "display_name": "Brew Attack Potions for the solstice watch",
+        "hint": "Herblore",
+        "skill": "herblore"
+      },
+      {
+        "id": "sunspire_sunfire_arrows",
+        "type": "craft",
+        "target": "mithril_arrow",
+        "amount": 50,
+        "display_name": "Fletch Mithril arrows to hold back the wisps",
+        "hint": "Fletching",
+        "skill": "fletching"
+      },
+      {
+        "id": "sunspire_wisps",
+        "type": "kill",
+        "target": "sun_wisp",
+        "amount": 15,
+        "display_name": "Drive off Sun Wisps",
+        "hint": "Only found in The Sunspire Expedition"
+      },
+      {
+        "id": "sunspire_hounds",
+        "type": "kill",
+        "target": "ember_hound",
+        "amount": 10,
+        "display_name": "Drive off Ember Hounds",
+        "hint": "Only found in The Sunspire Expedition"
+      },
+      {
+        "id": "sunspire_colossus",
+        "type": "kill",
+        "target": "cinder_colossus",
+        "amount": 3,
+        "display_name": "Topple Cinder Colossi",
+        "hint": "Only found in The Sunspire Expedition — rare"
+      }
+    ],
+    "bounty_rotation_ms": 3600000,
+    "expedition_dungeon_key": "sunspire",
+    "boss_key": "sol_invictus",
+    "minigame": {
+      "id": "bonfire_rhythm",
+      "display_name": "Bonfire Rhythm",
+      "rounds": 8,
+      "hole_count": 9,
+      "hits_required": 7,
+      "visible_ms": 500,
+      "cooldown_ms": 3600000,
+      "visible_ms_easy": 800,
+      "cooldown_ms_easy": 7200000
+    },
+    "reward_tiers": [
+      {
+        "tokens": 100,
+        "description": "Sunspire Solstice 2026 banner"
+      }
+    ],
+    "banner_text": "Participated in the Sunspire Solstice 2026",
+    "banner_icon": "banner_summer"
+  },
+  "gloomharvest_2026": {
+    "id": "gloomharvest_2026",
+    "display_name": "Gloomharvest",
+    "start_ms": 1788220800000,
+    "end_ms": 1796083200000,
+    "token_goal": 300,
+    "pillars": ["bounty", "expedition", "boss", "minigame"],
+    "bounty_tasks": [
+      {
+        "id": "gloom_pumpkins",
+        "type": "gather",
+        "target": "pumpkin",
+        "amount": 20,
+        "display_name": "Harvest pumpkins for the festival",
+        "hint": "Grow Pumpkins (Farming)",
+        "skill": "farming"
+      },
+      {
+        "id": "gloom_corn",
+        "type": "gather",
+        "target": "corn",
+        "amount": 25,
+        "display_name": "Bring in the corn harvest",
+        "hint": "Grow Corn (Farming)",
+        "skill": "farming"
+      },
+      {
+        "id": "gloom_maples",
+        "type": "gather",
+        "target": "maple_log",
+        "amount": 25,
+        "display_name": "Chop maple wood for the pyres",
+        "hint": "Chop Maple Logs (Woodcutting)",
+        "skill": "woodcutting"
+      },
+      {
+        "id": "gloom_swordfish",
+        "type": "gather",
+        "target": "raw_swordfish",
+        "amount": 15,
+        "display_name": "Land swordfish for the feast",
+        "hint": "Fish Raw Swordfish (Fishing)",
+        "skill": "fishing"
+      },
+      {
+        "id": "gloom_mithril",
+        "type": "gather",
+        "target": "mithril_ore",
+        "amount": 15,
+        "display_name": "Mine mithril to ward the gates",
+        "hint": "Mine Mithril Ore (Mining)",
+        "skill": "mining"
+      },
+      {
+        "id": "gloom_brews",
+        "type": "craft",
+        "target": "defense_potion",
+        "amount": 5,
+        "display_name": "Brew Defense Potions for the night watch",
+        "hint": "Herblore",
+        "skill": "herblore"
+      },
+      {
+        "id": "gloom_shortbows",
+        "type": "craft",
+        "target": "maple_shortbow",
+        "amount": 10,
+        "display_name": "Fletch Maple Shortbows for the wardens",
+        "hint": "Fletching",
+        "skill": "fletching"
+      },
+      {
+        "id": "gloom_feast",
+        "type": "craft",
+        "target": "swordfish",
+        "amount": 15,
+        "display_name": "Cook swordfish for the harvest feast",
+        "hint": "Cooking",
+        "skill": "cooking"
+      },
+      {
+        "id": "gloom_bars",
+        "type": "craft",
+        "target": "adamantite_bar",
+        "amount": 10,
+        "display_name": "Smelt adamantite for grave-iron",
+        "hint": "Smithing",
+        "skill": "smithing"
+      },
+      {
+        "id": "gloom_runes",
+        "type": "craft",
+        "target": "death_rune",
+        "amount": 40,
+        "display_name": "Craft Death Runes to quiet the spirits",
+        "hint": "Runecrafting",
+        "skill": "runecrafting"
+      },
+      {
+        "id": "gloom_wisps",
+        "type": "kill",
+        "target": "will_o_wisp",
+        "amount": 15,
+        "display_name": "Snuff out Will-o'-Wisps",
+        "hint": "Only found in The Hollowfen"
+      },
+      {
+        "id": "gloom_ghouls",
+        "type": "kill",
+        "target": "grave_ghoul",
+        "amount": 10,
+        "display_name": "Put down Grave Ghouls",
+        "hint": "Only found in The Hollowfen"
+      },
+      {
+        "id": "gloom_husks",
+        "type": "kill",
+        "target": "husk_horror",
+        "amount": 8,
+        "display_name": "Fell the Husk Horrors",
+        "hint": "Only found in The Hollowfen"
+      },
+      {
+        "id": "gloom_stalkers",
+        "type": "kill",
+        "target": "shade_stalker",
+        "amount": 8,
+        "display_name": "Hunt Shade Stalkers",
+        "hint": "Only found in The Blightwood"
+      },
+      {
+        "id": "gloom_wights",
+        "type": "kill",
+        "target": "barrow_wight",
+        "amount": 3,
+        "display_name": "Topple Barrow Wights",
+        "hint": "Only found in The Hollowfen (rare)"
+      },
+      {
+        "id": "gloom_tithe_pumpkins",
+        "type": "turn_in",
+        "target": "pumpkin",
+        "amount": 30,
+        "display_name": "Tithe: donate pumpkins",
+        "hint": "Donated straight from your inventory",
+        "skill": "farming"
+      },
+      {
+        "id": "gloom_tithe_maple",
+        "type": "turn_in",
+        "target": "maple_log",
+        "amount": 40,
+        "display_name": "Tithe: donate maple logs",
+        "hint": "Donated straight from your inventory",
+        "skill": "woodcutting"
+      },
+      {
+        "id": "gloom_tithe_swordfish",
+        "type": "turn_in",
+        "target": "swordfish",
+        "amount": 10,
+        "display_name": "Tithe: donate cooked swordfish",
+        "hint": "Donated straight from your inventory",
+        "skill": "cooking"
+      }
+    ],
+    "bounty_rotation_ms": 3600000,
+    "expedition_dungeon_keys": ["hollowfen", "blightwood"],
+    "boss_key": "the_hollow_king",
+    "minigame": {
+      "id": "lantern_lights",
+      "display_name": "Lantern Lights",
+      "type": "sequence",
+      "rounds": 8,
+      "hole_count": 6,
+      "hits_required": 6,
+      "visible_ms": 550,
+      "cooldown_ms": 3600000,
+      "visible_ms_easy": 800,
+      "cooldown_ms_easy": 7200000,
+      "emoji": "🎃"
+    },
+    "reward_tiers": [
+      {
+        "tokens": 25,
+        "description": "Coin purse (50,000 coins)",
+        "coins": 50000
+      },
+      {
+        "tokens": 60,
+        "description": "Wraithbone Ring",
+        "items": {
+          "wraithbone_ring": 1
+        }
+      },
+      {
+        "tokens": 100,
+        "description": "Free 48h XP Boost",
+        "xp_boost": true
+      },
+      {
+        "tokens": 150,
+        "description": "Reaper's Scythe",
+        "items": {
+          "reaper_scythe": 1
+        }
+      },
+      {
+        "tokens": 200,
+        "description": "Coin purse (250,000 coins)",
+        "coins": 250000
+      },
+      {
+        "tokens": 250,
+        "description": "Grave Sprout pet",
+        "pet_id": "grave_sprout"
+      },
+      {
+        "tokens": 300,
+        "description": "Gloomharvest 2026 banner"
+      }
+    ],
+    "night_market": [
+      {
+        "id": "gloomweave_cape",
+        "display_name": "Gloomweave Cape",
+        "coin_cost": 2500000,
+        "limit": 1,
+        "items": {
+          "gloomweave_cape": 1
+        }
+      },
+      {
+        "id": "bounty_refresh",
+        "display_name": "Fresh Bounties (skip the wait)",
+        "coin_cost": 1000000,
+        "effect": "skip_bounty_cooldowns"
+      },
+      {
+        "id": "lantern_relight",
+        "display_name": "Relight the Lanterns (skip minigame cooldown)",
+        "coin_cost": 1000000,
+        "effect": "skip_minigame_cooldown"
+      }
+    ],
+    "banner_text": "Participated in the Gloomharvest 2026",
+    "banner_icon": "banner_fall"
+  }
+}

@@ -274,18 +274,26 @@ const Systems = {
    *  GUILDS — 18 guilds, 10 tiers; progression quests + daily requests
    * ================================================================== */
 
-  // Only guilds whose skills exist in the web edition (construction & mercantile excluded)
+  // All 20 guilds (construction & mercantile included since the full port)
   GUILDS: [
     'mining', 'fishing', 'woodcutting', 'farming', 'thieving', 'firemaking', 'agility',
     'smithing', 'cooking', 'fletching', 'crafting', 'runecrafting', 'herblore',
+    'construction', 'mercantile',
     'warriors', 'archers', 'mages', 'slayer', 'prayer',
   ],
 
   GUILD_ICONS: {
     mining: '⛏️', fishing: '🎣', woodcutting: '🪓', farming: '🌾', thieving: '🗝️',
     firemaking: '🔥', agility: '🏃', smithing: '🔨', cooking: '🍳', fletching: '🏹',
-    crafting: '💎', runecrafting: '✨', herblore: '🧪', warriors: '⚔️', archers: '🎯',
+    crafting: '💎', runecrafting: '✨', herblore: '🧪', construction: '🏗️',
+    mercantile: '🛒', warriors: '⚔️', archers: '🎯',
     mages: '🔮', slayer: '🗡️', prayer: '🙏',
+  },
+
+  /** Guild Hall bonus: requirement amounts shrink by the guild_quest_reduction factor. */
+  guildQuestAmount(q) {
+    const factor = State.townBonusProduct('guild_quest_reduction', true);
+    return Math.max(1, Math.ceil(q.amount * factor));
   },
 
   DAILIES_PER_TIER: [2, 3, 4, 5, 7, 9, 12, 15, 20, 25],
@@ -409,6 +417,13 @@ const Systems = {
     this._addDailyProgress('agility', 'sessions', courseKey, 1);
   },
 
+  /** Called when a Mercantile caravan is collected: +1 route run, coins feed earn_coins dailies. */
+  recordGuildTrade(routeKey, coinsEarned) {
+    this._addQuestProgress('mercantile', 'trade', routeKey, 1);
+    this._addDailyProgress('mercantile', 'trade', routeKey, 1);
+    if (coinsEarned > 0) this._addDailyProgress('mercantile', 'earn_coins', '', coinsEarned, true);
+  },
+
   recordGuildPrayer(totalBuried) {
     if (totalBuried <= 0) return;
     this._addQuestProgress('prayer', 'prayer', null, totalBuried, true);
@@ -432,7 +447,7 @@ const Systems = {
     const quest = GameData.guildQuests[questId];
     const row = g.progress[questId];
     if (!quest || !row || row.completed) return { error: 'Not claimable.' };
-    if (row.progress < quest.amount) return { error: 'Not complete yet.' };
+    if (row.progress < this.guildQuestAmount(quest)) return { error: 'Not complete yet.' };
     row.completed = true;
     const rewards = this._grantGuildRewards(quest.rewards || {}, quest.guild);
     State.save();
@@ -533,6 +548,9 @@ const Systems = {
           return lvl('woodcutting') >= (tree?.level_required || 1);
         }
         case t.guild === 'agility' && t.type === 'sessions': return lvl('agility') >= (GameData.agilityCourses[t.target]?.level_required || 1);
+        case t.guild === 'construction' && t.type === 'craft': return lvl('construction') >= (GameData.recipes.construction[t.target]?.level_required || 1);
+        case t.guild === 'mercantile' && t.type === 'trade': return lvl('mercantile') >= (GameData.tradeRoutes[t.target]?.level_required || 1);
+        case t.guild === 'mercantile' && t.type === 'earn_coins': return lvl('mercantile') >= 1;
         default: return true;
       }
     } catch (e) { return true; }
@@ -555,11 +573,12 @@ const Systems = {
     { key: 'fishing_derby', name: 'Fishing Derby', icon: '🐟', skill: 'fishing' },
   ],
 
-  /** Ticket chance bonus from worn carnival gear (Carnival Cape: +5%). */
+  /** Ticket chance bonus from worn carnival gear (Carnival Cape: +5%) + Fairgrounds bonus. */
   carnivalTierBonus() {
     const cape = State.equippedItem('cape');
     const eq = cape ? GameData.equipment[cape] : null;
-    return eq && eq.cape_skill === 'carnival' ? (eq.cape_bonus || 0) : 0;
+    const gear = eq && eq.cape_skill === 'carnival' ? (eq.cape_bonus || 0) : 0;
+    return gear + (State.townBonus('idle_ticket_bonus_chance') || 0);
   },
 
   startCarnivalSession(gameKey) {
@@ -575,6 +594,12 @@ const Systems = {
 
   RING_TOSS_COOLDOWN_MS: 10 * 60 * 1000,
 
+  /** Fairgrounds cooldown multiplier (10 min base → 7.5/5 min by tier). */
+  carnivalCooldownMs() {
+    const mult = State.townBonusProduct('carnival_cooldown_mult', 'raw');
+    return Math.round(this.RING_TOSS_COOLDOWN_MS * (mult === 1 ? 1 : mult));
+  },
+
   /** Play Ring Toss: hit the target zone (position 0..1) for tickets. */
   playRingToss(position, hard) {
     const st = State.state;
@@ -584,7 +609,7 @@ const Systems = {
     const won = hard ? (position >= 0.52 && position <= 0.57) : (position >= 0.45 && position <= 0.55);
     const tickets = won ? (hard ? 7 : 2) : 0;
     if (tickets > 0) State.addItem('carnival_ticket', tickets);
-    st.carnivalCooldowns.ring_toss = now + this.RING_TOSS_COOLDOWN_MS;
+    st.carnivalCooldowns.ring_toss = now + this.carnivalCooldownMs();
     State.save();
     return { ok: true, won, tickets };
   },
