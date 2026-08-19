@@ -26,11 +26,15 @@ const GameData = {
   itemNameSource: {},
 
   async loadAll() {
-    const base = 'data/';
-    const j = async p => fetch(base + p).then(r => {
+    // Embedded bundle first (lets the game run from file:// with no server);
+    // fall back to fetching the JSON files when the bundle is absent.
+    const j = async p => {
+      if (typeof GAME_BUNDLE !== 'undefined' && GAME_BUNDLE[p] != null) return GAME_BUNDLE[p];
+      const base = 'data/';
+      const r = await fetch(base + p);
       if (!r.ok) throw new Error('Failed to load ' + p);
       return r.json();
-    });
+    };
 
     const [xp, ores, gems, trees, logs, fish, runes, spells, bones, agility, thieving,
       marketplace, quests, equipment, enemies, fishingSkill,

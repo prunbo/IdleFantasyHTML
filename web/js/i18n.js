@@ -40,6 +40,11 @@ const I18n = {
   },
 
   async _fetch(tag) {
+    // Prefer the embedded bundle (works from file://); fall back to HTTP fetch
+    if (typeof GAME_BUNDLE !== 'undefined') {
+      const hit = GAME_BUNDLE['i18n/' + tag + '.json'];
+      if (hit != null) return hit;
+    }
     try {
       const r = await fetch('i18n/' + tag + '.json');
       if (r.ok) return await r.json();

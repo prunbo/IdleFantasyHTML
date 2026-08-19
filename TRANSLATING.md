@@ -110,8 +110,12 @@ python3 scripts/build_web_locales.py
 
 from the repo root to regenerate `web/i18n/<locale>.json` from the Android
 string resources (plus the few web-only strings in `web/i18n/web-keys.json`).
-Run it after Weblate merges or after editing `web/` code, and commit the
-generated files together with your change.
+Then refresh the embedded copy the browser game ships (needed for the
+open-`index.html`-directly boot) and commit both together with your change:
+
+```bash
+python3 scripts/build_web_bundle.py
+```
 
 ---
 

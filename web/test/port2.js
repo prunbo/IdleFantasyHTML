@@ -219,10 +219,13 @@ function check(name, cond) {
     const r = Systems.Expeditions.start('copper_caverns');
     check('copper caverns starts at mining 1', !!r.ok);
     check('session kind expedition', Engine.session().kind === 'expedition');
-    // Inject 5 notes worth and collect
+    // Inject exactly 5 notes (strip any the sim randomly rolled) and collect
     const sess = Engine.session();
+    sess.frames.forEach(f => {
+      for (const k of Object.keys(f.items)) if (k.startsWith('note_')) delete f.items[k];
+      f.xpBySkill = { mining: f.xpGain };
+    });
     for (let i = 0; i < 5; i++) sess.frames[i].items['note_copper_caverns'] = 1;
-    sess.frames.forEach(f => { f.xpBySkill = { mining: f.xpGain }; });
     sess.startedAt -= 10 * 24 * 3600000; sess.endsAt = 0;
     const sum = Engine.collect();
     check('5 notes found', sum.notes === 5);

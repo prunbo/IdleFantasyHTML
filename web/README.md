@@ -7,13 +7,25 @@ Same game data, same combat math — playable in any browser.
 
 ## Play it
 
-Serve this `web/` folder over HTTP (fetching the JSON game data requires it — opening
-`index.html` straight from disk won't work):
+**No install, no server:** just open `web/index.html` in any browser. All game data
+and translations ship embedded in `js/game-bundle.js`, so double-clicking the file
+works straight from disk (`file://`).
+
+Serving over HTTP works exactly the same (and is only needed if you want to edit the
+JSON under `data/`/`i18n/` live — browsers block pages from reading loose JSON files
+via `fetch()` on `file://`, which is why the embedded bundle exists):
 
 ```bash
 cd web
-python3 -m http.server 8080
+python3 -m http.server 8080    # or: npx serve, VS Code Live Server, any static host
 # open http://localhost:8080
+```
+
+After changing the JSON data or the locale files, re-embed them:
+
+```bash
+python3 scripts/build_web_locales.py   # only if strings under app/src/main/res changed
+python3 scripts/build_web_bundle.py
 ```
 
 Progress is saved automatically to your browser's `localStorage` (autosave every 10 s
@@ -70,8 +82,9 @@ web/
 ├── i18n/               # generated locales (scripts/build_web_locales.py)
 ├── js/
 │   ├── util.js         # helpers (rng, formatting, tier lookups)
-│   ├── i18n.js         # localized strings (loads i18n/<locale>.json)
-│   ├── data.js         # loads the game's original JSON assets, builds lookups
+│   ├── game-bundle.js  # GENERATED: all data + locales embedded (file:// boot; build_web_bundle.py)
+│   ├── i18n.js         # localized strings (bundle-first, falls back to fetching i18n/<locale>.json)
+│   ├── data.js         # loads the game's original JSON assets (bundle-first), builds lookups
 │   ├── sim.js          # ported simulators (XP table, gathering, crafting, combat, mercantile, skilling dungeons, bosses)
 │   ├── state.js        # player state, equipment bonuses, town/church/inn/expedition/seasonal state, localStorage save/load
 │   ├── systems.js      # farming, slayer, guilds, carnival, tower, pets
@@ -87,10 +100,11 @@ web/
 Run the tests with Node (no dependencies):
 
 ```bash
-node test/smoke.js    # simulators, engine, shop, quests, save round-trip
-node test/systems.js  # farming, herblore, slayer, guilds, carnival, tower, pets
-node test/port2.js    # construction, mercantile, church, builder, inn workers, expeditions, bosses, seasonal, i18n
-node test/ui.js       # every screen rendered against a virtual DOM
+node test/smoke.js        # simulators, engine, shop, quests, save round-trip
+node test/systems.js      # farming, herblore, slayer, guilds, carnival, tower, pets
+node test/port2.js        # construction, mercantile, church, builder, inn workers, expeditions, bosses, seasonal, i18n
+node test/ui.js           # every screen rendered against a virtual DOM
+node test/file-protocol.js# boots with NO fetch/server, like double-clicking index.html
 ```
 
 After changing the Android string resources (or adding `t('…')` lookups to the

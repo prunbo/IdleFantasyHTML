@@ -11,7 +11,7 @@
     document.getElementById('screen').innerHTML =
       '<div class="card"><h2>⚠️ Failed to load game data</h2><p class="card-sub">' +
       Util.esc(String(e.message)) +
-      '</p><p class="card-sub">This game must be served over HTTP (e.g. <code>python3 -m http.server</code> from the web/ folder) — opening index.html directly from disk blocks the data files.</p></div>';
+      '</p><p class="card-sub">The game data normally ships embedded in <code>js/game-bundle.js</code>. If that file is missing, serve the web/ folder over HTTP instead (e.g. <code>python3 -m http.server</code> from web/) — browsers block direct JSON reads from <code>file://</code> pages.</p></div>';
     return;
   }
 
