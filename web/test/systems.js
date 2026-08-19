@@ -31,7 +31,9 @@ const check = (name, cond, extra) => {
   const State = require('../js/state.js').State;
   global.State = State;
   const SystemsMod = require('../js/systems.js');
-  global.Systems = SystemsMod.Systems;
+  global.Systems = SystemsMod.Systems;   // systems-town.js extends it at load time
+  require('../js/systems-town.js');
+  global.I18n = require('../js/i18n.js').I18n;
   const Engine = require('../js/engine.js').Engine;
   global.Engine = Engine;
 
@@ -46,7 +48,7 @@ const check = (name, cond, extra) => {
   check('200 guild quests', Object.keys(GD.guildQuests).length === 200);
   check('439 guild dailies', GD.guildDailies.length === 439);
   check('23 slayer tasks', Object.keys(GD.slayerTasks).length === 23);
-  check('skill defs now 21', GD.skillDefs.length === 21);
+  check('skill defs now 23', GD.skillDefs.length === 23);
   check('new skills present', State.level('farming') === 1 && State.level('herblore') === 1 && State.level('slayer') === 1);
 
   console.log('— pets: boosts & drops —');

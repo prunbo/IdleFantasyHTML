@@ -32,11 +32,12 @@ const Sim = {
 
   xpForLevel(level) { return GameData.xpTable[String(Util.clamp(level, 1, 99))]; },
 
-  /** Agility bonus: sessions scale from 60 min at lvl 1 to 40 min at lvl 99. */
-  sessionDurationMs(agilityLevel) {
+  /** Agility bonus: sessions scale from 60 min at lvl 1 to 40 min at lvl 99.
+   *  `durationMult` (Chronos Spire) further scales the wall-clock time. */
+  sessionDurationMs(agilityLevel, durationMult = 1) {
     const fraction = Util.clamp(agilityLevel - 1, 0, 98) / 98;
     const maxReduction = 20.0;
-    const minutes = 60.0 - maxReduction * fraction;
+    const minutes = (60.0 - maxReduction * fraction) * Util.clamp(durationMult, 0.5, 1.0);
     return Math.max(1, Math.round(minutes)) * 60000;
   },
 
@@ -450,6 +451,263 @@ const Sim = {
     }
     const ratio = pool / Math.max(1, weightedDPM * 60);
     return ratio >= 1.2 ? 'LIKELY' : ratio >= 0.6 ? 'RISKY' : 'UNLIKELY';
+  },
+
+  /* -------------------------- Mercantile routes ------------------------- */
+
+  /**
+   * Port of MercantileSimulator: a 60-frame caravan run. One coin total is
+   * rolled from the route's coin range × 60 and split across the frames; each
+   * frame rolls XP from the route's XP range for the starting level.
+   */
+  simulateMercantile(route, startXp, opts) {
+    const level = this.levelForXp(startXp);
+    const xpRange = Util.tierFor(route.xp_ranges, level);
+    const coinRange = Util.tierFor(route.coin_ranges, level);
+    let currentXp = startXp;
+    const frames = [];
+    const totalCoins = Util.randInt(coinRange.min * 60, coinRange.max * 60);
+    const baseShare = Math.floor(totalCoins / 60);
+    const remainder = totalCoins % 60;
+
+    for (let minute = 1; minute <= 60; minute++) {
+      const xpBefore = currentXp;
+      const levelBefore = this.levelForXp(currentXp);
+      const xpGain = Util.randInt(xpRange.min, xpRange.max);
+      currentXp += xpGain;
+      const levelAfter = this.levelForXp(currentXp);
+      const coinReturn = baseShare + (minute <= remainder ? 1 : 0);
+      const items = { coins: coinReturn };
+      this._petRoll(items, opts.petDrop);
+      frames.push(this._frame(minute, xpBefore, currentXp, levelBefore, levelAfter, items, xpGain));
+    }
+    return this._result(frames, opts.agilityLevel);
+  },
+
+  /* ------------------------ Skilling dungeons ------------------------ */
+
+  /**
+   * Port of SkillingDungeonSimulator: like gathering, but XP and the drop
+   * table come from the expedition's tiered ranges, and each frame rolls a
+   * lore note (`note_<key>`) handled at collect time.
+   */
+  simulateSkillingDungeon(dungeonKey, dungeon, startXp, opts) {
+    const eff = opts.toolEfficiency || 1;
+    const petBoost = opts.petBoostPct || 0;
+    let currentXp = startXp;
+    const frames = [];
+    const noteKey = 'note_' + dungeonKey;
+
+    for (let minute = 1; minute <= 60; minute++) {
+      const xpBefore = currentXp;
+      const levelBefore = this.levelForXp(currentXp);
+      const xpRange = Util.tierFor(dungeon.xp_ranges, levelBefore);
+      const baseXp = Math.floor(Util.randInt(xpRange.min, xpRange.max) * eff);
+      const xpGain = petBoost > 0 ? Math.floor(baseXp * (1 + petBoost / 100)) : baseXp;
+      currentXp += xpGain;
+      const levelAfter = this.levelForXp(currentXp);
+
+      const dropTable = dungeon.drop_tables && Object.keys(dungeon.drop_tables).length
+        ? Util.tierFor(dungeon.drop_tables, levelBefore) : [];
+      const items = {};
+      for (const entry of dropTable)
+        if (Math.random() < entry.chance) items[entry.item] = (items[entry.item] || 0) + 1;
+      if (Math.random() < (dungeon.note_chance_per_frame || 0))
+        items[noteKey] = (items[noteKey] || 0) + 1;
+      this._petRoll(items, opts.petDrop);
+
+      frames.push(this._frame(minute, xpBefore, currentXp, levelBefore, levelAfter, items, xpGain));
+    }
+    return this._result(frames, opts.agilityLevel);
+  },
+
+  /* ----------------------------- Raid bosses ----------------------------- */
+
+  /**
+   * Port of CombatSimulator.simulateBoss: a single fight vs one big HP pool.
+   * The fight runs for at most `duration_minutes` frames; if neither side is
+   * dead by then a DPS-comparison fallback decides the winner. Win/lose loot
+   * and XP rewards are attached to the final frame.
+   */
+  simulateBoss(boss, bossKey, ctx) {
+    const speed = Util.clamp(ctx.attackSpeedSec || this.BASE_ATTACK_SPEED_SEC, 1.2, this.BASE_ATTACK_SPEED_SEC);
+    const ticksPerFrame = Math.round(60 / speed);
+    const eatFraction = 0.5;
+
+    const effAttack = ctx.attack + (ctx.potions?.attack || 0);
+    const effStrength = ctx.strength + (ctx.potions?.strength || 0);
+    const effDefence = ctx.defense + (ctx.potions?.defense || 0) + (ctx.blessingDefBonus || 0);
+    const effRanged = ctx.ranged + (ctx.potions?.ranged || 0);
+    const effMagic = ctx.magic + (ctx.potions?.magic || 0);
+
+    let playerMax, effAtk, bossDefence;
+    if (ctx.style === 'ranged') {
+      playerMax = this._rangedMaxHit(effRanged, ctx.rangedStrBonus, 0);
+      effAtk = effRanged + ctx.weaponAtkBonus;
+      bossDefence = boss.defensive_stats.ranged_defense;
+    } else if (ctx.style === 'magic') {
+      playerMax = Math.max(1, ctx.spellMaxHit);
+      effAtk = effMagic + ctx.weaponAtkBonus;
+      bossDefence = boss.defensive_stats.magic_defense;
+    } else {
+      const effStr = effStrength + ctx.weaponStrBonus;
+      playerMax = Math.max(1, Math.floor(1 + effStr * (ctx.weaponStrBonus + 64) / 640));
+      effAtk = effAttack + ctx.weaponAtkBonus;
+      bossDefence = ctx.style === 'strength' ? boss.defensive_stats.strength_defense : boss.defensive_stats.attack_defense;
+    }
+
+    const playerHitChance = Util.clamp(
+      effAtk > bossDefence ? 1 - bossDefence / (2 * Math.max(1, effAtk)) : effAtk / (2 * Math.max(1, bossDefence)),
+      0.10, 0.95);
+
+    const bossEffStr = boss.combat_stats.strength_level + boss.combat_stats.strength_bonus;
+    const bossMax = bossEffStr === 0 ? 0 : Math.max(0, Math.floor(1 + bossEffStr * (boss.combat_stats.strength_bonus + 64) / 640));
+    const bossEffAtk = boss.combat_stats.attack_level + boss.combat_stats.attack_bonus;
+    const bossHitChance = Util.clamp(
+      bossEffAtk > effDefence ? 1 - effDefence / (2 * Math.max(1, bossEffAtk)) : bossEffAtk / (2 * Math.max(1, effDefence)),
+      0.10, 0.95);
+
+    const maxHp = ctx.hitpoints * 10;
+    let currentHp = maxHp;
+    let currentBossHp = boss.hp;
+    const maxFrames = boss.duration_minutes;
+    const frames = [];
+    let won = false;
+
+    const foodSupply = { ...ctx.food };
+    const foodOrder = Object.keys(ctx.food)
+      .filter(k => GameData.foodHeals[k] != null)
+      .sort((a, b) => GameData.foodHeals[b] - GameData.foodHeals[a]);
+    let totalFoodEaten = 0;
+
+    const arrowTiers = ctx.arrows ? Object.entries(ctx.arrows) : [];
+    let arrowIdx = 0;
+    let arrowsLeft = arrowTiers[0] ? arrowTiers[0][1] : (ctx.style === 'ranged' ? 0 : Infinity);
+    let runesLeft = ctx.runes != null ? ctx.runes : Infinity;
+    let bossClock = 0;
+
+    outer:
+    while (frames.length < maxFrames) {
+      const pHits = [], eHits = [], pHeals = [];
+      const frameFood = {}, frameArrows = {};
+      let frameRunesUsed = 0;
+
+      for (let tick = 0; tick < ticksPerFrame; tick++) {
+        let pDmg = 0;
+        if (ctx.style === 'ranged') {
+          while (arrowsLeft === 0 && arrowIdx + 1 < arrowTiers.length) {
+            arrowIdx++; arrowsLeft = arrowTiers[arrowIdx][1];
+          }
+          if (arrowsLeft > 0) {
+            const key = arrowTiers[arrowIdx][0];
+            arrowsLeft--;
+            frameArrows[key] = (frameArrows[key] || 0) + 1;
+            playerMax = this._rangedMaxHit(effRanged, ctx.rangedStrBonus, GameData.arrowBonuses[key] || 0);
+            if (Math.random() < playerHitChance) pDmg = Util.randInt(0, playerMax);
+          }
+        } else if (ctx.style === 'magic') {
+          if (runesLeft >= ctx.runeCost) {
+            if (ctx.runeKey) { runesLeft -= ctx.runeCost; frameRunesUsed++; }
+            if (Math.random() < playerHitChance) pDmg = Util.randInt(0, playerMax);
+          }
+        } else {
+          if (Math.random() < playerHitChance) pDmg = Util.randInt(0, playerMax);
+        }
+
+        currentBossHp -= pDmg;
+        pHits.push(pDmg);
+        if (currentBossHp <= 0) {
+          won = true;
+          frames.push(this._bossFrame(frames.length, bossKey, pHits, eHits, pHeals, currentHp, maxHp,
+            frameFood, frameArrows, ctx.runeKey, frameRunesUsed, ctx.runeCost, 1));
+          break outer;
+        }
+
+        bossClock += speed;
+        let bDmg = 0;
+        while (bossClock >= this.BASE_ATTACK_SPEED_SEC - 1e-9) {
+          bossClock -= this.BASE_ATTACK_SPEED_SEC;
+          if (Math.random() < bossHitChance) bDmg += Util.randInt(0, bossMax);
+        }
+        currentHp = Math.max(0, currentHp - bDmg);
+        eHits.push(bDmg);
+
+        // Death is checked before eating (food can't revive a 0-HP player)
+        if (currentHp <= 0) {
+          pHeals.push(0);
+          frames.push(this._bossFrame(frames.length, bossKey, pHits, eHits, pHeals, 0, maxHp,
+            frameFood, frameArrows, ctx.runeKey, frameRunesUsed, ctx.runeCost, 0));
+          break outer;
+        }
+
+        const hpBeforeEating = currentHp;
+        let ate = true;
+        while (ate && totalFoodEaten < 300) {
+          ate = false;
+          const foodKey = foodOrder.find(k => (foodSupply[k] || 0) > 0);
+          if (!foodKey) break;
+          const heal = GameData.foodHeals[foodKey];
+          if (currentHp <= bossMax || currentHp <= maxHp * eatFraction) {
+            currentHp = Math.min(maxHp, currentHp + heal);
+            foodSupply[foodKey]--;
+            frameFood[foodKey] = (frameFood[foodKey] || 0) + 1;
+            totalFoodEaten++;
+            ate = true;
+          }
+        }
+        pHeals.push(currentHp - hpBeforeEating);
+      }
+
+      if (frames.length < maxFrames && currentHp > 0 && currentBossHp > 0) {
+        frames.push(this._bossFrame(frames.length, bossKey, pHits, eHits, pHeals, currentHp, maxHp,
+          frameFood, frameArrows, ctx.runeKey, frameRunesUsed, ctx.runeCost, 0));
+      }
+    }
+
+    // DPS fallback when the frame cap is hit with neither side dead
+    if (frames.length === 0 || (frames[frames.length - 1].kills === 0 && currentBossHp > 0 && currentHp > 0)) {
+      const playerDps = (playerMax / 2) * playerHitChance / speed;
+      const bossDps = (bossMax / 2) * bossHitChance / this.BASE_ATTACK_SPEED_SEC;
+      won = playerDps > 0 && bossDps > 0
+        ? (boss.hp / playerDps) <= (maxHp / bossDps)
+        : playerDps >= bossDps;
+      const stub = this._bossFrame(frames.length, bossKey, [], [], [], won ? 1 : 0, maxHp, {}, {}, null, 0, 1, won ? 1 : 0);
+      if (frames.length === 0) frames.push(stub); else frames[frames.length - 1] = stub;
+    }
+
+    // Attach loot + XP rewards to the final frame (win: full; loss: 10% XP, no loot)
+    const items = {};
+    const xpBySkill = {};
+    if (won) {
+      items.coins = Util.randInt(boss.common_loot.coins_min, boss.common_loot.coins_max);
+      for (const [item, range] of Object.entries(boss.common_loot.items || {}))
+        items[item] = range.min >= range.max ? range.min : Util.randInt(range.min, range.max);
+      for (const rare of (boss.rare_drops || []))
+        if (Math.random() < rare.chance) items[rare.item] = (items[rare.item] || 0) + 1;
+      if (boss.pet && Math.random() < boss.pet.chance) items[boss.pet.id] = 1;
+      for (const [skill, xp] of Object.entries(boss.xp_rewards || {})) xpBySkill[skill] = xp;
+    } else {
+      for (const [skill, xp] of Object.entries(boss.xp_rewards || {})) xpBySkill[skill] = Math.max(1, Math.floor(xp * 0.1));
+    }
+    const last = frames[frames.length - 1];
+    const totalXp = Object.values(xpBySkill).reduce((a, b) => a + b, 0);
+    last.xpGain = totalXp;
+    last.items = items;
+    last.xpBySkill = xpBySkill;
+    last.killsByEnemy = won ? { [bossKey]: 1 } : {};
+    last.combatStyle = ctx.style;
+    return frames;
+  },
+
+  _bossFrame(minute, bossKey, pHits, eHits, pHeals, hpAfter, maxHp, frameFood, frameArrows, runeKey, frameRunesUsed, runeCost, kills) {
+    return {
+      minute, xpGain: 0, xpBefore: 0, xpAfter: 0, levelBefore: 0, levelAfter: 0,
+      kills, killsByEnemy: {}, died: hpAfter <= 0,
+      enemyKey: bossKey, playerHits: pHits, enemyHits: eHits, playerHeals: pHeals,
+      hpAfter, maxHp, items: {}, xpBySkill: {},
+      foodConsumed: frameFood, arrowsConsumed: frameArrows,
+      runesConsumed: runeKey && frameRunesUsed > 0 ? { [runeKey]: frameRunesUsed * runeCost } : {},
+    };
   },
 
   /* ----------------------------- Carnival ----------------------------- */

@@ -100,6 +100,25 @@ has established equivalents for idle RPG terminology:
 
 ---
 
+## Web edition
+
+The browser port (`web/`) consumes the same translations: run
+
+```bash
+python3 scripts/build_web_locales.py
+```
+
+from the repo root to regenerate `web/i18n/<locale>.json` from the Android
+string resources (plus the few web-only strings in `web/i18n/web-keys.json`).
+Then refresh the embedded copy the browser game ships (needed for the
+open-`index.html`-directly boot) and commit both together with your change:
+
+```bash
+python3 scripts/build_web_bundle.py
+```
+
+---
+
 ## Questions?
 
 Open a Q&A discussion on the project repository.

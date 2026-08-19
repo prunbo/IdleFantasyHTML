@@ -100,6 +100,8 @@ const check = (name, cond) => { if (cond) console.log('  ✓ ' + name); else { c
   const State = require('../js/state.js').State;
   global.State = State;
   global.Systems = require('../js/systems.js').Systems;
+  require('../js/systems-town.js');
+  global.I18n = require('../js/i18n.js').I18n;
   const Engine = require('../js/engine.js').Engine;
   global.Engine = Engine;
   const UI = require('../js/ui.js').UI;
@@ -174,13 +176,39 @@ const check = (name, cond) => { if (cond) console.log('  ✓ ' + name); else { c
   Engine.collect();
   check('dungeon collect ok', true);
 
-  console.log('— render: town (all four sections) —');
+  console.log('— render: town (all nine sections) —');
   UI.tab = 'town';
   UI.townView = 'slayer'; UI.render();
   UI.townView = 'guilds'; UI.render();
+  // Church with + without an active blessing
+  UI.townView = 'church'; UI.render();
+  State.addItem('bones', 50);
+  Systems.Church.activate('blessed_focus');
+  UI.render();
+  UI.townView = 'inn'; UI.render();
+  // hire a worker + assign screen
+  State.state.coins = 60000;
+  Systems.Inn.hire('apprentice');
+  UI.render();
+  UI.townView = 'builder'; UI.render();
+  State.state.skills.construction.xp = Sim.xpForLevel(40);
+  UI.render();
+  UI.townView = 'expeditions'; UI.render();
+  UI.townView = 'event'; UI.render();   // real event may or may not be active
   UI.townView = 'carnival'; UI.render();
   UI.townView = 'tower'; UI.render();
   check('all town sections render', true);
+
+  console.log('— render: dungeons with raid bosses —');
+  UI.tab = 'dungeons'; UI.render();
+  const html = JSON.stringify(byId.screen._innerHTML) + byId.screen.children.map(c => c.tagName).join(',');
+  check('boss list present', byId.screen.children.length > 0);
+
+  console.log('— localized render —');
+  await I18n.load('de');
+  UI.tab = 'town'; UI.townView = 'church'; UI.render();
+  check('renders under a locale', byId.screen.children.length > 0);
+  await I18n.load('en');
 
   console.log('— render: farming + herblore + pets —');
   State.addItem('potato_seed', 10);

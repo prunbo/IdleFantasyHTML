@@ -1,0 +1,106 @@
+{
+  "wooden_rack": {
+    "display_name": "Wooden Rack",
+    "level_required": 1,
+    "materials": { "plank": 2, "iron_nail": 5 },
+    "output_quantity": 1,
+    "xp_per_item": 30.0,
+    "time_per_item": 60
+  },
+  "wooden_shelf": {
+    "display_name": "Wooden Shelf",
+    "level_required": 10,
+    "materials": { "plank": 3, "iron_nail": 8 },
+    "output_quantity": 1,
+    "xp_per_item": 50.0,
+    "time_per_item": 60
+  },
+  "carved_stone": {
+    "display_name": "Carved Stone",
+    "level_required": 15,
+    "materials": { "stone": 1 },
+    "output_quantity": 1,
+    "xp_per_item": 25.0,
+    "time_per_item": 60
+  },
+  "oak_table": {
+    "display_name": "Oak Table",
+    "level_required": 20,
+    "materials": { "oak_plank": 4, "iron_nail": 8 },
+    "output_quantity": 1,
+    "xp_per_item": 80.0,
+    "time_per_item": 60
+  },
+  "oak_bookshelf": {
+    "display_name": "Oak Bookshelf",
+    "level_required": 30,
+    "materials": { "oak_plank": 5, "steel_nail": 10 },
+    "output_quantity": 1,
+    "xp_per_item": 120.0,
+    "time_per_item": 60
+  },
+  "stone_block": {
+    "display_name": "Stone Block",
+    "level_required": 40,
+    "materials": { "carved_stone": 2 },
+    "output_quantity": 1,
+    "xp_per_item": 60.0,
+    "time_per_item": 60
+  },
+  "willow_cabinet": {
+    "display_name": "Willow Cabinet",
+    "level_required": 40,
+    "materials": { "willow_plank": 5, "steel_nail": 10 },
+    "output_quantity": 1,
+    "xp_per_item": 165.0,
+    "time_per_item": 60
+  },
+  "maple_dresser": {
+    "display_name": "Maple Dresser",
+    "level_required": 55,
+    "materials": { "maple_plank": 6, "steel_nail": 12 },
+    "output_quantity": 1,
+    "xp_per_item": 220.0,
+    "time_per_item": 60
+  },
+  "yew_wardrobe": {
+    "display_name": "Yew Wardrobe",
+    "level_required": 65,
+    "materials": { "yew_plank": 6, "mithril_nail": 12 },
+    "output_quantity": 1,
+    "xp_per_item": 285.0,
+    "time_per_item": 60
+  },
+  "magic_throne": {
+    "display_name": "Magic Throne",
+    "level_required": 75,
+    "materials": { "magic_plank": 8, "mithril_nail": 15 },
+    "output_quantity": 1,
+    "xp_per_item": 360.0,
+    "time_per_item": 60
+  },
+  "redwood_bench": {
+    "display_name": "Redwood Bench",
+    "level_required": 80,
+    "materials": { "redwood_plank": 6, "runite_nail": 10 },
+    "output_quantity": 1,
+    "xp_per_item": 450.0,
+    "time_per_item": 60
+  },
+  "redwood_bookcase": {
+    "display_name": "Redwood Bookcase",
+    "level_required": 88,
+    "materials": { "redwood_plank": 8, "runite_nail": 12 },
+    "output_quantity": 1,
+    "xp_per_item": 560.0,
+    "time_per_item": 60
+  },
+  "redwood_grand_bed": {
+    "display_name": "Redwood Grand Bed",
+    "level_required": 95,
+    "materials": { "redwood_plank": 10, "runite_nail": 15 },
+    "output_quantity": 1,
+    "xp_per_item": 700.0,
+    "time_per_item": 60
+  }
+}

@@ -49,6 +49,32 @@ const State = {
         tierCounts: {},        // "guild:tier" -> dailies claimed this tier
         generatedAt: 0,
       },
+      // Builder's Workshop — building key -> tier (1..3)
+      town: { buildingTiers: {} },
+      // Church — active timed blessing
+      church: { blessingKey: null, blessingExpiresAt: 0 },
+      // Inn — hired workers (slot 1: Long Laborer; slot 2: Apprentice/Journeyman/Master)
+      inn: {
+        workers: { 1: null, 2: null },   // slot -> {tier, name, session}
+        dailyFoods: { generatedAt: 0, items: [] },
+      },
+      // Expeditions — lore notes found + pity counter per skilling dungeon
+      expeditions: { notes: {}, pityRuns: {} },
+      // Seasonal events
+      seasonal: {
+        tokensByEvent: {},       // event id -> tokens
+        bountyEventId: null, bountySlots: [], bountyProgress: {},
+        bountyCooldowns: {},     // slot index -> cooldown-until ms
+        bountyDailyStamp: 0,
+        rewardTiersClaimed: {},  // event id -> [tokens]
+        marketPurchases: {},     // "event:offer" -> count
+        minigameCooldownAt: 0, minigameEasyMode: false,
+        bannersEarned: [],       // event ids
+      },
+      // 48h 2x XP boost (shop + seasonal reward tiers)
+      xpBoostUntil: 0,
+      // UI language (BCP-47 tag, null = English/auto)
+      lang: null,
       log: [],
     };
   },
@@ -81,9 +107,16 @@ const State = {
       data.guilds = { ...def.guilds, ...data.guilds };
       data.slayer = { ...def.slayer, ...data.slayer };
       data.tower = { ...def.tower, ...data.tower };
+      data.town = { ...def.town, ...data.town };
+      data.church = { ...def.church, ...data.church };
+      data.inn = { ...def.inn, ...data.inn };
+      data.expeditions = { ...def.expeditions, ...data.expeditions };
+      data.seasonal = { ...def.seasonal, ...data.seasonal };
+      if (data.xpBoostUntil == null) data.xpBoostUntil = 0;
       if (!Array.isArray(data.farmingPatches)) data.farmingPatches = def.farmingPatches;
       while (data.farmingPatches.length < 5) data.farmingPatches.push(null);
       if (!Array.isArray(data.petsOwned)) data.petsOwned = [];
+      if (!Array.isArray(data.unlockedDungeonsExtra)) data.unlockedDungeonsExtra = [];
       this.state = data;
       return true;
     } catch (e) { return false; }
@@ -253,19 +286,92 @@ const State = {
     return true;
   },
 
-  /** Farming patch count: 3 (lvl 1-19), 4 (20-39), 5 (40+). */
+  /** Farming patch count: 3 (lvl 1-19), 4 (20-39), 5 (40+), + Garden building tiers. */
   patchCount() {
     const lvl = this.level('farming');
-    return lvl >= 40 ? 5 : lvl >= 20 ? 4 : 3;
+    let n = lvl >= 40 ? 5 : lvl >= 20 ? 4 : 3;
+    n += (this.townBonus('farm_plots') || 0);
+    return Math.min(n, this.state.farmingPatches.length);
   },
 
   /** Effective max HP including tower milestone bonuses (+5 hp levels each). */
   effectiveHpLevel() { return this.level('hitpoints') + (this.state.tower?.hpBonus || 0); },
 
-  /** A dungeon is visible if not gated, or unlocked via the magic bean. */
+  /* ------------------------- town building bonuses ------------------------- */
+
+  /** Summed bonus of one type across owned building tiers (port of TownRepository). */
+  townBonus(bonusKey, how = 'sum') {
+    const tiers = this.state.town?.buildingTiers || {};
+    const values = [];
+    for (const [building, tier] of Object.entries(tiers)) {
+      if (!tier) continue;
+      const def = GameData.townBuildings[building];
+      const b = def?.tiers?.[tier - 1]?.bonuses?.[bonusKey];
+      if (b != null) values.push(b);
+    }
+    if (!values.length) return 0;
+    return how === 'multiply' ? values.reduce((a, b) => a * b, 1) : values.reduce((a, b) => a + b, 0);
+  },
+
+  /** Multiplied-style bonuses (worker_xp, guild_quest_reduction, carnival cooldown). */
+  townBonusProduct(bonusKey, mode) {
+    const tiers = this.state.town?.buildingTiers || {};
+    let mult = 1;
+    for (const [building, tier] of Object.entries(tiers)) {
+      if (!tier) continue;
+      const def = GameData.townBuildings[building];
+      const b = def?.tiers?.[tier - 1]?.bonuses?.[bonusKey];
+      if (b != null) mult *= mode === 'raw' ? b : mode === true || mode === 'invert' ? 1 - b : 1 + b;
+    }
+    return mult;
+  },
+
+  /** Player session duration multiplier from the Chronos Spire (0.5 floor). */
+  playerSessionDurationMultiplier() { return Math.max(0.5, 1 - (this.townBonus('player_session_speed_reduction') || 0)); },
+
+  /** Secondary material preservation chance from the Artisan's Workshop. */
+  materialSaveChance() { return this.townBonus('secondary_material_save_chance') || 0; },
+
+  /** Blessing duration in ms: 24h base + Church building tiers. */
+  blessingDurationMs() { return 24 * 3600000 + (this.townBonus('extra_blessing_hrs') || 0) * 3600000; },
+
+  /* ------------------------------ church ------------------------------ */
+
+  /** 2x XP boost from the shop / seasonal reward tiers (48h). */
+  xpBoostActive() { return (this.state.xpBoostUntil || 0) > Date.now(); },
+
+  activeBlessing() {
+    const ch = this.state.church || {};
+    if (!ch.blessingKey || (ch.blessingExpiresAt || 0) <= Date.now()) return null;
+    return GameData.blessing(ch.blessingKey);
+  },
+
+  blessingXpMultiplier() {
+    const b = this.activeBlessing();
+    return b && b.type === 'XP' ? b.mag : 1;
+  },
+
+  blessingDefBonus() {
+    const b = this.activeBlessing();
+    return b && b.type === 'DEFENSE' ? b.mag : 0;
+  },
+
+  blessingCoinMultiplier() {
+    const b = this.activeBlessing();
+    return b && b.type === 'COINS' ? 1 + b.mag : 1;
+  },
+
+  /** Total bone XP on hand (bigger bones count for more). */
+  totalBoneXp() {
+    const BONE_XP = { bones: 10, big_bones: 20, giant_bones: 40, dragon_bone: 80 };
+    return Object.entries(BONE_XP).reduce((s, [k, xp]) => s + (this.count(k) || 0) * xp, 0);
+  },
+
+  /** A dungeon is visible unless lore-gated (expedition notes / magic bean unlocks those). */
   dungeonUnlocked(key) {
-    if (key !== 'cloud_kingdom') return true;
-    return (this.state.unlockedDungeonsExtra || []).includes('cloud_kingdom');
+    const d = GameData.dungeons[key];
+    if (!d || !d.lore_unlock_only) return true;
+    return (this.state.unlockedDungeonsExtra || []).includes(key);
   },
 
   /** Summed combat bonuses from all currently equipped gear. */
@@ -309,6 +415,7 @@ const State = {
       magic: this.level('magic'),
       agilityLevel: this.level('agility'),
       potions: {},
+      blessingDefBonus: this.blessingDefBonus(),
     };
 
     if (style === 'ranged') {

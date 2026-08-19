@@ -85,11 +85,11 @@ const UI = {
     btn.disabled = !Engine.isComplete(sess);
     btn.textContent = Engine.isComplete(sess) ? '📦 Collect rewards' : '⏳ In progress…';
 
-    // Live combat feed + HP bar for dungeon/tower sessions
+    // Live combat feed + HP bar for dungeon/tower/boss sessions
     const hpEl = document.getElementById('combat-hp');
     const feedEl = document.getElementById('combat-feed');
     if (hpEl && feedEl) {
-      if (sess.kind === 'dungeon' || sess.kind === 'tower') {
+      if (sess.kind === 'dungeon' || sess.kind === 'tower' || sess.kind === 'boss') {
         const feed = this._combatFeed(sess);
         hpEl.innerHTML = feed.hpBar;
         feedEl.innerHTML = feed.html;
@@ -111,6 +111,65 @@ const UI = {
     // Save indicator
     const saveEl = document.getElementById('save-ind');
     if (saveEl) saveEl.style.opacity = (Date.now() - (State._savedAt || 0)) < 1600 ? '1' : '0';
+
+    // Live blessing countdown
+    const blessEl = document.getElementById('blessing-countdown');
+    if (blessEl) {
+      const b = State.activeBlessing();
+      blessEl.textContent = b ? Util.fmtTime(State.state.church.blessingExpiresAt - Date.now()) : '';
+    }
+  },
+
+  /** Blessing / worker / seasonal status cards shown on Home. */
+  _renderStatusStrip() {
+    const strip = Util.el('div');
+    strip.style.cssText = 'display:flex;flex-direction:column;gap:8px';
+
+    // Active blessing
+    const b = State.activeBlessing();
+    if (b) {
+      const effect = b.type === 'XP' ? `×${b.mag.toFixed(2)} XP`
+        : b.type === 'DEFENSE' ? `+${b.mag} Defense`
+        : `+${Math.round(b.mag * 100)}% coins`;
+      const card = Util.el('div', 'card');
+      card.style.padding = '10px 14px';
+      card.innerHTML = `<span style="float:right;font-size:12px;color:var(--muted)" id="blessing-countdown"></span>
+        ⛪ <b>${Util.esc(GameData.blessingName(b))}</b> — ${effect} <span class="tag gold">blessing</span>`;
+      strip.appendChild(card);
+    }
+
+    // Hired workers at work
+    if (typeof Systems.Inn !== 'undefined') {
+      for (const slot of [1, 2]) {
+        const worker = State.state.inn.workers[slot];
+        if (!worker) continue;
+        const sess = worker.session;
+        const done = sess && Date.now() >= sess.endsAt;
+        const card = Util.el('div', 'card quest-row complete');
+        card.style.padding = '10px 14px';
+        card.innerHTML = sess
+          ? `🍺 <b>${Util.esc(worker.name)}</b> (${Util.prettify(worker.tier)}) — ${done
+            ? `<span class="tag green">job done — collect in 🏘️ Town → Inn</span>`
+            : `${Util.esc(sess.label)} · ${Util.fmtTime(sess.endsAt - Date.now())} left`}`
+          : `🍺 <b>${Util.esc(worker.name)}</b> (${Util.prettify(worker.tier)}) — <span class="tag">waiting for a job (🏘️ Town → Inn)</span>`;
+        strip.appendChild(card);
+      }
+    }
+
+    // Seasonal event banner
+    if (typeof Systems.Seasonal !== 'undefined') {
+      const event = Systems.Seasonal.activeEvent();
+      if (event) {
+        const tokens = Systems.Seasonal.tokens(event.id);
+        const card = Util.el('div', 'card');
+        card.style.padding = '10px 14px';
+        card.style.borderColor = 'var(--gold)';
+        card.innerHTML = `🎉 <b>${Util.esc(event.display_name)}</b> is on! Tokens: <b>${tokens} / ${event.token_goal}</b> — bounty board, expedition and boss tokens in 🏘️ Town → Event`;
+        strip.appendChild(card);
+      }
+    }
+
+    return strip;
   },
 
   /** Tick-accurate combat log for the frame currently in progress. */
@@ -119,7 +178,7 @@ const UI = {
     const idx = Math.min(n, sess.frames.length) - 1;
     if (idx < 0 || !sess.frames[idx] || !sess.frames[idx].playerHits) return { html: '', hpBar: '' };
     const f = sess.frames[idx];
-    const enemyName = GameData.enemies[f.enemyKey]?.display_name || Util.prettify(f.enemyKey || 'enemy');
+    const enemyName = (sess.kind === 'boss' ? GameData.raidBosses[f.enemyKey]?.display_name : GameData.enemies[f.enemyKey]?.display_name) || Util.prettify(f.enemyKey || 'enemy');
     const ticks = Math.max(f.playerHits.length, Sim.TICKS_PER_FRAME);
     const elapsedInFrame = (Date.now() - sess.startedAt) - idx * sess.frameMs;
     const done = Engine.isComplete(sess);
@@ -178,6 +237,9 @@ const UI = {
       wrap.appendChild(idle);
     }
 
+    // Status strip: active blessing, hired workers, seasonal event
+    wrap.appendChild(this._renderStatusStrip());
+
     // Recent activity log
     const logCard = Util.el('div', 'card');
     logCard.appendChild(Util.el('h2', null, '📖 Adventure log'));
@@ -199,14 +261,16 @@ const UI = {
 
   _sessionCard(sess) {
     const card = Util.el('div', 'card');
-    const emoji = { mining: '⛏️', woodcutting: '🪓', fishing: '🎣', thieving: '🗝️', agility: '🏃', firemaking: '🔥', smithing: '🔨', cooking: '🍳', fletching: '🏹', crafting: '💎', runecrafting: '✨', prayer: '🙏', combat: '⚔️', tower: '🗼', ranged: '🎯', strength: '💪', magic: '🔮', attack: '⚔️', defense: '🛡️', herblore: '🧪' }[sess.skill] || '🎯';
-    const skillName = GameData.skillDefs.find(d => d.key === sess.skill)?.name || sess.skill;
+    const emoji = { mining: '⛏️', woodcutting: '🪓', fishing: '🎣', thieving: '🗝️', agility: '🏃', firemaking: '🔥', smithing: '🔨', cooking: '🍳', fletching: '🏹', crafting: '💎', runecrafting: '✨', prayer: '🙏', combat: '⚔️', tower: '🗼', ranged: '🎯', strength: '💪', magic: '🔮', attack: '⚔️', defense: '🛡️', herblore: '🧪', construction: '🏗️', mercantile: '🛒', boss: '🐉', expedition: '🧭' }[sess.kind === 'boss' ? 'boss' : (sess.kind === 'expedition' ? 'expedition' : sess.skill)] || '🎯';
+    const skillName = GameData.skillDefs.find(d => d.key === sess.skill)?.name || Util.prettify(sess.skill);
 
     card.innerHTML = `
       <div class="session-hero">
         <span class="emoji">${emoji}</span>
-        <div class="session-title">${Util.esc(sess.kind === 'dungeon' || sess.kind === 'tower' ? sess.label : `${skillName}: ${sess.label}`)}</div>
+        <div class="session-title">${Util.esc(['dungeon', 'tower', 'boss'].includes(sess.kind) ? sess.label : `${skillName}: ${sess.label}`)}</div>
         <div class="session-meta">${sess.kind === 'dungeon'
+          ? `Style: ${Util.prettify(sess.style)} · Minute ${Util.clamp(Engine.revealedFrames(sess), 0, sess.frames.length)} of ${sess.frames.length}`
+          : sess.kind === 'boss'
           ? `Style: ${Util.prettify(sess.style)} · Minute ${Util.clamp(Engine.revealedFrames(sess), 0, sess.frames.length)} of ${sess.frames.length}`
           : `Minute ${Util.clamp(Engine.revealedFrames(sess), 0, sess.frames.length)} of ${sess.frames.length}`}</div>
       </div>
@@ -233,7 +297,7 @@ const UI = {
     const { xp } = Engine.liveXp(sess);
     const n = Util.clamp(Engine.revealedFrames(sess), 0, sess.frames.length);
     const parts = [`XP so far: <b>${Util.fmt(xp)}</b>`];
-    if (sess.kind === 'dungeon') {
+    if (sess.kind === 'dungeon' || sess.kind === 'boss') {
       let kills = 0, food = 0;
       for (let i = 0; i < n; i++) {
         kills += sess.frames[i].kills || 0;
@@ -270,16 +334,28 @@ const UI = {
       ...Object.entries(summary.runesConsumed).map(([k, v]) => `<div class="rw"><span>${GameData.name(k)} used</span><b>−${Util.fmt(v)}</b></div>`),
     ].join('');
 
-    if (summary.died) State.pushLog(`💀 Your hero fell in ${GameData.dungeons[summary.dungeon]?.display_name || 'the dungeon'} — the loot was lost.`, 'death');
+    if (summary.died && !summary.boss) State.pushLog(`💀 Your hero fell in ${GameData.dungeons[summary.dungeon]?.display_name || 'the dungeon'} — the loot was lost.`, 'death');
     else if (summary.dungeon) State.pushLog(`🏰 ${GameData.dungeons[summary.dungeon]?.display_name || 'Dungeon'} cleared: ${summary.kills} kills.`, 'quest');
+    else if (summary.boss) State.pushLog(summary.bossWon
+      ? `🐉 ${GameData.raidBosses[summary.boss]?.display_name || 'The boss'} defeated!`
+      : `💀 ${GameData.raidBosses[summary.boss]?.display_name || 'The boss'} was too strong — you escaped with 10% XP.`, summary.bossWon ? 'quest' : 'death');
+
+    const noteBlock = summary.noteTexts?.length ? `
+      <div class="card-sub" style="margin-top:8px;color:var(--accent)">📜 Lore recovered${summary.unlockedDungeon ? ' — <b>' + Util.esc(GameData.dungeons[summary.unlockedDungeon]?.display_name || summary.unlockedDungeon) + ' unlocked!</b>' : ''}:
+        <ul style="margin:6px 0 0 18px;text-align:left;color:var(--muted)">
+          ${summary.noteTexts.map(txt => `<li>${Util.esc(txt)}</li>`).join('')}
+        </ul>
+      </div>` : '';
 
     this.modal(`
-      <h2>${summary.died ? '💀 You died!' : '🎉 Session complete!'}</h2>
-      ${summary.died ? '<p class="card-sub">Your hero was overwhelmed and the remaining loot was lost. XP earned before death is kept — bring more food or train Defense next time.</p>' : ''}
+      <h2>${summary.boss ? (summary.bossWon ? '🐉 Boss defeated!' : '💀 You fell…') : summary.died ? '💀 You died!' : '🎉 Session complete!'}</h2>
+      ${summary.boss && !summary.bossWon ? '<p class="card-sub">The boss outlasted you. You keep 10% of the XP — bring better gear, food, or a Defense blessing next time.</p>' : ''}
+      ${summary.died && !summary.boss ? '<p class="card-sub">Your hero was overwhelmed and the remaining loot was lost. XP earned before death is kept — bring more food or train Defense next time.</p>' : ''}
       ${summary.kills ? `<p class="card-sub" style="color:var(--gold)">${summary.kills} enemies defeated</p>` : ''}
       ${summary.leveled?.length ? `<p class="card-sub" style="color:var(--accent)">⬆️ Level up: ${summary.leveled.map(l => Util.esc(l)).join(' · ')}</p>` : ''}
       ${summary.petsGained?.length ? `<p class="card-sub" style="color:var(--green)">🐾 A pet has joined you: ${summary.petsGained.map(k => GameData.pets[k]?.display_name || k).join(', ')}!</p>` : ''}
       ${Object.keys(summary.reclaimed || {}).length ? `<p class="card-sub">♻️ Reclaimed ${Object.entries(summary.reclaimed).map(([k, v]) => `${Util.fmt(v)}× ${GameData.name(k)}`).join(', ')}</p>` : ''}
+      ${noteBlock}
       <div class="reward-list">
         ${xpRows || '<div class="rw"><span>No XP gained</span><b>—</b></div>'}
         ${itemRows}
@@ -480,6 +556,35 @@ const UI = {
           lockedReason: locked ? `Requires Firemaking ${log.level_required}` : 'No logs — chop some trees or buy them.',
           extra: have > 60 ? this._qtyPicker('fm_' + key, have) : null,
           onStart: () => this._tryStart(() => Engine.startSkillSession('firemaking', key, this.qtySelections['fm_' + key])),
+        }));
+      }
+    } else if (skillKey === 'construction') {
+      for (const [key, recipe] of Object.entries(GameData.recipes.construction)) {
+        const locked = lvl < recipe.level_required;
+        const mats = Object.entries(recipe.materials || {})
+          .map(([m, n]) => `<span class="${State.count(m) >= n ? 'mat-ok' : 'mat-missing'}">${n}× ${GameData.name(m)} (${Util.fmt(State.count(m))})</span>`)
+          .join(' · ');
+        let maxQty = 500;
+        for (const [m, n] of Object.entries(recipe.materials || {})) maxQty = Math.min(maxQty, Math.floor(State.count(m) / n));
+        rows.push(mk({
+          icon: '🏗️', name: recipe.display_name,
+          sub: `${mats} · ${recipe.xp_per_item} XP · furnishes the Builder's Workshop` + (locked ? ` · 🔒 Construction ${recipe.level_required}` : ''),
+          locked: locked || maxQty < 1,
+          lockedReason: locked ? `Requires Construction ${recipe.level_required}` : 'Not enough materials — planks come from Fletching, nails from Smithing, stone from the shop',
+          extra: maxQty > 60 ? this._qtyPicker('co_' + key, maxQty) : null,
+          onStart: () => this._tryStart(() => Engine.startSkillSession('construction', key, this.qtySelections['co_' + key])),
+        }));
+      }
+    } else if (skillKey === 'mercantile') {
+      for (const route of GameData.tradeRouteList) {
+        const locked = lvl < route.level_required;
+        const coinRange = Util.tierFor(route.coin_ranges, lvl);
+        const xpRange = Util.tierFor(route.xp_ranges, lvl);
+        rows.push(mk({
+          icon: '🛒', name: route.display_name,
+          sub: `${Util.esc(route.description || '')}<br>Invest <b>${Util.fmt(route.coin_cost)}</b> 🪙 · returns ${Util.fmt(coinRange.min * 60)}–${Util.fmt(coinRange.max * 60)} 🪙 · ${xpRange.min}–${xpRange.max} XP/min` + (locked ? ` · 🔒 Mercantile ${route.level_required}` : ''),
+          locked, lockedReason: `Requires Mercantile ${route.level_required}`,
+          onStart: () => this._tryStart(() => Engine.startSkillSession('mercantile', route.id)),
         }));
       }
     } else if (skillKey === 'smithing' || skillKey === 'fletching' || skillKey === 'crafting') {
@@ -699,21 +804,56 @@ const UI = {
     const ctx2 = State.combatContext();
     const totalFoodHeal = Object.entries(ctx2.food).reduce((s, [k, v]) => s + (GameData.foodHeals[k] || 0) * 10 * v, 0);
     for (const d of GameData.dungeonList()) {
-      if (!State.dungeonUnlocked(d.name)) continue;
+      const unlocked = State.dungeonUnlocked(d.name);
+      // Which expedition (or magic bean) unlocks a lore-gated dungeon
+      let gate = null;
+      if (!unlocked) {
+        const via = Object.values(GameData.skillingDungeons).find(sd => sd.unlock_dungeon === d.name);
+        gate = via ? `Find all ${via.note_threshold} lore notes in ${via.display_name}` : 'Something in the clouds must open the way…';
+      }
       const rating = Sim.estimateSurvival(d, ctx2.defense, ctx2.hitpoints, totalFoodHeal);
       const ratingTag = { LIKELY: ['green', 'Likely survive'], RISKY: ['orange', 'Risky'], UNLIKELY: ['red', 'Unlikely'] }[rating];
       const enemies = [...new Set(d.enemy_spawns.map(s => GameData.enemies[s.enemy]?.display_name || s.enemy))].slice(0, 4).join(', ');
       list.appendChild(this._startRow({
         icon: '🏰',
-        name: `${d.display_name} <span class="tag ${ratingTag[0]}">${ratingTag[1]}</span>`,
+        name: `${d.display_name} <span class="tag ${unlocked ? ratingTag[0] : ''}">${unlocked ? ratingTag[1] : '🔒 ' + gate}</span>`,
         sub: `Rec. level ${d.recommended_level} · ${enemies}${d.safe_zone ? ' · 🕊️ safe zone (no death)' : ''}`,
-        locked: false,
+        locked: !unlocked,
+        lockedReason: gate || '',
         onStart: () => this._tryStart(() => Engine.startDungeonSession(d.name)),
       }));
     }
     listCard.appendChild(list);
     wrap.appendChild(listCard);
+
+    // Raid bosses (port of the app's Combat screen boss list)
+    wrap.appendChild(this._renderBosses());
     return wrap;
+  },
+
+  /* ------------------------------ raid bosses ------------------------------ */
+
+  _renderBosses() {
+    const card = Util.el('div', 'card');
+    card.appendChild(Util.el('h2', null, '🐉 Raid Bosses'));
+    card.appendChild(Util.el('p', 'card-sub',
+      `Epic single-target fights — up to ${Math.max(...Object.values(GameData.raidBosses).map(b => b.duration_minutes))} minutes long. Your combat level is ${Systems.combatLevel()}. Winners take the boss's XP rewards, loot table and a shot at its pet; losers keep 10% of the XP.`));
+    const list = Util.el('div', 'row-list');
+    for (const [key, boss] of Systems.Bosses.list()) {
+      const lvlOk = Systems.combatLevel() >= boss.combat_level_required;
+      const pet = boss.pet ? ` · 🐾 ${GameData.pets[boss.pet.id]?.display_name || boss.pet.id} 1/${Math.round(1 / boss.pet.chance)}` : '';
+      const rares = (boss.rare_drops || []).slice(0, 3).map(r => GameData.name(r.item)).join(', ');
+      list.appendChild(this._startRow({
+        icon: boss.emoji || '🐉',
+        name: `${boss.display_name} <span class="tag ${lvlOk ? 'orange' : ''}">${boss.combat_level_required}+ combat</span>`,
+        sub: `${Util.esc(boss.description || '')}<br>${boss.hp} HP · ${boss.duration_minutes} min · loot ${Util.fmt(boss.common_loot.coins_min)}–${Util.fmt(boss.common_loot.coins_max)} 🪙${rares ? ' · rares: ' + rares : ''}${pet}`,
+        locked: !lvlOk,
+        lockedReason: `Requires combat level ${boss.combat_level_required}`,
+        onStart: () => this._tryStart(() => Systems.Bosses.start(key)),
+      }));
+    }
+    card.appendChild(list);
+    return card;
   },
 
   /* ============================ CHARACTER ============================ */
@@ -814,6 +954,29 @@ const UI = {
     buyCard.appendChild(Util.el('h2', null, '🛒 General Store'));
     buyCard.appendChild(Util.el('p', 'card-sub', `Your purse: ${Util.fmt(State.state.coins)} 🪙`));
     const buyList = Util.el('div', 'row-list');
+    // 48h 2x XP boost (special entry, like the app's shop)
+    {
+      const boostActive = State.xpBoostActive();
+      const row = Util.el('div', 'row quest-row' + (boostActive ? ' complete' : ''));
+      row.innerHTML = `
+        <div class="row-icon">⚡</div>
+        <div class="row-main">
+          <div class="row-name">2× XP Boost <span class="tag gold">48 hours</span></div>
+          <div class="row-sub">${boostActive ? `Active — ${Util.fmtTime(State.state.xpBoostUntil - Date.now())} remaining` : 'Doubles all XP from collected sessions for 48 hours'}</div>
+        </div>
+        <div class="row-actions">
+          <span class="tag gold">${Util.fmt(Engine.XP_BOOST.price)} 🪙</span>
+          <button class="btn small" ${boostActive ? 'disabled' : ''}>${boostActive ? '⚡ Active' : 'Buy'}</button>
+        </div>`;
+      const bbtn = row.querySelector('button');
+      if (bbtn && !boostActive) bbtn.onclick = () => {
+        const r = Engine.buyXpBoost();
+        if (r.error) this.toast(r.error, 'error');
+        else this.toast('⚡ 2× XP boost active for 48h!', 'success');
+        State.save(); this.render();
+      };
+      buyList.appendChild(row);
+    }
     for (const entry of Engine.buyEntries()) {
       const row = Util.el('div', 'row');
       row.innerHTML = `
@@ -924,8 +1087,18 @@ const UI = {
 
   bindTabs() {
     document.querySelectorAll('.tab').forEach(t => {
+      this._applyTabLabel(t);
       t.onclick = () => { this.tab = t.dataset.tab; this._setTab(); };
     });
+  },
+
+  /** Localize a tab button via its data-i18n key (English text as fallback). */
+  _applyTabLabel(t) {
+    const key = t.dataset.i18n;
+    if (key && typeof I18n !== 'undefined' && I18n.has(key)) {
+      const emoji = t.textContent.trim().split(' ')[0];
+      t.textContent = emoji + ' ' + I18n.t(key);
+    }
   },
 };
 

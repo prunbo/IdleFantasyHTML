@@ -11,7 +11,7 @@
     document.getElementById('screen').innerHTML =
       '<div class="card"><h2>⚠️ Failed to load game data</h2><p class="card-sub">' +
       Util.esc(String(e.message)) +
-      '</p><p class="card-sub">This game must be served over HTTP (e.g. <code>python3 -m http.server</code> from the web/ folder) — opening index.html directly from disk blocks the data files.</p></div>';
+      '</p><p class="card-sub">The game data normally ships embedded in <code>js/game-bundle.js</code>. If that file is missing, serve the web/ folder over HTTP instead (e.g. <code>python3 -m http.server</code> from web/) — browsers block direct JSON reads from <code>file://</code> pages.</p></div>';
     return;
   }
 
@@ -19,6 +19,12 @@
   const loaded = State.load();
   // Compute away-time BEFORE overwriting the timestamp
   const awayMs = loaded && State.state.lastSeenAt ? Date.now() - State.state.lastSeenAt : 0;
+
+  // Localized strings (generated from the Android app's translations)
+  await I18n.load(State.state.lang || I18n.autoDetect());
+
+  // Refresh the seasonal bounty board / catch up rotations after time away
+  if (typeof Systems.Seasonal !== 'undefined') Systems.Seasonal.ensureBountySlots();
 
   Engine.restoreLastStart();
   UI.bindTabs();
@@ -38,14 +44,48 @@
   State.state.lastSeenAt = Date.now();
   State.save();
 
-  // Tick: refresh live session readouts
-  setInterval(() => UI.updateLive(), 500);
+  // Tick: refresh live session readouts + worker completion pings
+  setInterval(() => {
+    UI.updateLive();
+    for (const slot of [1, 2]) {
+      const worker = State.state.inn.workers[slot];
+      if (worker?.session && !worker.session._notified && Date.now() >= worker.session.endsAt) {
+        worker.session._notified = true;
+        State.pushLog(`🍺 ${worker.name} finished: ${worker.session.label} — collect at the Inn.`);
+        UI.toast(`🍺 ${worker.name} finished the job — collect at the Inn!`, 'success');
+        State.save();
+      }
+    }
+  }, 500);
 
   // Autosave every 10s
   setInterval(() => { State.state.lastSeenAt = Date.now(); State.save(); }, 10000);
   window.addEventListener('beforeunload', () => { State.state.lastSeenAt = Date.now(); State.save(); });
 
   // Top-bar actions
+  document.getElementById('btn-lang').onclick = () => {
+    const current = I18n.locale;
+    const listHtml = I18n.SUPPORTED.map(l =>
+      `<button class="btn ${l.tag === current ? '' : 'secondary'}" data-lang="${l.tag}" style="margin:3px;min-width:150px">${l.tag === current ? '✔️ ' : ''}${Util.esc(l.label)}</button>`).join('');
+    UI.modal(`
+      <h2>🌐 ${Util.esc(I18n.tf('settings_language', null, 'Language'))}</h2>
+      <p class="card-sub">${Util.esc(I18n.tf('web_lang_note', null, 'Community translations from the Android app — strings still being ported fall back to English.'))}</p>
+      <div style="display:flex;flex-wrap:wrap;justify-content:center">${listHtml}</div>
+      <div class="modal-actions">
+        <button class="btn secondary" data-act="close">${Util.esc(I18n.tf('btn_close', null, 'Close'))}</button>
+      </div>`, m => {
+      m.querySelector('[data-act=close]').onclick = () => UI.closeModal();
+      m.querySelectorAll('[data-lang]').forEach(b => b.onclick = async () => {
+        State.state.lang = b.dataset.lang;
+        State.save();
+        await I18n.load(State.state.lang);
+        UI.closeModal();
+        UI.render();
+        UI.toast('🌐 ' + b.textContent.replace('✔️ ', '').trim(), 'success');
+      });
+    });
+  };
+
   document.getElementById('btn-export').onclick = () => {
     const code = State.exportSave();
     UI.modal(`

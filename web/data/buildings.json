@@ -1,0 +1,363 @@
+{
+  "inn": {
+    "key": "inn",
+    "tiers": [
+      {
+        "construction_level_required": 20,
+        "coin_cost": 50000,
+        "materials": {
+          "plank": 200,
+          "oak_plank": 100,
+          "iron_nail": 500
+        },
+        "bonuses": {
+          "worker_xp": 0.1
+        }
+      },
+      {
+        "construction_level_required": 45,
+        "coin_cost": 250000,
+        "materials": {
+          "oak_plank": 500,
+          "willow_plank": 200,
+          "steel_nail": 1500
+        },
+        "bonuses": {
+          "worker_xp": 0.2
+        }
+      },
+      {
+        "construction_level_required": 70,
+        "coin_cost": 1000000,
+        "materials": {
+          "willow_plank": 1000,
+          "maple_plank": 1000,
+          "mithril_nail": 3000
+        },
+        "bonuses": {
+          "worker_xp": 0.3
+        }
+      }
+    ]
+  },
+  "guild_hall": {
+    "key": "guild_hall",
+    "tiers": [
+      {
+        "construction_level_required": 25,
+        "coin_cost": 75000,
+        "materials": {
+          "oak_plank": 300,
+          "iron_nail": 600
+        },
+        "bonuses": {
+          "guild_quest_reduction": 0.1
+        }
+      },
+      {
+        "construction_level_required": 50,
+        "coin_cost": 350000,
+        "materials": {
+          "willow_plank": 600,
+          "steel_nail": 1500
+        },
+        "bonuses": {
+          "guild_quest_reduction": 0.2
+        }
+      },
+      {
+        "construction_level_required": 75,
+        "coin_cost": 1500000,
+        "materials": {
+          "maple_plank": 1500,
+          "yew_plank": 500,
+          "mithril_nail": 3000
+        },
+        "bonuses": {
+          "guild_quest_reduction": 0.3
+        }
+      }
+    ]
+  },
+  "church": {
+    "key": "church",
+    "tiers": [
+      {
+        "construction_level_required": 30,
+        "coin_cost": 100000,
+        "materials": {
+          "oak_plank": 200,
+          "carved_stone": 400,
+          "steel_nail": 500
+        },
+        "bonuses": {
+          "extra_blessing_hrs": 6
+        }
+      },
+      {
+        "construction_level_required": 55,
+        "coin_cost": 500000,
+        "materials": {
+          "willow_plank": 500,
+          "stone_block": 600,
+          "steel_nail": 1500
+        },
+        "bonuses": {
+          "extra_blessing_hrs": 12
+        }
+      },
+      {
+        "construction_level_required": 80,
+        "coin_cost": 2000000,
+        "materials": {
+          "yew_plank": 800,
+          "stone_block": 1000,
+          "mithril_nail": 3000
+        },
+        "bonuses": {
+          "extra_blessing_hrs": 24
+        }
+      }
+    ]
+  },
+  "fairgrounds": {
+    "key": "fairgrounds",
+    "tiers": [
+      {
+        "construction_level_required": 35,
+        "coin_cost": 150000,
+        "materials": {
+          "oak_plank": 250,
+          "willow_plank": 100,
+          "steel_nail": 600
+        },
+        "bonuses": {
+          "extra_carnival_games": 1,
+          "carnival_cooldown_mult": 0.75,
+          "idle_ticket_bonus_chance": 0.05
+        }
+      },
+      {
+        "construction_level_required": 55,
+        "coin_cost": 600000,
+        "materials": {
+          "willow_plank": 600,
+          "maple_plank": 200,
+          "steel_nail": 1500
+        },
+        "bonuses": {
+          "extra_carnival_games": 2,
+          "carnival_cooldown_mult": 0.75,
+          "idle_ticket_bonus_chance": 0.1
+        }
+      },
+      {
+        "construction_level_required": 75,
+        "coin_cost": 1500000,
+        "materials": {
+          "maple_plank": 800,
+          "yew_plank": 400,
+          "mithril_nail": 2500
+        },
+        "bonuses": {
+          "extra_carnival_games": 2,
+          "carnival_cooldown_mult": 0.5,
+          "idle_ticket_bonus_chance": 0.15
+        }
+      }
+    ]
+  },
+  "garden": {
+    "key": "garden",
+    "tiers": [
+      {
+        "construction_level_required": 30,
+        "coin_cost": 80000,
+        "materials": {
+          "plank": 100,
+          "oak_plank": 200,
+          "iron_nail": 400
+        },
+        "bonuses": {
+          "farm_plots": 1
+        }
+      },
+      {
+        "construction_level_required": 55,
+        "coin_cost": 400000,
+        "materials": {
+          "oak_plank": 400,
+          "willow_plank": 200,
+          "steel_nail": 1000
+        },
+        "bonuses": {
+          "farm_plots": 2
+        }
+      }
+    ]
+  },
+  "queue_master": {
+    "key": "queue_master",
+    "tiers": [
+      {
+        "construction_level_required": 40,
+        "coin_cost": 200000,
+        "materials": {
+          "oak_plank": 300,
+          "willow_plank": 100,
+          "steel_nail": 800
+        },
+        "bonuses": {
+          "queue_slots": 1
+        }
+      },
+      {
+        "construction_level_required": 65,
+        "coin_cost": 800000,
+        "materials": {
+          "willow_plank": 500,
+          "maple_plank": 300,
+          "mithril_nail": 2000
+        },
+        "bonuses": {
+          "queue_slots": 2
+        }
+      },
+      {
+        "construction_level_required": 90,
+        "coin_cost": 3000000,
+        "materials": {
+          "maple_plank": 1000,
+          "yew_plank": 600,
+          "mithril_nail": 4000
+        },
+        "bonuses": {
+          "queue_slots": 3
+        }
+      }
+    ]
+  },
+  "cape_rack": {
+    "key": "cape_rack",
+    "tiers": [
+      {
+        "construction_level_required": 50,
+        "coin_cost": 150000,
+        "materials": {
+          "oak_plank": 500,
+          "carved_stone": 200,
+          "steel_nail": 1000
+        },
+        "bonuses": {
+          "passive_cape_category": 1
+        }
+      },
+      {
+        "construction_level_required": 75,
+        "coin_cost": 600000,
+        "materials": {
+          "willow_plank": 800,
+          "stone_block": 400,
+          "steel_nail": 2000
+        },
+        "bonuses": {
+          "passive_cape_category": 2
+        }
+      },
+      {
+        "construction_level_required": 90,
+        "coin_cost": 2000000,
+        "materials": {
+          "yew_plank": 1200,
+          "stone_block": 800,
+          "mithril_nail": 3000
+        },
+        "bonuses": {
+          "passive_cape_category": 3
+        }
+      }
+    ]
+  },
+  "artisans_workshop": {
+    "key": "artisans_workshop",
+    "tiers": [
+      {
+        "construction_level_required": 80,
+        "coin_cost": 2000000,
+        "materials": {
+          "yew_plank": 1000,
+          "stone_block": 800,
+          "mithril_nail": 3000
+        },
+        "bonuses": {
+          "secondary_material_save_chance": 0.05
+        }
+      },
+      {
+        "construction_level_required": 90,
+        "coin_cost": 5000000,
+        "materials": {
+          "magic_plank": 1500,
+          "stone_block": 1500,
+          "mithril_nail": 5000
+        },
+        "bonuses": {
+          "secondary_material_save_chance": 0.10
+        }
+      },
+      {
+        "construction_level_required": 99,
+        "coin_cost": 10000000,
+        "materials": {
+          "magic_plank": 3000,
+          "stone_block": 3000,
+          "mithril_nail": 10000
+        },
+        "bonuses": {
+          "secondary_material_save_chance": 0.15
+        }
+      }
+    ]
+  },
+  "chronos_spire": {
+    "key": "chronos_spire",
+    "tiers": [
+      {
+        "construction_level_required": 82,
+        "coin_cost": 3000000,
+        "materials": {
+          "magic_plank": 800,
+          "stone_block": 1000,
+          "mithril_nail": 3000
+        },
+        "bonuses": {
+          "player_session_speed_reduction": 0.02
+        }
+      },
+      {
+        "construction_level_required": 92,
+        "coin_cost": 7500000,
+        "materials": {
+          "magic_plank": 1800,
+          "stone_block": 2000,
+          "mithril_nail": 6000
+        },
+        "bonuses": {
+          "player_session_speed_reduction": 0.04
+        }
+      },
+      {
+        "construction_level_required": 99,
+        "coin_cost": 15000000,
+        "materials": {
+          "magic_plank": 4000,
+          "stone_block": 4000,
+          "mithril_nail": 12000
+        },
+        "bonuses": {
+          "player_session_speed_reduction": 0.06
+        }
+      }
+    ]
+  }
+}

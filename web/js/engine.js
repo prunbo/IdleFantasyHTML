@@ -56,6 +56,8 @@ const Engine = {
     if (ls.kind === 'dungeon') return GameData.dungeons[ls.activityKey]?.display_name || 'last dungeon';
     if (ls.kind === 'tower') return 'Tower Floor ' + (State.state.tower.current + 1);
     if (ls.kind === 'carnival') return Systems.CARNIVAL_GAMES.find(g => g.key === ls.activityKey)?.name || 'carnival';
+    if (ls.kind === 'boss') return GameData.raidBosses[ls.activityKey]?.display_name || 'boss';
+    if (ls.kind === 'expedition') return 'Expedition: ' + (GameData.skillingDungeons[ls.activityKey]?.display_name || ls.activityKey);
     const def = GameData.skillDefs.find(d => d.key === ls.skill);
     const actLabel = ({
       mining: k => GameData.ores[k]?.display_name,
@@ -66,6 +68,8 @@ const Engine = {
       firemaking: k => GameData.name(k),
       herblore: k => GameData.herbloreRecipes[k]?.display_name,
       prayer: k => GameData.bones[k]?.display_name,
+      mercantile: k => GameData.tradeRoutes[k]?.display_name,
+      expedition: k => GameData.skillingDungeons[k]?.display_name,
     }[ls.skill] || (k => GameData.recipes[ls.skill]?.[k]?.display_name || GameData.name(k)))(ls.activityKey);
     return `${def?.name || ls.skill}: ${actLabel || ls.activityKey}`;
   },
@@ -77,20 +81,25 @@ const Engine = {
     if (ls.kind === 'dungeon') return this.startDungeonSession(ls.activityKey);
     if (ls.kind === 'tower') return Systems.startTowerSession();
     if (ls.kind === 'carnival') return Systems.startCarnivalSession(ls.activityKey);
+    if (ls.kind === 'boss') return Systems.Bosses.start(ls.activityKey);
+    if (ls.kind === 'expedition') return this.startSkillSession('expedition', ls.activityKey);
     return this.startSkillSession(ls.skill, ls.activityKey);
   },
 
   _makeSession(kind, skill, activityKey, label, result, extra = {}) {
     const agilityLevel = State.level('agility');
     const nFrames = Math.max(1, result.frames.length);
-    const frameMs = Math.max(1000, Math.floor(result.durationMs / nFrames));
+    // Chronos Spire speeds up every player session
+    const durationMs = kind === 'boss' ? result.durationMs
+      : Math.max(1000, Math.round(result.durationMs * State.playerSessionDurationMultiplier()));
+    const frameMs = Math.max(1000, Math.floor(durationMs / nFrames));
     const sess = {
       id: 's' + Date.now(),
       kind, skill, activityKey, label,
       startedAt: Date.now(),
       frameMs,
       frames: result.frames,
-      endsAt: Date.now() + result.durationMs,
+      endsAt: Date.now() + durationMs,
       agilityLevel,
       ...extra,
     };
@@ -111,58 +120,134 @@ const Engine = {
     return sess;
   },
 
+  /**
+   * Worker variant: the session lives on the hired worker instead of the
+   * player slot. Gathering runs take the tier's real duration (4–8 h);
+   * production runs are per-item (1 min ÷ tier efficiency, like the app).
+   */
+  _makeWorkerSession(worker, kind, skill, activityKey, label, result, extra = {}) {
+    const tier = worker.tier;
+    const gathering = kind === 'gathering' || kind === 'expedition';
+    // Gathering/combat runs take the tier's real duration (4–8 h); production
+    // runs are per-item at the tier's crafting speed (1 min ÷ efficiency).
+    const durationMs = gathering || kind === 'dungeon' || kind === 'boss' || kind === 'tower'
+      ? tier.hours * 3600000
+      : Math.max(60000, result.durationMs / (tier.efficiency || 1));
+    const nFrames = Math.max(1, result.frames.length);
+    const sess = {
+      id: 'w' + Date.now() + '_' + worker.slot,
+      kind, skill, activityKey, label,
+      startedAt: Date.now(),
+      frameMs: Math.max(1000, Math.floor(durationMs / nFrames)),
+      frames: result.frames,
+      endsAt: Date.now() + durationMs,
+      agilityLevel: State.level('agility'),
+      // Port of WorkerQueuedSessionStarter: the tier's combined multiplier applies
+      // to loot & XP for gathering runs and combat/boss runs; production runs are
+      // already quantity-capped instead.
+      mult: (gathering && ['mining', 'woodcutting', 'fishing', 'thieving', 'agility'].includes(skill)) ||
+        kind === 'dungeon' || kind === 'boss'
+        ? Systems.Inn.gatheringMult(tier) : 1,
+      workerTier: tier.key,
+      workerSlot: worker.slot,
+      ...extra,
+    };
+    const w = State.state.inn.workers[worker.slot];
+    w.session = sess;
+    State.pushLog(`🍺 ${w.name} started: ${label} (${Util.fmtTime(durationMs)})`);
+    State.save();
+    return sess;
+  },
+
   /* ----------------------- gathering + production ----------------------- */
 
   /**
    * Start a skill session. Returns {error} or {ok, session}.
    * `qtyArg` limits production sessions (firemaking/smithing/cooking/etc.).
+   * `opts.worker = {slot, tier}` targets a hired worker's session instead of
+   * the player's (workers run in parallel, mirroring the app).
    */
-  startSkillSession(skill, activityKey, qtyArg) {
-    if (this.hasSession()) return { error: 'A session is already running.' };
+  startSkillSession(skill, activityKey, qtyArg, opts = {}) {
+    const worker = opts.worker || null;
+    if (!worker && this.hasSession()) return { error: 'A session is already running.' };
     const s = State.state;
     const level = State.level(skill);
     const capeBonus = State.capeBonus(skill);
-    const opts = { agilityLevel: State.level('agility'), petBoostPct: State.petBoost(skill) };
-    // Gathering pets drop from their skill's sessions (1/1000 per frame, like the app)
+    const opts2 = { agilityLevel: State.level('agility'), petBoostPct: State.petBoost(skill) };
+    // Gathering pets drop from their skill's sessions (1/1000 per frame, like the app).
+    // Workers never roll pet drops (petDropKey = null in WorkerQueuedSessionStarter).
     const petDef = GameData.petBySkill[skill];
-    if (petDef && ['mining', 'woodcutting', 'fishing', 'thieving', 'agility'].includes(skill))
-      opts.petDrop = { key: petDef.id, chance: 1 / 1000 };
+    if (!worker && petDef && ['mining', 'woodcutting', 'fishing', 'thieving', 'agility'].includes(skill))
+      opts2.petDrop = { key: petDef.id, chance: 1 / 1000 };
+    const saveChance = State.materialSaveChance();
+    // Worker tiers cap crafting/prayer/runecrafting quantities (Long Laborer is uncapped)
+    const capQty = q => worker ? Math.min(q, worker.tier.maxCraftQty) : q;
+    const mkSession = (kind, sk, key, label, result, extra) =>
+      worker
+        ? this._makeWorkerSession(worker, kind, sk, key, label, result, extra)
+        : this._makeSession(kind, sk, key, label, result, extra);
 
     switch (skill) {
       case 'mining': {
         const ore = GameData.ores[activityKey];
         if (!ore) return { error: 'Unknown ore.' };
         if (level < ore.level_required) return { error: `Requires Mining ${ore.level_required}.` };
-        opts.toolEfficiency = State.toolEfficiency('pickaxe', 'mining') * (1 + capeBonus);
-        return { ok: true, session: this._makeSession('gathering', 'mining', activityKey, ore.display_name, Sim.simulateMining(activityKey, ore, State.xp('mining'), opts)) };
+        opts2.toolEfficiency = State.toolEfficiency('pickaxe', 'mining') * (1 + capeBonus);
+        return { ok: true, session: mkSession('gathering', 'mining', activityKey, ore.display_name, Sim.simulateMining(activityKey, ore, State.xp('mining'), opts2)) };
       }
       case 'woodcutting': {
         const tree = GameData.trees[activityKey];
         if (!tree) return { error: 'Unknown tree.' };
         if (level < tree.level_required) return { error: `Requires Woodcutting ${tree.level_required}.` };
-        opts.toolEfficiency = State.toolEfficiency('axe', 'woodcutting', tree.level_required) * (1 + capeBonus);
-        return { ok: true, session: this._makeSession('gathering', 'woodcutting', activityKey, tree.display_name, Sim.simulateWoodcutting(tree, State.xp('woodcutting'), opts)) };
+        opts2.toolEfficiency = State.toolEfficiency('axe', 'woodcutting', tree.level_required) * (1 + capeBonus);
+        return { ok: true, session: mkSession('gathering', 'woodcutting', activityKey, tree.display_name, Sim.simulateWoodcutting(tree, State.xp('woodcutting'), opts2)) };
       }
       case 'fishing': {
         const fish = GameData.fish[activityKey];
         if (!fish) return { error: 'Unknown fish.' };
         if (level < fish.level_required) return { error: `Requires Fishing ${fish.level_required}.` };
-        opts.toolEfficiency = State.toolEfficiency('fishing_rod', 'fishing') * (1 + capeBonus);
-        return { ok: true, session: this._makeSession('gathering', 'fishing', activityKey, GameData.name(activityKey), Sim.simulateFishing(activityKey, fish, State.xp('fishing'), opts)) };
+        opts2.toolEfficiency = State.toolEfficiency('fishing_rod', 'fishing') * (1 + capeBonus);
+        return { ok: true, session: mkSession('gathering', 'fishing', activityKey, GameData.name(activityKey), Sim.simulateFishing(activityKey, fish, State.xp('fishing'), opts2)) };
       }
       case 'thieving': {
         const npc = GameData.thievingNpcs.find(n => n.key === activityKey);
         if (!npc) return { error: 'Unknown target.' };
         if (level < npc.level_required) return { error: `Requires Thieving ${npc.level_required}.` };
-        opts.toolEfficiency = State.toolEfficiency('lockpick', 'thieving');
-        return { ok: true, session: this._makeSession('gathering', 'thieving', activityKey, npc.display_name, Sim.simulateThieving(npc, State.xp('thieving'), level, opts)) };
+        opts2.toolEfficiency = State.toolEfficiency('lockpick', 'thieving');
+        return { ok: true, session: mkSession('gathering', 'thieving', activityKey, npc.display_name, Sim.simulateThieving(npc, State.xp('thieving'), level, opts2)) };
       }
       case 'agility': {
         const course = GameData.agilityCourses[activityKey];
         if (!course) return { error: 'Unknown course.' };
         if (level < course.level_required) return { error: `Requires Agility ${course.level_required}.` };
-        opts.toolEfficiency = State.toolEfficiency('grappling_hook', 'agility');
-        return { ok: true, session: this._makeSession('gathering', 'agility', activityKey, course.display_name, Sim.simulateAgility(course, State.xp('agility'), level, opts)) };
+        opts2.toolEfficiency = State.toolEfficiency('grappling_hook', 'agility');
+        return { ok: true, session: mkSession('gathering', 'agility', activityKey, course.display_name, Sim.simulateAgility(course, State.xp('agility'), level, opts2)) };
+      }
+      case 'mercantile': {
+        // Trade routes: the caravan cost is paid up front; coins come back with the frames
+        const route = GameData.tradeRoutes[activityKey];
+        if (!route) return { error: 'Unknown trade route.' };
+        if (level < route.level_required) return { error: `Requires Mercantile ${route.level_required}.` };
+        if (State.state.coins < route.coin_cost) return { error: `Not enough coins (need ${Util.fmt(route.coin_cost)} 🪙).` };
+        State.state.coins -= route.coin_cost;
+        const routePet = GameData.petBySkill.mercantile;
+        if (!worker && routePet) opts2.petDrop = { key: routePet.id, chance: 1 / 1000 };
+        return { ok: true, session: mkSession('gathering', 'mercantile', activityKey, route.display_name, Sim.simulateMercantile(route, State.xp('mercantile'), opts2), { coinCost: route.coin_cost }) };
+      }
+      case 'expedition': {
+        // Skilling dungeons: tiered XP + drops, lore notes roll every frame
+        const dungeon = GameData.skillingDungeons[activityKey];
+        if (!dungeon) return { error: 'Unknown expedition.' };
+        if (typeof Systems.Expeditions === 'undefined') return { error: 'Expeditions not loaded.' };
+        const avail = Systems.Expeditions.available(activityKey);
+        if (!avail.ok) return { error: avail.reason };
+        const skillKey = dungeon.skill;
+        opts2.toolEfficiency = State.toolEfficiency(
+          { mining: 'pickaxe', woodcutting: 'axe', fishing: 'fishing_rod', thieving: 'lockpick', agility: 'grappling_hook' }[skillKey] || 'pickaxe',
+          skillKey);
+        opts2.petBoostPct = State.petBoost(skillKey);
+        if (!worker && GameData.petBySkill[skillKey]) opts2.petDrop = { key: GameData.petBySkill[skillKey].id, chance: 1 / 1000 };
+        return { ok: true, session: mkSession('expedition', skillKey, activityKey, dungeon.display_name, Sim.simulateSkillingDungeon(activityKey, dungeon, State.xp(skillKey), opts2)) };
       }
       case 'firemaking': {
         const log = GameData.logs[activityKey];
@@ -170,14 +255,14 @@ const Engine = {
         if (!log || !ashKey) return { error: 'Unknown log.' };
         if (level < log.level_required) return { error: `Requires Firemaking ${log.level_required}.` };
         const have = State.count(activityKey);
-        const qty = Math.min(have, qtyArg || have);
+        const qty = capQty(Math.min(have, qtyArg || have));
         if (qty < 1) return { error: `You need ${GameData.name(activityKey)} to burn.` };
         const eff = State.toolEfficiency('tinderbox', 'firemaking', log.level_required);
         State.removeItem(activityKey, qty);
-        const petDef = GameData.petBySkill.firemaking;
+        const petDef2 = GameData.petBySkill.firemaking;
         const baseFrameMs = Sim.sessionDurationMs(State.level('agility')) / 60;
-        return { ok: true, session: this._makeSession('production', 'firemaking', activityKey, GameData.name(activityKey),
-          { frames: Sim.simulateCraft(State.xp('firemaking'), qty, log.xp_per_log, 1, ashKey, eff, petDef ? { key: petDef.id, chance: 1 / 1000 } : null), durationMs: Math.max(1, qty * baseFrameMs / eff) },
+        return { ok: true, session: mkSession('production', 'firemaking', activityKey, GameData.name(activityKey),
+          { frames: Sim.simulateCraft(State.xp('firemaking'), qty, log.xp_per_log, 1, ashKey, eff, !worker && petDef2 ? { key: petDef2.id, chance: 1 / 1000 } : null), durationMs: Math.max(1, qty * baseFrameMs / eff) },
           { consumed: { [activityKey]: qty }, outputKey: ashKey, totalQty: qty }) };
       }
       case 'herblore': {
@@ -191,16 +276,16 @@ const Engine = {
           const missing = Object.entries(recipe.materials || {}).filter(([m]) => (State.count(m) || 0) < 1).map(([m]) => GameData.name(m));
           return { error: `Not enough materials — need ${missing.join(', ')}.` };
         }
-        const qty = Math.min(maxQty, qtyArg || maxQty);
+        const qty = capQty(Math.min(maxQty, qtyArg || maxQty));
         for (const [mat, need] of Object.entries(recipe.materials || {})) State.removeItem(mat, need * qty);
-        const petDef = GameData.petBySkill.herblore;
+        const petDef3 = GameData.petBySkill.herblore;
         const baseFrameMs = Sim.sessionDurationMs(State.level('agility')) / 60;
         const effects = Object.entries(recipe.effects || {}).map(([k, v]) => `+${v} ${k}`).join(', ');
-        return { ok: true, session: this._makeSession('production', 'herblore', activityKey, recipe.display_name,
-          { frames: Sim.simulateCraft(State.xp('herblore'), qty, recipe.xp_per_item, recipe.output_quantity || 1, activityKey, 1, petDef ? { key: petDef.id, chance: 1 / 1000 } : null), durationMs: Math.max(1, qty * baseFrameMs) },
+        return { ok: true, session: mkSession('production', 'herblore', activityKey, recipe.display_name,
+          { frames: Sim.simulateCraft(State.xp('herblore'), qty, recipe.xp_per_item, recipe.output_quantity || 1, activityKey, 1, !worker && petDef3 ? { key: petDef3.id, chance: 1 / 1000 } : null), durationMs: Math.max(1, qty * baseFrameMs) },
           { consumed: Object.fromEntries(Object.entries(recipe.materials || {}).map(([m, n]) => [m, n * qty])), outputKey: activityKey, totalQty: qty * (recipe.output_quantity || 1) }) };
       }
-      case 'smithing': case 'fletching': case 'crafting': {
+      case 'smithing': case 'fletching': case 'crafting': case 'construction': {
         const recipe = GameData.recipes[skill][activityKey];
         if (!recipe) return { error: 'Unknown recipe.' };
         if (level < recipe.level_required) return { error: `Requires ${Util.prettify(skill)} ${recipe.level_required}.` };
@@ -211,28 +296,40 @@ const Engine = {
           const missing = Object.entries(recipe.materials || {}).filter(([m]) => (State.count(m) || 0) < 1).map(([m]) => GameData.name(m));
           return { error: `Not enough materials${missing.length ? ' — need ' + missing.join(', ') : ''}.` };
         }
-        const qty = Math.min(maxQty, qtyArg || maxQty);
-        for (const [mat, need] of Object.entries(recipe.materials || {})) State.removeItem(mat, need * qty);
+        const qty = capQty(Math.min(maxQty, qtyArg || maxQty));
+        // Artisan's Workshop: a chance to preserve every material except the first (primary)
+        const mats = Object.entries(recipe.materials || {});
+        const toConsume = {};
+        mats.forEach(([m, n], i) => {
+          let consume = n * qty;
+          if (i > 0 && saveChance > 0) {
+            let kept = 0;
+            for (let u = 0; u < consume; u++) if (Math.random() < saveChance) kept++;
+            consume -= kept;
+          }
+          toConsume[m] = consume;
+        });
+        for (const [mat, n] of Object.entries(toConsume)) if (n > 0) State.removeItem(mat, n);
         const eff = skill === 'smithing'
           ? State.toolEfficiency('hammer', 'smithing', recipe.level_required)
           : 1.0;
-        const petDef = GameData.petBySkill[skill];
+        const petDef4 = GameData.petBySkill[skill];
         const baseFrameMs = Sim.sessionDurationMs(State.level('agility')) / 60;
-        return { ok: true, session: this._makeSession('production', skill, activityKey, recipe.display_name,
-          { frames: Sim.simulateCraft(State.xp(skill), qty, recipe.xp_per_item, recipe.output_quantity || 1, activityKey, eff, petDef ? { key: petDef.id, chance: 1 / 1000 } : null), durationMs: Math.max(1, qty * baseFrameMs / eff) },
-          { consumed: Object.fromEntries(Object.entries(recipe.materials || {}).map(([m, n]) => [m, n * qty])), outputKey: activityKey, totalQty: qty * (recipe.output_quantity || 1) }) };
+        return { ok: true, session: mkSession('production', skill, activityKey, recipe.display_name,
+          { frames: Sim.simulateCraft(State.xp(skill), qty, recipe.xp_per_item, recipe.output_quantity || 1, activityKey, eff, !worker && petDef4 ? { key: petDef4.id, chance: 1 / 1000 } : null), durationMs: Math.max(1, qty * baseFrameMs / eff) },
+          { consumed: toConsume, outputKey: activityKey, totalQty: qty * (recipe.output_quantity || 1) }) };
       }
       case 'cooking': {
         const recipe = GameData.recipes.cooking[activityKey];
         if (!recipe) return { error: 'Unknown recipe.' };
         if (level < recipe.level_required) return { error: `Requires Cooking ${recipe.level_required}.` };
         const have = State.count(recipe.raw_item) || 0;
-        const qty = Math.min(have, qtyArg || have);
+        const qty = capQty(Math.min(have, qtyArg || have));
         if (qty < 1) return { error: `You need ${GameData.name(recipe.raw_item)} to cook.` };
         State.removeItem(recipe.raw_item, qty);
         const eff = State.toolEfficiency('frying_pan', 'cooking', recipe.level_required);
         const baseFrameMs = Sim.sessionDurationMs(State.level('agility')) / 60;
-        return { ok: true, session: this._makeSession('production', 'cooking', activityKey, recipe.display_name,
+        return { ok: true, session: mkSession('production', 'cooking', activityKey, recipe.display_name,
           { frames: Sim.simulateCraft(State.xp('cooking'), qty, recipe.xp_per_item, 1, recipe.cooked_item, eff), durationMs: Math.max(1, qty * baseFrameMs / eff) },
           { consumed: { [recipe.raw_item]: qty }, outputKey: recipe.cooked_item, totalQty: qty }) };
       }
@@ -241,20 +338,20 @@ const Engine = {
         if (!rune) return { error: 'Unknown rune.' };
         if (level < rune.level_required) return { error: `Requires Runecrafting ${rune.level_required}.` };
         const have = Math.floor((State.count('rune_essence') || 0) / (rune.essence_cost || 1));
-        const qty = Math.min(have, qtyArg || have);
+        const qty = capQty(Math.min(have, qtyArg || have));
         if (qty < 1) return { error: 'You need Rune Essence — mine it at level 1 Mining or buy it at the shop.' };
         State.removeItem('rune_essence', qty * (rune.essence_cost || 1));
-        const petDef = GameData.petBySkill.runecrafting;
+        const petDef5 = GameData.petBySkill.runecrafting;
         const frames = Sim.simulateRunecrafting(activityKey, rune, qty, State.xp('runecrafting'));
-        if (petDef && frames.length > 0) {
+        if (!worker && petDef5 && frames.length > 0) {
           for (let i = 0; i < 60; i++) if (Math.random() < 1 / 1000) {
             const last = frames[frames.length - 1];
-            last.items[petDef.id] = (last.items[petDef.id] || 0) + 1;
+            last.items[petDef5.id] = (last.items[petDef5.id] || 0) + 1;
             break;
           }
         }
         const baseFrameMs = Sim.sessionDurationMs(State.level('agility')) / 60;
-        return { ok: true, session: this._makeSession('production', 'runecrafting', activityKey, rune.display_name,
+        return { ok: true, session: mkSession('production', 'runecrafting', activityKey, rune.display_name,
           { frames, durationMs: Math.max(1, qty * baseFrameMs) },
           { consumed: { rune_essence: qty * (rune.essence_cost || 1) }, outputKey: activityKey, totalQty: qty }) };
       }
@@ -262,11 +359,11 @@ const Engine = {
         const bone = GameData.bones[activityKey];
         if (!bone) return { error: 'Unknown bone.' };
         const have = State.count(activityKey) || 0;
-        const qty = Math.min(have, qtyArg || have);
+        const qty = capQty(Math.min(have, qtyArg || have));
         if (qty < 1) return { error: `You need ${bone.display_name}.` };
         State.removeItem(activityKey, qty);
         const baseFrameMs = Sim.sessionDurationMs(State.level('agility')) / 60;
-        return { ok: true, session: this._makeSession('production', 'prayer', activityKey, bone.display_name,
+        return { ok: true, session: mkSession('production', 'prayer', activityKey, bone.display_name,
           { frames: Sim.simulateCraft(State.xp('prayer'), qty, bone.xp_per_bone, 1, null, 1), durationMs: Math.max(1, qty * baseFrameMs) },
           { consumed: { [activityKey]: qty }, totalQty: qty }) };
       }
@@ -301,8 +398,9 @@ const Engine = {
     return 'Unknown style.';
   },
 
-  startDungeonSession(dungeonKey) {
-    if (this.hasSession()) return { error: 'A session is already running.' };
+  startDungeonSession(dungeonKey, opts = {}) {
+    const worker = opts.worker || null;
+    if (!worker && this.hasSession()) return { error: 'A session is already running.' };
     const dungeon = GameData.dungeons[dungeonKey];
     if (!dungeon) return { error: 'Unknown dungeon.' };
     if (!State.dungeonUnlocked(dungeonKey)) return { error: 'This dungeon is locked — something in the clouds must open the way…' };
@@ -323,14 +421,14 @@ const Engine = {
     }
     const result = Sim.simulateDungeon(dungeon, ctx);
     State.save();
-    return {
-      ok: true,
-      session: this._makeSession('dungeon', 'combat', dungeonKey, dungeon.display_name, result, {
+    const sess = worker
+      ? this._makeWorkerSession(worker, 'dungeon', 'combat', dungeonKey, dungeon.display_name, result, { style })
+      : this._makeSession('dungeon', 'combat', dungeonKey, dungeon.display_name, result, {
         style,
         foodAtStart: { ...ctx.food },
         arrowsAtStart: style === 'ranged' ? Object.entries(ctx.arrows).map(([k]) => k)[0] || null : null,
-      }),
-    };
+      });
+    return { ok: true, session: sess };
   },
 
   /* ------------------------------ collect ------------------------------ */
@@ -342,6 +440,10 @@ const Engine = {
       xpBySkill: {}, items: {}, kills: 0, killsByEnemy: {}, died: false,
       foodConsumed: {}, arrowsConsumed: {}, runesConsumed: {}, leveled: [],
       dungeon: sess.kind === 'dungeon' ? sess.activityKey : null,
+      boss: sess.kind === 'boss' ? sess.activityKey : null,
+      bossWon: false,
+      expedition: sess.kind === 'expedition' ? sess.activityKey : null,
+      notes: 0, noteTexts: [], unlockedDungeon: null,
       completed: sess.kind === 'dungeon' && !sess.frames.some(f => f.died),
     };
 
@@ -355,6 +457,46 @@ const Engine = {
       for (const [k, v] of Object.entries(f.foodConsumed || {})) summary.foodConsumed[k] = (summary.foodConsumed[k] || 0) + v;
       for (const [k, v] of Object.entries(f.arrowsConsumed || {})) summary.arrowsConsumed[k] = (summary.arrowsConsumed[k] || 0) + v;
       for (const [k, v] of Object.entries(f.runesConsumed || {})) summary.runesConsumed[k] = (summary.runesConsumed[k] || 0) + v;
+    }
+
+    // --- Expedition: pull lore notes out of the loot and apply them ---
+    if (sess.kind === 'expedition' && typeof Systems.Expeditions !== 'undefined') {
+      let rawNotes = 0;
+      for (const k of Object.keys(summary.items)) {
+        if (k.startsWith('note_')) { rawNotes += summary.items[k]; delete summary.items[k]; }
+      }
+      const res = Systems.Expeditions.collectNotes(sess.activityKey, rawNotes);
+      summary.notes = res.notes;
+      summary.noteTexts = res.revealed || [];
+      summary.unlockedDungeon = res.unlocked;
+      if (res.unlocked) {
+        State.pushLog(`🗺️ ${res.unlockMessage || 'A new dungeon is unlocked!'}`, 'quest');
+      }
+    }
+
+    // --- Boss fights: the final frame carries the verdict ---
+    if (sess.kind === 'boss') {
+      const last = sess.frames[sess.frames.length - 1];
+      summary.bossWon = (last.kills || 0) > 0;
+      if (summary.bossWon) {
+        summary.kills = 1;
+        summary.killsByEnemy = { [sess.activityKey]: 1 };
+      } else {
+        summary.kills = 0;
+        summary.killsByEnemy = {};
+        summary.items = {};   // no loot on a loss (XP is already at 10% in the frames)
+      }
+      summary.completed = summary.bossWon;
+      // Ammo/rune reclaim like the tower
+      summary.reclaimed = {};
+      for (const [k, v] of Object.entries(summary.arrowsConsumed)) {
+        const back = Math.floor(v * Systems.reclaimChance(State.level('ranged')));
+        if (back > 0) { summary.arrowsConsumed[k] -= back; summary.reclaimed[k] = back; }
+      }
+      for (const [k, v] of Object.entries(summary.runesConsumed)) {
+        const back = Math.floor(v * Systems.reclaimChance(State.level('magic')));
+        if (back > 0) { summary.runesConsumed[k] -= back; summary.reclaimed[k] = (summary.reclaimed[k] || 0) + back; }
+      }
     }
 
     // --- Tower: death forfeits 90% of XP/loot; survivors get tower bonus multipliers ---
@@ -393,6 +535,14 @@ const Engine = {
       Systems.recordGuildSlayer(slayerRes.taskKills, slayerRes.tasksCompleted);
     }
 
+    // --- Church blessing + XP boost multipliers apply to collected rewards ---
+    const blessXp = State.blessingXpMultiplier();
+    const blessCoins = State.blessingCoinMultiplier();
+    const boostXp = State.xpBoostActive() ? 2 : 1;
+    if (blessXp > 1 || boostXp > 1)
+      for (const k of Object.keys(summary.xpBySkill)) summary.xpBySkill[k] = Math.floor(summary.xpBySkill[k] * blessXp * boostXp);
+    if (blessCoins > 1 && summary.items.coins) summary.items.coins = Math.floor(summary.items.coins * blessCoins);
+
     // Apply XP
     for (const [skill, xp] of Object.entries(summary.xpBySkill)) {
       const ups = State.addXp(skill, xp);
@@ -426,6 +576,21 @@ const Engine = {
 
     this._updateQuestCounters(sess, summary);
     this._updateGuildCounters(sess, summary);
+
+    // --- Seasonal event hooks (bounty board progress + token pillars) ---
+    if (typeof Systems.Seasonal !== 'undefined') {
+      if (sess.kind === 'gathering') Systems.Seasonal.recordGathering(summary.items);
+      else if (sess.kind === 'expedition') Systems.Seasonal.recordGathering(summary.items);
+      else if (sess.kind === 'production') Systems.Seasonal.recordCrafting(summary.items);
+      else if ((sess.kind === 'dungeon' || sess.kind === 'tower' || sess.kind === 'boss') && Object.keys(summary.killsByEnemy).length)
+        Systems.Seasonal.recordCombat(summary.killsByEnemy);
+      if (sess.kind === 'expedition') Systems.Seasonal.recordExpeditionCompletion(sess.activityKey);
+      if (sess.kind === 'boss' && summary.bossWon) Systems.Seasonal.recordBossDefeat(sess.activityKey);
+    }
+    // --- Mercantile guild: route completions + coins earned from trade ---
+    if (sess.kind === 'gathering' && sess.skill === 'mercantile')
+      Systems.recordGuildTrade(sess.activityKey, summary.items.coins || 0);
+
     State.state.stats.sessionsCollected++;
     State.state.session = null;
     State.save();
@@ -435,7 +600,7 @@ const Engine = {
   /** Feed a collected session into the guild tracking system. */
   _updateGuildCounters(sess, summary) {
     if (typeof Systems === 'undefined') return;
-    if (sess.kind === 'gathering') {
+    if (sess.kind === 'gathering' || sess.kind === 'expedition') {
       if (sess.skill === 'thieving') {
         const okFrames = sess.frames.filter(f => (f.xpGain || 0) > 0).length;
         Systems.recordGuildThieving(sess.activityKey, okFrames);
@@ -451,7 +616,7 @@ const Engine = {
       } else {
         Systems.recordGuildCrafting(sess.skill, summary.items);
       }
-    } else if (sess.kind === 'dungeon' || sess.kind === 'tower') {
+    } else if (sess.kind === 'dungeon' || sess.kind === 'tower' || sess.kind === 'boss') {
       if (!summary.died && Object.keys(summary.killsByEnemy).length) Systems.recordGuildCombat(summary.killsByEnemy, sess.style);
     }
   },
@@ -474,6 +639,9 @@ const Engine = {
           }
         }
       }
+    } else if (sess.kind === 'expedition') {
+      // Expeditions count as gathering for their skill (like the app's recordGathering)
+      for (const [k, v] of Object.entries(sum.items)) st.itemsGathered[k] = (st.itemsGathered[k] || 0) + v;
     } else if (sess.kind === 'production') {
       if (sess.outputKey) {
         st.itemsCrafted[sess.outputKey] = (st.itemsCrafted[sess.outputKey] || 0) + (sum.items[sess.outputKey] || 0);
@@ -485,11 +653,15 @@ const Engine = {
       if (sess.skill === 'prayer') {
         st.bonesScatteredTotal = (st.bonesScatteredTotal || 0) + (sess.consumed ? Object.values(sess.consumed).reduce((a, b) => a + b, 0) : 0);
       }
-    } else if (sess.kind === 'dungeon') {
+    } else if (sess.kind === 'dungeon' || sess.kind === 'boss') {
       st.totalKills += sum.kills;
       for (const [k, v] of Object.entries(sum.killsByEnemy)) st.killsByEnemy[k] = (st.killsByEnemy[k] || 0) + v;
       st.combatItems = st.combatItems || {};
       for (const [k, v] of Object.entries(sum.items)) if (k !== 'coins') st.combatItems[k] = (st.combatItems[k] || 0) + v;
+      if (sess.kind === 'boss' && sum.bossWon) {
+        st.bossKillsByBoss = st.bossKillsByBoss || {};
+        st.bossKillsByBoss[sess.activityKey] = (st.bossKillsByBoss[sess.activityKey] || 0) + 1;
+      }
       if (sum.completed) {
         st.dungeonRuns[sess.activityKey] = (st.dungeonRuns[sess.activityKey] || 0) + 1;
         st.dungeonStyleRuns[sess.activityKey + ':' + sess.style] = (st.dungeonStyleRuns[sess.activityKey + ':' + sess.style] || 0) + 1;
@@ -526,7 +698,13 @@ const Engine = {
         if (itemKey === 'arrow_shaft') base = 1;
       } else if (itemKey.endsWith('potion') || itemKey.endsWith('brew')) base = 25;
       else if (itemKey.includes('log')) base = 5;
+      else if (itemKey.endsWith('_plank')) base = { redwood: 40, magic: 30, yew: 22, maple: 14, willow: 9, oak: 6 }[itemKey.split('_')[0]] || 4;
+      else if (itemKey.endsWith('_nail')) base = { runite: 60, mithril: 25, steel: 12, iron: 6 }[itemKey.split('_')[0]] || 5;
       else if (itemKey.endsWith('ore') || itemKey === 'rune_essence') base = 5;
+      else if (itemKey === 'stone') base = 8;
+      else if (itemKey === 'carved_stone') base = 20;
+      else if (itemKey === 'stone_block') base = 45;
+      else if (GameData.recipes.construction[itemKey]) base = Math.max(10, Math.round((GameData.recipes.construction[itemKey].xp_per_item || 30) / 2));
       else if (itemKey.startsWith('cooked')) base = 10;
       else if (itemKey.startsWith('raw_')) base = 4;
       else if (GameData.fish[itemKey]) base = 8;
@@ -572,6 +750,19 @@ const Engine = {
     return { ok: true };
   },
 
+  /** The shop's 48h 2x XP boost (xp_boost_48h, 2.5M coins — port of activateXpBoost). */
+  XP_BOOST: { key: 'xp_boost_48h', price: 2500000, durationMs: 48 * 3600000 },
+
+  buyXpBoost() {
+    if (State.xpBoostActive()) return { error: 'A 2× XP boost is already active.' };
+    if (State.state.coins < this.XP_BOOST.price) return { error: 'Not enough coins.' };
+    State.state.coins -= this.XP_BOOST.price;
+    State.state.xpBoostUntil = Date.now() + this.XP_BOOST.durationMs;
+    State.pushLog('⚡ 2× XP boost activated for 48 hours!', 'levelup');
+    State.save();
+    return { ok: true };
+  },
+
   sell(itemKey, qty) {
     if (itemKey === 'carnival_ticket') return { error: 'Tickets can only be spent at the Carnival.' };
     const have = State.count(itemKey);
@@ -591,6 +782,7 @@ const Engine = {
     'gather', 'gather_any', 'craft', 'craft_any', 'prayer', 'kill', 'dungeon',
     'kill_enemy', 'dungeon_melee_only', 'dungeon_ranged_only', 'dungeon_magic_only',
     'dungeon_no_food', 'collect', 'pickpocket', 'steal', 'slayer_task',
+    'boss', 'upgrade_building',
   ]),
 
   questsAvailable() {
@@ -619,6 +811,8 @@ const Engine = {
       case 'pickpocket': count = (st.pickpocketsByNpc || {})[q.target] || 0; break;
       case 'steal': count = (st.stolen || {})[q.target] || 0; break;
       case 'slayer_task': count = st.slayerTasksCompleted || 0; break;
+      case 'boss': count = (st.bossKillsByBoss || {})[q.target] || 0; break;
+      case 'upgrade_building': count = (st.buildingsUpgradedByBuilding || {})[q.target] || 0; break;
     }
     const prevClaimed = !q.requires_previous || (State.state.quests[q.requires_previous]?.claimed);
     return {
